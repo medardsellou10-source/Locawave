@@ -9,7 +9,8 @@
       "Bash(cp -r \"C:/Users/lenovo/locawave/\".[!.]* \"C:/Users/lenovo/LOCAWAVESN/\")",
       "Bash(npm install:*)",
       "Bash(npx shadcn@latest init -d)",
-      "Bash(npx shadcn@latest add button card input label dialog sheet table badge select textarea tabs toast form separator dropdown-menu avatar skeleton sonner -y)"
+      "Bash(npx shadcn@latest add button card input label dialog sheet table badge select textarea tabs toast form separator dropdown-menu avatar skeleton sonner -y)",
+      "Bash(npx shadcn@latest add button card input label dialog sheet table badge select textarea tabs form separator dropdown-menu avatar skeleton sonner -y)"
     ]
   }
 }
