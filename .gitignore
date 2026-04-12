@@ -36,3 +36,7 @@ yarn-error.log*
 next-env.d.ts
 
 .vercel
+*.output.json
+deps*.json
+logs*.json
+build_*.txt
