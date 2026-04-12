@@ -72,7 +72,7 @@ export default function PaymentsPage() {
             className="w-40"
           />
           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-            <DialogTrigger asChild>
+            <DialogTrigger>
               <Button className="bg-[#f97316] hover:bg-[#ea580c] text-white">
                 <Plus className="w-4 h-4 mr-2" /> Encaisser
               </Button>

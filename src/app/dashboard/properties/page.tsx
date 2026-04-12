@@ -74,7 +74,7 @@ export default function PropertiesPage() {
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold text-[#1a2744]">Biens immobiliers</h1>
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-          <DialogTrigger asChild>
+          <DialogTrigger>
             <Button className="bg-[#f97316] hover:bg-[#ea580c] text-white">
               <Plus className="w-4 h-4 mr-2" /> Ajouter un bien
             </Button>

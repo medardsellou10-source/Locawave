@@ -112,7 +112,7 @@ export default function TenantDetailPage() {
             <MessageCircle className="w-4 h-4 mr-1" /> WhatsApp
           </Button>
           <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
-            <DialogTrigger asChild>
+            <DialogTrigger>
               <Button variant="outline" size="sm"><Edit className="w-4 h-4 mr-1" /> Modifier</Button>
             </DialogTrigger>
             <DialogContent>

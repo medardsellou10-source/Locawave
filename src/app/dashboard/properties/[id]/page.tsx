@@ -124,7 +124,7 @@ export default function PropertyDetailPage() {
         </div>
         <div className="flex gap-2">
           <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
-            <DialogTrigger asChild>
+            <DialogTrigger>
               <Button variant="outline" size="sm"><Edit className="w-4 h-4 mr-1" /> Modifier</Button>
             </DialogTrigger>
             <DialogContent>
@@ -153,7 +153,7 @@ export default function PropertyDetailPage() {
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-semibold text-[#1a2744]">Unités ({units.length})</h2>
         <Dialog open={unitDialogOpen} onOpenChange={(open) => { setUnitDialogOpen(open); if (!open) setEditingUnit(undefined) }}>
-          <DialogTrigger asChild>
+          <DialogTrigger>
             <Button className="bg-[#f97316] hover:bg-[#ea580c] text-white" size="sm">
               <Plus className="w-4 h-4 mr-1" /> Ajouter une unité
             </Button>
