@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server"
 import { createAdminClient } from "@/lib/supabase-server"
 
+export const dynamic = "force-dynamic"
+
 // POST /api/ocr-wave
 // Reçoit un screenshot Wave/OM depuis le front, l'upload dans Supabase Storage,
 // puis appelle l'Edge Function extract-wave-payment pour OCR
