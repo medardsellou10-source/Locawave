@@ -43,6 +43,7 @@ export default function RegisterPage() {
     formState: { errors },
   } = useForm<RegisterInput>({
     resolver: zodResolver(registerSchema),
+    defaultValues: { full_name: "", email: "", password: "", confirm_password: "" },
   })
 
   function handlePropertyCountChange(e: React.ChangeEvent<HTMLSelectElement>) {

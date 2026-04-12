@@ -102,8 +102,13 @@ export default function DashboardPage() {
   }
 
   useEffect(() => {
-    if (org) fetchKPIs()
-  }, [org])
+    if (org) {
+      fetchKPIs()
+    } else if (!orgLoading) {
+      // Org finished loading but is null (unauthenticated or no org)
+      setKpiLoading(false)
+    }
+  }, [org, orgLoading])
 
   // Temps réel via Supabase subscriptions
   useEffect(() => {
