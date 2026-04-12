@@ -1,0 +1,39 @@
+./src/app/(auth)/login/page.tsx
+---
+./src/app/api/export/payments/route.ts
+---
+Error occurred prerendering page "/api/export/payments". Read more: https://nextjs.org/docs/messages/prerender-error
+---
+Error: supabaseUrl is required.
+---
+    at t.createClient (/vercel/path0/.next/server/chunks/480.js:62:41250)
+---
+    at c (/vercel/path0/.next/server/app/api/export/payments/route.js:1:824)
+---
+Error: @supabase/ssr: Your project's URL and API key are required to create a Supabase client!
+---
+    at g (/vercel/path0/.next/server/app/(auth)/login/page.js:1:2649)
+---
+Error occurred prerendering page "/login". Read more: https://nextjs.org/docs/messages/prerender-error
+---
+Error: @supabase/ssr: Your project's URL and API key are required to create a Supabase client!
+---
+    at g (/vercel/path0/.next/server/app/(auth)/login/page.js:1:2649)
+---
+Error: @supabase/ssr: Your project's URL and API key are required to create a Supabase client!
+---
+    at v (/vercel/path0/.next/server/app/(auth)/register/page.js:1:2613)
+---
+Error occurred prerendering page "/register". Read more: https://nextjs.org/docs/messages/prerender-error
+---
+Error: @supabase/ssr: Your project's URL and API key are required to create a Supabase client!
+---
+    at v (/vercel/path0/.next/server/app/(auth)/register/page.js:1:2613)
+---
+	/(auth)/login/page: /login
+---
+	/(auth)/register/page: /register
+---
+	/api/export/payments/route: /api/export/payments
+---
+Error: Command "npm run build" exited with 1

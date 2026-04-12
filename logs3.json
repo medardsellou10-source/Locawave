@@ -1,0 +1,299 @@
+[
+{"created":1776014013420,"date":1776014013420,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014013420611275077500000","text":"Running build in Washington, D.C., USA (East) – iad1","type":"stdout","serial":"1776014013420611275077500000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014013420,"date":1776014013420,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014013420611275077500001","text":"Build machine configuration: 2 cores, 8 GB","type":"stdout","serial":"1776014013420611275077500001","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014013522,"date":1776014013522,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014013522611275077500001","text":"Cloning github.com/medardsellou10-source/Locawave (Branch: main, Commit: 08382d4)","type":"stdout","serial":"1776014013522611275077500001","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014013523,"date":1776014013523,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014013523611275077500001","text":"Previous build caches not available.","type":"stdout","serial":"1776014013523611275077500001","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014013710,"date":1776014013710,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014013710611275077500000","text":"Cloning completed: 187.000ms","type":"stdout","serial":"1776014013710611275077500000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014014065,"date":1776014014065,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014014065098389320300000","text":"Running \"vercel build\"","type":"stdout","serial":"1776014014065098389320300000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014014718,"date":1776014014718,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014014718098389320300000","text":"Vercel CLI 50.42.0","type":"stderr","serial":"1776014014718098389320300000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014015319,"date":1776014015319,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014015319098389320300000","text":"Installing dependencies...","type":"stdout","serial":"1776014015319098389320300000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014022699,"date":1776014022699,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014022699098389320300000","text":"npm warn deprecated node-domexception@1.0.0: Use your platform's native DOMException instead","type":"stderr","serial":"1776014022699098389320300000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."},"level":"warning"}
+,
+{"created":1776014035219,"date":1776014035219,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014035219098389320300000","text":"","type":"stdout","serial":"1776014035219098389320300000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014035220,"date":1776014035220,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014035220098389320300000","text":"added 739 packages in 20s","type":"stdout","serial":"1776014035220098389320300000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014035220,"date":1776014035220,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014035220098389320300001","text":"","type":"stdout","serial":"1776014035220098389320300001","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014035220,"date":1776014035220,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014035220098389320300002","text":"245 packages are looking for funding","type":"stdout","serial":"1776014035220098389320300002","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014035221,"date":1776014035221,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014035221098389320300000","text":"  run `npm fund` for details","type":"stdout","serial":"1776014035221098389320300000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014035271,"date":1776014035271,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014035271098389320300000","text":"Running \"npm run build\"","type":"stdout","serial":"1776014035271098389320300000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014035368,"date":1776014035368,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014035368098389320300000","text":"","type":"stdout","serial":"1776014035368098389320300000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014035368,"date":1776014035368,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014035368098389320300001","text":"> locawave@0.1.0 build","type":"stdout","serial":"1776014035368098389320300001","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014035369,"date":1776014035369,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014035369098389320300000","text":"> next build","type":"stdout","serial":"1776014035369098389320300000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014035369,"date":1776014035369,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014035369098389320300001","text":"","type":"stdout","serial":"1776014035369098389320300001","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014035963,"date":1776014035963,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014035963098389320300000","text":"Attention: Next.js now collects completely anonymous telemetry regarding usage.","type":"stdout","serial":"1776014035963098389320300000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014035964,"date":1776014035964,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014035964098389320300000","text":"This information is used to shape Next.js' roadmap and prioritize features.","type":"stdout","serial":"1776014035964098389320300000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014035964,"date":1776014035964,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014035964098389320300001","text":"You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:","type":"stdout","serial":"1776014035964098389320300001","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014035964,"date":1776014035964,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014035964098389320300002","text":"https://nextjs.org/telemetry","type":"stdout","serial":"1776014035964098389320300002","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014035964,"date":1776014035964,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014035964098389320300003","text":"","type":"stdout","serial":"1776014035964098389320300003","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014036013,"date":1776014036013,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014036013098389320300000","text":"  ▲ Next.js 14.2.35","type":"stdout","serial":"1776014036013098389320300000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014036013,"date":1776014036013,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014036013098389320300001","text":"","type":"stdout","serial":"1776014036013098389320300001","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014036032,"date":1776014036032,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014036032098389320300000","text":"   Creating an optimized production build ...","type":"stdout","serial":"1776014036032098389320300000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014036483,"date":1776014036483,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014036483098389320300000","text":" ⚠ Found lockfile missing swc dependencies, run next locally to automatically patch","type":"stderr","serial":"1776014036483098389320300000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."},"level":"warning"}
+,
+{"created":1776014046302,"date":1776014046302,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014046302098389320300000","text":" ⚠ Found lockfile missing swc dependencies, run next locally to automatically patch","type":"stderr","serial":"1776014046302098389320300000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."},"level":"warning"}
+,
+{"created":1776014048633,"date":1776014048633,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014048633098389320300000","text":"<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (215kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)","type":"stderr","serial":"1776014048633098389320300000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014049248,"date":1776014049248,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014049248098389320300000","text":" ⚠ Found lockfile missing swc dependencies, run next locally to automatically patch","type":"stderr","serial":"1776014049248098389320300000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."},"level":"warning"}
+,
+{"created":1776014057412,"date":1776014057412,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014057412098389320300000","text":" ✓ Compiled successfully","type":"stdout","serial":"1776014057412098389320300000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014057413,"date":1776014057413,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014057413098389320300000","text":"   Skipping validation of types","type":"stdout","serial":"1776014057413098389320300000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014057413,"date":1776014057413,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014057413098389320300001","text":"   Linting ...","type":"stdout","serial":"1776014057413098389320300001","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014060228,"date":1776014060228,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060228098389320300000","text":"","type":"stdout","serial":"1776014060228098389320300000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014060229,"date":1776014060229,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060229098389320300000","text":"./src/app/(auth)/login/page.tsx","type":"stdout","serial":"1776014060229098389320300000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014060229,"date":1776014060229,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060229098389320300001","text":"24:10  Warning: 'Skeleton' is defined but never used.  @typescript-eslint/no-unused-vars","type":"stdout","serial":"1776014060229098389320300001","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."},"level":"warning"}
+,
+{"created":1776014060230,"date":1776014060230,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060230098389320300000","text":"","type":"stdout","serial":"1776014060230098389320300000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014060230,"date":1776014060230,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060230098389320300001","text":"./src/app/api/auth/setup-org/route.ts","type":"stdout","serial":"1776014060230098389320300001","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014060230,"date":1776014060230,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060230098389320300002","text":"19:40  Warning: 'property_count' is assigned a value but never used.  @typescript-eslint/no-unused-vars","type":"stdout","serial":"1776014060230098389320300002","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."},"level":"warning"}
+,
+{"created":1776014060231,"date":1776014060231,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060231098389320300000","text":"","type":"stdout","serial":"1776014060231098389320300000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014060231,"date":1776014060231,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060231098389320300001","text":"./src/app/api/export/payments/route.ts","type":"stdout","serial":"1776014060231098389320300001","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014060231,"date":1776014060231,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060231098389320300002","text":"18:7  Warning: 'query' is never reassigned. Use 'const' instead.  prefer-const","type":"stdout","serial":"1776014060231098389320300002","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."},"level":"warning"}
+,
+{"created":1776014060232,"date":1776014060232,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060232098389320300000","text":"","type":"stdout","serial":"1776014060232098389320300000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014060232,"date":1776014060232,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060232098389320300001","text":"./src/app/dashboard/billing/page.tsx","type":"stdout","serial":"1776014060232098389320300001","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014060232,"date":1776014060232,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060232098389320300002","text":"11:15  Warning: 'Database' is defined but never used.  @typescript-eslint/no-unused-vars","type":"stdout","serial":"1776014060232098389320300002","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."},"level":"warning"}
+,
+{"created":1776014060233,"date":1776014060233,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060233098389320300000","text":"","type":"stdout","serial":"1776014060233098389320300000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014060233,"date":1776014060233,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060233098389320300001","text":"./src/app/dashboard/leases/page.tsx","type":"stdout","serial":"1776014060233098389320300001","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014060233,"date":1776014060233,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060233098389320300002","text":"7:16  Warning: 'CardContent' is defined but never used.  @typescript-eslint/no-unused-vars","type":"stdout","serial":"1776014060233098389320300002","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."},"level":"warning"}
+,
+{"created":1776014060234,"date":1776014060234,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060234098389320300000","text":"46:47  Warning: React Hook useEffect has a missing dependency: 'fetchLeases'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps","type":"stdout","serial":"1776014060234098389320300000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."},"level":"warning"}
+,
+{"created":1776014060234,"date":1776014060234,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060234098389320300001","text":"","type":"stdout","serial":"1776014060234098389320300001","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014060234,"date":1776014060234,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060234098389320300002","text":"./src/app/dashboard/onboarding/page.tsx","type":"stdout","serial":"1776014060234098389320300002","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014060235,"date":1776014060235,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060235098389320300000","text":"14:10  Warning: 'propertySchema' is defined but never used.  @typescript-eslint/no-unused-vars","type":"stdout","serial":"1776014060235098389320300000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."},"level":"warning"}
+,
+{"created":1776014060235,"date":1776014060235,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060235098389320300001","text":"14:26  Warning: 'unitSchema' is defined but never used.  @typescript-eslint/no-unused-vars","type":"stdout","serial":"1776014060235098389320300001","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."},"level":"warning"}
+,
+{"created":1776014060235,"date":1776014060235,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060235098389320300002","text":"14:38  Warning: 'tenantSchema' is defined but never used.  @typescript-eslint/no-unused-vars","type":"stdout","serial":"1776014060235098389320300002","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."},"level":"warning"}
+,
+{"created":1776014060235,"date":1776014060235,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060235098389320300003","text":"25:11  Warning: 'appUser' is assigned a value but never used.  @typescript-eslint/no-unused-vars","type":"stdout","serial":"1776014060235098389320300003","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."},"level":"warning"}
+,
+{"created":1776014060236,"date":1776014060236,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060236098389320300000","text":"86:9  Warning: 'unitId' is assigned a value but never used.  @typescript-eslint/no-unused-vars","type":"stdout","serial":"1776014060236098389320300000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."},"level":"warning"}
+,
+{"created":1776014060236,"date":1776014060236,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060236098389320300001","text":"","type":"stdout","serial":"1776014060236098389320300001","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014060236,"date":1776014060236,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060236098389320300002","text":"./src/app/dashboard/page.tsx","type":"stdout","serial":"1776014060236098389320300002","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014060236,"date":1776014060236,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060236098389320300003","text":"104:6  Warning: React Hook useEffect has a missing dependency: 'fetchKPIs'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps","type":"stdout","serial":"1776014060236098389320300003","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."},"level":"warning"}
+,
+{"created":1776014060237,"date":1776014060237,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060237098389320300000","text":"117:6  Warning: React Hook useEffect has missing dependencies: 'fetchKPIs' and 'supabase'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps","type":"stdout","serial":"1776014060237098389320300000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."},"level":"warning"}
+,
+{"created":1776014060237,"date":1776014060237,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060237098389320300001","text":"","type":"stdout","serial":"1776014060237098389320300001","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014060237,"date":1776014060237,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060237098389320300002","text":"./src/app/dashboard/payments/page.tsx","type":"stdout","serial":"1776014060237098389320300002","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014060237,"date":1776014060237,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060237098389320300003","text":"15:28  Warning: 'Download' is defined but never used.  @typescript-eslint/no-unused-vars","type":"stdout","serial":"1776014060237098389320300003","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."},"level":"warning"}
+,
+{"created":1776014060238,"date":1776014060238,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060238098389320300000","text":"61:49  Warning: React Hook useEffect has a missing dependency: 'fetchPayments'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps","type":"stdout","serial":"1776014060238098389320300000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."},"level":"warning"}
+,
+{"created":1776014060238,"date":1776014060238,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060238098389320300001","text":"","type":"stdout","serial":"1776014060238098389320300001","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014060238,"date":1776014060238,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060238098389320300002","text":"./src/app/dashboard/properties/[id]/page.tsx","type":"stdout","serial":"1776014060238098389320300002","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014060238,"date":1776014060238,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060238098389320300003","text":"10:29  Warning: 'CardHeader' is defined but never used.  @typescript-eslint/no-unused-vars","type":"stdout","serial":"1776014060238098389320300003","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."},"level":"warning"}
+,
+{"created":1776014060239,"date":1776014060239,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060239098389320300000","text":"10:41  Warning: 'CardTitle' is defined but never used.  @typescript-eslint/no-unused-vars","type":"stdout","serial":"1776014060239098389320300000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."},"level":"warning"}
+,
+{"created":1776014060239,"date":1776014060239,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060239098389320300001","text":"72:6  Warning: React Hook useEffect has a missing dependency: 'fetchData'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps","type":"stdout","serial":"1776014060239098389320300001","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."},"level":"warning"}
+,
+{"created":1776014060239,"date":1776014060239,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060239098389320300002","text":"","type":"stdout","serial":"1776014060239098389320300002","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014060239,"date":1776014060239,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060239098389320300003","text":"./src/app/dashboard/properties/page.tsx","type":"stdout","serial":"1776014060239098389320300003","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014060240,"date":1776014060240,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060240098389320300000","text":"48:6  Warning: React Hook useEffect has a missing dependency: 'fetchProperties'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps","type":"stdout","serial":"1776014060240098389320300000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."},"level":"warning"}
+,
+{"created":1776014060241,"date":1776014060241,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060241098389320300000","text":"","type":"stdout","serial":"1776014060241098389320300000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014060241,"date":1776014060241,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060241098389320300001","text":"./src/app/dashboard/referral/page.tsx","type":"stdout","serial":"1776014060241098389320300001","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014060241,"date":1776014060241,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060241098389320300002","text":"36:6  Warning: React Hook useEffect has a missing dependency: 'supabase'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps","type":"stdout","serial":"1776014060241098389320300002","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."},"level":"warning"}
+,
+{"created":1776014060244,"date":1776014060244,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060244098389320300000","text":"","type":"stdout","serial":"1776014060244098389320300000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014060244,"date":1776014060244,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060244098389320300001","text":"./src/app/dashboard/reports/page.tsx","type":"stdout","serial":"1776014060244098389320300001","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014060244,"date":1776014060244,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060244098389320300002","text":"80:6  Warning: React Hook useEffect has a missing dependency: 'supabase'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps","type":"stdout","serial":"1776014060244098389320300002","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."},"level":"warning"}
+,
+{"created":1776014060244,"date":1776014060244,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060244098389320300003","text":"","type":"stdout","serial":"1776014060244098389320300003","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014060245,"date":1776014060245,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060245098389320300000","text":"./src/app/dashboard/settings/page.tsx","type":"stdout","serial":"1776014060245098389320300000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014060245,"date":1776014060245,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060245098389320300001","text":"44:6  Warning: React Hook useEffect has a missing dependency: 'supabase'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps","type":"stdout","serial":"1776014060245098389320300001","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."},"level":"warning"}
+,
+{"created":1776014060245,"date":1776014060245,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060245098389320300002","text":"","type":"stdout","serial":"1776014060245098389320300002","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014060245,"date":1776014060245,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060245098389320300003","text":"./src/app/dashboard/tenants/[id]/page.tsx","type":"stdout","serial":"1776014060245098389320300003","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014060246,"date":1776014060246,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060246098389320300000","text":"63:6  Warning: React Hook useEffect has a missing dependency: 'fetchData'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps","type":"stdout","serial":"1776014060246098389320300000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."},"level":"warning"}
+,
+{"created":1776014060246,"date":1776014060246,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060246098389320300001","text":"","type":"stdout","serial":"1776014060246098389320300001","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014060246,"date":1776014060246,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060246098389320300002","text":"./src/app/dashboard/tenants/page.tsx","type":"stdout","serial":"1776014060246098389320300002","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014060246,"date":1776014060246,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060246098389320300003","text":"51:6  Warning: React Hook useEffect has a missing dependency: 'fetchTenants'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps","type":"stdout","serial":"1776014060246098389320300003","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."},"level":"warning"}
+,
+{"created":1776014060247,"date":1776014060247,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060247098389320300000","text":"","type":"stdout","serial":"1776014060247098389320300000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014060247,"date":1776014060247,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060247098389320300001","text":"./src/components/app/LeaseForm.tsx","type":"stdout","serial":"1776014060247098389320300001","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014060252,"date":1776014060252,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060252098389320300000","text":"63:6  Warning: React Hook useEffect has a missing dependency: 'supabase'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps","type":"stdout","serial":"1776014060252098389320300000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."},"level":"warning"}
+,
+{"created":1776014060252,"date":1776014060252,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060252098389320300001","text":"71:6  Warning: React Hook useEffect has a missing dependency: 'setValue'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps","type":"stdout","serial":"1776014060252098389320300001","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."},"level":"warning"}
+,
+{"created":1776014060252,"date":1776014060252,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060252098389320300002","text":"","type":"stdout","serial":"1776014060252098389320300002","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014060253,"date":1776014060253,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060253098389320300000","text":"./src/components/app/PaymentForm.tsx","type":"stdout","serial":"1776014060253098389320300000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014060253,"date":1776014060253,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060253098389320300001","text":"64:6  Warning: React Hook useEffect has a missing dependency: 'supabase'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps","type":"stdout","serial":"1776014060253098389320300001","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."},"level":"warning"}
+,
+{"created":1776014060253,"date":1776014060253,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060253098389320300002","text":"72:6  Warning: React Hook useEffect has a missing dependency: 'setValue'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps","type":"stdout","serial":"1776014060253098389320300002","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."},"level":"warning"}
+,
+{"created":1776014060253,"date":1776014060253,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060253098389320300003","text":"","type":"stdout","serial":"1776014060253098389320300003","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014060254,"date":1776014060254,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060254098389320300000","text":"./src/hooks/useOrganization.ts","type":"stdout","serial":"1776014060254098389320300000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014060254,"date":1776014060254,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060254098389320300001","text":"41:6  Warning: React Hook useEffect has a missing dependency: 'supabase'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps","type":"stdout","serial":"1776014060254098389320300001","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."},"level":"warning"}
+,
+{"created":1776014060254,"date":1776014060254,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060254098389320300002","text":"","type":"stdout","serial":"1776014060254098389320300002","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014060254,"date":1776014060254,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060254098389320300003","text":"./src/hooks/useUser.ts","type":"stdout","serial":"1776014060254098389320300003","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014060255,"date":1776014060255,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060255098389320300000","text":"46:6  Warning: React Hook useEffect has a missing dependency: 'supabase'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps","type":"stdout","serial":"1776014060255098389320300000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."},"level":"warning"}
+,
+{"created":1776014060255,"date":1776014060255,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060255098389320300001","text":"","type":"stdout","serial":"1776014060255098389320300001","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014060255,"date":1776014060255,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060255098389320300002","text":"info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/basic-features/eslint#disabling-rules","type":"stdout","serial":"1776014060255098389320300002","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014060256,"date":1776014060256,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060256098389320300000","text":"   Collecting page data ...","type":"stdout","serial":"1776014060256098389320300000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014060469,"date":1776014060469,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014060469098389320300000","text":" ⚠ Found lockfile missing swc dependencies, run next locally to automatically patch","type":"stderr","serial":"1776014060469098389320300000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."},"level":"warning"}
+,
+{"created":1776014062037,"date":1776014062037,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014062037098389320300000","text":"   Generating static pages (0/18) ...","type":"stdout","serial":"1776014062037098389320300000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014062331,"date":1776014062331,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014062331098389320300000","text":"   Generating static pages (4/18) \r","type":"stdout","serial":"1776014062331098389320300000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014062547,"date":1776014062547,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014062547098389320300000","text":"   Generating static pages (8/18) \r","type":"stdout","serial":"1776014062547098389320300000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014062741,"date":1776014062741,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014062741098389320300000","text":"   Generating static pages (13/18) \r","type":"stdout","serial":"1776014062741098389320300000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014063065,"date":1776014063065,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014063065098389320300000","text":" ✓ Generating static pages (18/18)","type":"stdout","serial":"1776014063065098389320300000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014063445,"date":1776014063445,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014063445098389320300000","text":"   Finalizing page optimization ...","type":"stdout","serial":"1776014063445098389320300000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014063446,"date":1776014063446,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014063446098389320300000","text":"   Collecting build traces ...","type":"stdout","serial":"1776014063446098389320300000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014067703,"date":1776014067703,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014067703098389320300000","text":"","type":"stdout","serial":"1776014067703098389320300000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014067723,"date":1776014067723,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014067723098389320300000","text":"Route (app)                              Size     First Load JS","type":"stdout","serial":"1776014067723098389320300000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014067723,"date":1776014067723,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014067723098389320300001","text":"┌ ○ /                                    855 B          96.9 kB","type":"stdout","serial":"1776014067723098389320300001","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014067723,"date":1776014067723,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014067723098389320300002","text":"├ ○ /_not-found                          873 B          88.2 kB","type":"stdout","serial":"1776014067723098389320300002","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014067723,"date":1776014067723,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014067723098389320300003","text":"├ ƒ /api/auth/setup-org                  0 B                0 B","type":"stdout","serial":"1776014067723098389320300003","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014067723,"date":1776014067723,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014067723098389320300004","text":"├ ƒ /api/export/payments                 0 B                0 B","type":"stdout","serial":"1776014067723098389320300004","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014067723,"date":1776014067723,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014067723098389320300005","text":"├ ○ /api/health                          0 B                0 B","type":"stdout","serial":"1776014067723098389320300005","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014067723,"date":1776014067723,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014067723098389320300006","text":"├ ƒ /api/ocr-wave                        0 B                0 B","type":"stdout","serial":"1776014067723098389320300006","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014067724,"date":1776014067724,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014067724098389320300000","text":"├ ƒ /api/receipts/generate               0 B                0 B","type":"stdout","serial":"1776014067724098389320300000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014067724,"date":1776014067724,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014067724098389320300001","text":"├ ƒ /dashboard                           4.88 kB         256 kB","type":"stdout","serial":"1776014067724098389320300001","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014067724,"date":1776014067724,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014067724098389320300002","text":"├ ƒ /dashboard/billing                   4.34 kB         176 kB","type":"stdout","serial":"1776014067724098389320300002","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014067724,"date":1776014067724,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014067724098389320300003","text":"├ ƒ /dashboard/leases                    3.53 kB         246 kB","type":"stdout","serial":"1776014067724098389320300003","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014067724,"date":1776014067724,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014067724098389320300004","text":"├ ƒ /dashboard/onboarding                4.67 kB         179 kB","type":"stdout","serial":"1776014067724098389320300004","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014067724,"date":1776014067724,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014067724098389320300005","text":"├ ƒ /dashboard/payments                  3.51 kB         246 kB","type":"stdout","serial":"1776014067724098389320300005","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014067724,"date":1776014067724,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014067724098389320300006","text":"├ ƒ /dashboard/properties                3.02 kB         246 kB","type":"stdout","serial":"1776014067724098389320300006","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014067724,"date":1776014067724,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014067724098389320300007","text":"├ ƒ /dashboard/properties/[id]           4.75 kB         247 kB","type":"stdout","serial":"1776014067724098389320300007","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014067724,"date":1776014067724,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014067724098389320300008","text":"├ ƒ /dashboard/referral                  4.64 kB         179 kB","type":"stdout","serial":"1776014067724098389320300008","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014067725,"date":1776014067725,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014067725098389320300000","text":"├ ƒ /dashboard/reports                   4.34 kB         166 kB","type":"stdout","serial":"1776014067725098389320300000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014067725,"date":1776014067725,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014067725098389320300001","text":"├ ƒ /dashboard/settings                  11.4 kB         190 kB","type":"stdout","serial":"1776014067725098389320300001","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014067725,"date":1776014067725,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014067725098389320300002","text":"├ ƒ /dashboard/tenants                   4.09 kB         247 kB","type":"stdout","serial":"1776014067725098389320300002","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014067725,"date":1776014067725,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014067725098389320300003","text":"├ ƒ /dashboard/tenants/[id]              5 kB            248 kB","type":"stdout","serial":"1776014067725098389320300003","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014067725,"date":1776014067725,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014067725098389320300004","text":"├ ○ /login                               4.59 kB         227 kB","type":"stdout","serial":"1776014067725098389320300004","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014067725,"date":1776014067725,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014067725098389320300005","text":"└ ○ /register                            4.63 kB         227 kB","type":"stdout","serial":"1776014067725098389320300005","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014067725,"date":1776014067725,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014067725098389320300006","text":"+ First Load JS shared by all            87.3 kB","type":"stdout","serial":"1776014067725098389320300006","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014067725,"date":1776014067725,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014067725098389320300007","text":"  ├ chunks/117-064db2287c41fa5b.js       31.7 kB","type":"stdout","serial":"1776014067725098389320300007","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014067725,"date":1776014067725,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014067725098389320300008","text":"  ├ chunks/fd9d1056-88e4015c43d025b0.js  53.6 kB","type":"stdout","serial":"1776014067725098389320300008","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014067725,"date":1776014067725,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014067725098389320300009","text":"  └ other shared chunks (total)          1.95 kB","type":"stdout","serial":"1776014067725098389320300009","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014067725,"date":1776014067725,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014067725098389320300010","text":"","type":"stdout","serial":"1776014067725098389320300010","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014067725,"date":1776014067725,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014067725098389320300011","text":"","type":"stdout","serial":"1776014067725098389320300011","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014067725,"date":1776014067725,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014067725098389320300012","text":"ƒ Middleware                             80.3 kB","type":"stdout","serial":"1776014067725098389320300012","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014067725,"date":1776014067725,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014067725098389320300013","text":"","type":"stdout","serial":"1776014067725098389320300013","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014067725,"date":1776014067725,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014067725098389320300014","text":"○  (Static)   prerendered as static content","type":"stdout","serial":"1776014067725098389320300014","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014067725,"date":1776014067725,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014067725098389320300015","text":"ƒ  (Dynamic)  server-rendered on demand","type":"stdout","serial":"1776014067725098389320300015","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014067725,"date":1776014067725,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014067725098389320300016","text":"","type":"stdout","serial":"1776014067725098389320300016","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+,
+{"created":1776014067771,"date":1776014067771,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014067771098389320300000","text":"Error: No Output Directory named \"public\" found after the Build completed. Configure the Output Directory in your Project Settings. Alternatively, configure vercel.json#outputDirectory.","type":"stderr","serial":"1776014067771098389320300000","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."},"level":"error"}
+,
+{"created":1776014067771,"date":1776014067771,"deploymentId":"dpl_9sQihxb3L3vY7VPgGb34gmPDyuFd","id":"1776014067771098389320300001","text":"Learn More: https://vercel.link/missing-public-directory","type":"stderr","serial":"1776014067771098389320300001","info":{"type":"build","name":"bld_6pyypca7h","entrypoint":"."}}
+]
