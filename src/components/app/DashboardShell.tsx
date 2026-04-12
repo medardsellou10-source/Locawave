@@ -13,7 +13,6 @@ import {
   Settings,
   LogOut,
   Menu,
-  Plus,
 } from "lucide-react"
 
 import { useUser } from "@/hooks/useUser"
@@ -55,12 +54,6 @@ const PAGE_TITLES: Record<string, string> = {
   "/dashboard/referral": "Parrainage",
 }
 
-const PAGE_ACTIONS: Record<string, { label: string; href: string }> = {
-  "/dashboard/properties": { label: "+ Ajouter bien", href: "/dashboard/properties/new" },
-  "/dashboard/tenants": { label: "+ Ajouter locataire", href: "/dashboard/tenants/new" },
-  "/dashboard/leases": { label: "+ Nouveau bail", href: "/dashboard/leases/new" },
-  "/dashboard/payments": { label: "+ Enregistrer paiement", href: "/dashboard/payments/new" },
-}
 
 function getPlanBadge(plan: string, expiresAt: string | null) {
   const labels: Record<string, string> = {
@@ -225,8 +218,6 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
     Object.entries(PAGE_TITLES).find(([key]) => pathname.startsWith(key))?.[1] ||
     "Dashboard"
 
-  const pageAction = PAGE_ACTIONS[pathname]
-
   return (
     <div className="flex h-screen overflow-hidden">
       {/* Sidebar desktop */}
@@ -267,18 +258,6 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
             <h1 className="text-lg font-semibold text-gray-900">{pageTitle}</h1>
           </div>
 
-          {pageAction && (
-            <Link href={pageAction.href}>
-              <Button
-                size="sm"
-                className="gap-1"
-                style={{ backgroundColor: "#f97316" }}
-              >
-                <Plus className="h-4 w-4" />
-                <span className="hidden sm:inline">{pageAction.label}</span>
-              </Button>
-            </Link>
-          )}
         </header>
 
         {/* Content area */}

@@ -3,9 +3,6 @@
 export const dynamic = "force-dynamic"
 
 import { useState } from "react"
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { loginSchema, type LoginInput } from "@/lib/schemas"
 import { createClient } from "@/lib/supabase"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
@@ -23,7 +20,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { Skeleton } from "@/components/ui/skeleton"
 
 export default function LoginPage() {
   const router = useRouter()
@@ -32,23 +28,29 @@ export default function LoginPage() {
   const [isMagicLinkLoading, setIsMagicLinkLoading] = useState(false)
   const [showMagicLink, setShowMagicLink] = useState(false)
 
-  const {
-    register,
-    handleSubmit,
-    getValues,
-    formState: { errors },
-  } = useForm<LoginInput>({
-    resolver: zodResolver(loginSchema),
-    defaultValues: { email: "", password: "" },
-  })
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [errors, setErrors] = useState<{ email?: string; password?: string }>({})
 
-  async function onSubmit(data: LoginInput) {
+  function validate() {
+    const errs: { email?: string; password?: string } = {}
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      errs.email = "Email invalide"
+    }
+    if (!password || password.length < 6) {
+      errs.password = "Le mot de passe doit contenir au moins 6 caractères"
+    }
+    setErrors(errs)
+    return Object.keys(errs).length === 0
+  }
+
+  async function onSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    if (!validate()) return
+
     setIsLoading(true)
     try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email: data.email,
-        password: data.password,
-      })
+      const { error } = await supabase.auth.signInWithPassword({ email, password })
 
       if (error) {
         if (error.message.includes("Invalid login credentials")) {
@@ -61,7 +63,7 @@ export default function LoginPage() {
         return
       }
 
-      toast.success("Connexion reussie !")
+      toast.success("Connexion réussie !")
       router.push("/dashboard")
     } catch {
       toast.error("Une erreur inattendue est survenue")
@@ -71,9 +73,8 @@ export default function LoginPage() {
   }
 
   async function handleMagicLink() {
-    const email = getValues("email")
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      toast.error("Veuillez entrer un email valide")
+      setErrors({ email: "Veuillez entrer un email valide" })
       return
     }
 
@@ -81,9 +82,7 @@ export default function LoginPage() {
     try {
       const { error } = await supabase.auth.signInWithOtp({
         email,
-        options: {
-          emailRedirectTo: `${window.location.origin}/dashboard`,
-        },
+        options: { emailRedirectTo: `${window.location.origin}/dashboard` },
       })
 
       if (error) {
@@ -91,7 +90,7 @@ export default function LoginPage() {
         return
       }
 
-      toast.success("Lien magique envoye ! Verifiez votre boite email.")
+      toast.success("Lien magique envoyé ! Vérifiez votre boite email.")
       setShowMagicLink(true)
     } catch {
       toast.error("Une erreur inattendue est survenue")
@@ -107,9 +106,9 @@ export default function LoginPage() {
           <div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-[#f97316]/10">
             <Mail className="h-6 w-6 text-[#f97316]" />
           </div>
-          <CardTitle className="text-xl">Verifiez votre email</CardTitle>
+          <CardTitle className="text-xl">Vérifiez votre email</CardTitle>
           <CardDescription>
-            Un lien de connexion a ete envoye a votre adresse email. Cliquez
+            Un lien de connexion a été envoyé à votre adresse email. Cliquez
             dessus pour vous connecter.
           </CardDescription>
         </CardHeader>
@@ -119,7 +118,7 @@ export default function LoginPage() {
             className="w-full"
             onClick={() => setShowMagicLink(false)}
           >
-            Retour a la connexion
+            Retour à la connexion
           </Button>
         </CardContent>
       </Card>
@@ -129,17 +128,14 @@ export default function LoginPage() {
   return (
     <Card className="w-full border-0 bg-white/95 shadow-2xl backdrop-blur">
       <CardHeader className="text-center">
-        <CardTitle className="text-xl text-[#1a2744]">
-          Connexion
-        </CardTitle>
+        <CardTitle className="text-xl text-[#1a2744]">Connexion</CardTitle>
         <CardDescription>
-          Connectez-vous a votre espace de gestion locative
+          Connectez-vous à votre espace de gestion locative
         </CardDescription>
       </CardHeader>
 
       <CardContent>
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-          {/* Email */}
+        <form onSubmit={onSubmit} className="flex flex-col gap-4">
           <div className="flex flex-col gap-1.5">
             <Label htmlFor="email">Email</Label>
             <Input
@@ -147,15 +143,15 @@ export default function LoginPage() {
               type="email"
               autoComplete="email"
               disabled={isLoading}
-              {...register("email")}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               aria-invalid={!!errors.email}
             />
             {errors.email && (
-              <p className="text-xs text-red-500">{errors.email.message}</p>
+              <p className="text-xs text-red-500">{errors.email}</p>
             )}
           </div>
 
-          {/* Password */}
           <div className="flex flex-col gap-1.5">
             <Label htmlFor="password">Mot de passe</Label>
             <Input
@@ -163,15 +159,15 @@ export default function LoginPage() {
               type="password"
               autoComplete="current-password"
               disabled={isLoading}
-              {...register("password")}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               aria-invalid={!!errors.password}
             />
             {errors.password && (
-              <p className="text-xs text-red-500">{errors.password.message}</p>
+              <p className="text-xs text-red-500">{errors.password}</p>
             )}
           </div>
 
-          {/* Submit */}
           <Button
             type="submit"
             disabled={isLoading}
@@ -188,7 +184,6 @@ export default function LoginPage() {
           </Button>
         </form>
 
-        {/* Separator */}
         <div className="relative my-4">
           <div className="absolute inset-0 flex items-center">
             <div className="w-full border-t" />
@@ -198,7 +193,6 @@ export default function LoginPage() {
           </div>
         </div>
 
-        {/* Magic Link */}
         <Button
           type="button"
           variant="outline"
@@ -227,7 +221,7 @@ export default function LoginPage() {
             href="/register"
             className="font-medium text-[#f97316] underline-offset-4 hover:underline"
           >
-            Creer un compte
+            Créer un compte
           </Link>
         </p>
       </CardFooter>

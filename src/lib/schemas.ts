@@ -39,8 +39,8 @@ export const propertySchema = z.object({
 export const unitSchema = z.object({
   unit_number: z.string().min(1, "Le numéro d'unité est requis"),
   type: z.enum(["studio", "f1", "f2", "f3", "f4", "commerce"]),
-  floor: z.number().int().optional(),
-  surface_m2: z.number().positive().optional(),
+  floor: z.preprocess(v => (typeof v === "number" && isNaN(v)) || v === "" || v === null ? undefined : v, z.number().int().optional()),
+  surface_m2: z.preprocess(v => (typeof v === "number" && isNaN(v)) || v === "" || v === null ? undefined : v, z.number().positive().optional()),
   rent_fcfa: z.number().int().positive("Le loyer doit être positif"),
   status: z.enum(["vacant", "rented", "maintenance"]).default("vacant"),
 })
