@@ -1,0 +1,51 @@
+import { serve } from "https://deno.land/std@0.177.0/http/server.ts"
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2"
+
+serve(async () => {
+  const supabase = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!)
+
+  const target = new Date()
+  target.setDate(target.getDate() - 3)
+  const dateStr = target.toISOString().split("T")[0]
+
+  const { data: schedules } = await supabase
+    .from("rent_schedules")
+    .select("id, amount_fcfa, org_id, leases(tenants(first_name, whatsapp), units(unit_number, properties(name)))")
+    .eq("due_date", dateStr)
+    .in("status", ["pending", "late"])
+
+  if (!schedules?.length) return new Response(JSON.stringify({ sent: 0 }))
+
+  let sent = 0
+  for (const sched of schedules) {
+    // Marquer comme late
+    await supabase.from("rent_schedules").update({ status: "late" }).eq("id", sched.id)
+
+    const lease = (sched as any).leases
+    const tenant = lease?.tenants
+    if (!tenant?.whatsapp) continue
+
+    const { data: template } = await supabase
+      .from("notification_templates").select("message_template")
+      .eq("org_id", sched.org_id).eq("type", "reminder_j3_late").eq("is_active", true).single()
+
+    let message = template?.message_template ??
+      "Bonjour {prenom}, votre loyer de {montant} FCFA est en retard de 3 jours. Merci de régulariser rapidement. Contact : {tel_proprietaire}"
+
+    message = message
+      .replace("{prenom}", tenant.first_name)
+      .replace("{montant}", new Intl.NumberFormat("fr-FR").format(sched.amount_fcfa))
+      .replace("{tel_proprietaire}", "")
+
+    try {
+      await fetch(`${Deno.env.get("SUPABASE_URL")}/functions/v1/send-whatsapp`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")}`, "Content-Type": "application/json" },
+        body: JSON.stringify({ to: tenant.whatsapp, message, org_id: sched.org_id }),
+      })
+      sent++
+    } catch (e) { console.error(e) }
+  }
+
+  return new Response(JSON.stringify({ sent }), { headers: { "Content-Type": "application/json" } })
+})
