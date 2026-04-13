@@ -2,7 +2,7 @@
 
 export const dynamic = "force-dynamic"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, Suspense } from "react"
 import { createClient } from "@/lib/supabase"
 import { useRouter, useSearchParams } from "next/navigation"
 import { toast } from "sonner"
@@ -33,7 +33,8 @@ const PLAN_CONFIG: Record<string, { label: string; range: string; count: number;
   agence: { label: "Agence", range: "20+", count: 50, color: "bg-amber-50 border-amber-300 text-amber-700", emoji: "🏢" },
 }
 
-export default function RegisterPage() {
+// Inner component that uses useSearchParams — must be wrapped in Suspense
+function RegisterForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const supabase = createClient()
@@ -49,6 +50,13 @@ export default function RegisterPage() {
   const [propertyRange, setPropertyRange] = useState("")
   const [propertyCount, setPropertyCount] = useState(5)
 
+  const [errors, setErrors] = useState<{
+    full_name?: string
+    email?: string
+    password?: string
+    confirm_password?: string
+  }>({})
+
   // Pre-select plan from URL param
   useEffect(() => {
     if (selectedPlan) {
@@ -56,14 +64,6 @@ export default function RegisterPage() {
       setPropertyCount(selectedPlan.count)
     }
   }, [planParam]) // eslint-disable-line react-hooks/exhaustive-deps
-
-  const [errors, setErrors] = useState<{
-    full_name?: string
-    email?: string
-    password?: string
-    confirm_password?: string
-    property_count?: string
-  }>({})
 
   function validate() {
     const errs: typeof errors = {}
@@ -228,7 +228,7 @@ export default function RegisterPage() {
                 if (opt) setPropertyCount(opt.numericValue)
               }}
               disabled={isLoading}
-              className="h-8 w-full rounded-lg border border-input bg-transparent px-2.5 py-1 text-sm transition-colors outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
+              className="h-10 w-full rounded-lg border border-input bg-transparent px-3 py-2 text-sm transition-colors outline-none focus-visible:border-ring disabled:pointer-events-none disabled:opacity-50"
             >
               <option value="" disabled>
                 Sélectionnez une tranche
@@ -270,5 +270,23 @@ export default function RegisterPage() {
         </p>
       </CardFooter>
     </Card>
+  )
+}
+
+// Outer page wraps the form in Suspense (required for useSearchParams)
+export default function RegisterPage() {
+  return (
+    <Suspense fallback={
+      <Card className="w-full border-0 bg-white/95 shadow-2xl backdrop-blur">
+        <CardHeader className="text-center">
+          <CardTitle className="text-xl text-[#1a2744]">Créer un compte</CardTitle>
+        </CardHeader>
+        <CardContent className="flex justify-center py-8">
+          <Loader2 className="h-6 w-6 animate-spin text-[#f97316]" />
+        </CardContent>
+      </Card>
+    }>
+      <RegisterForm />
+    </Suspense>
   )
 }

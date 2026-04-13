@@ -25,6 +25,12 @@ export const metadata: Metadata = {
   keywords: ["gestion locative", "Sénégal", "loyer", "immobilier", "Wave", "Orange Money", "WhatsApp", "Dakar", "diaspora", "quittance", "bail"],
   authors: [{ name: "Locawave", url: "https://locawave.sn" }],
   metadataBase: new URL("https://locawave.sn"),
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+    ],
+    shortcut: "/favicon.ico",
+  },
   openGraph: {
     type: "website",
     locale: "fr_SN",
