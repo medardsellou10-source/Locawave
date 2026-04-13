@@ -1,7 +1,7 @@
 "use client"
 
 export function WhatsAppSupportButton() {
-  const phoneNumber = "221776543210"
+  const phoneNumber = "212610249872"
   const message = encodeURIComponent(
     "Bonjour Locawave, j'ai besoin d'aide avec l'application. 🙏"
   )

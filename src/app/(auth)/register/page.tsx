@@ -2,9 +2,9 @@
 
 export const dynamic = "force-dynamic"
 
-import { useState, useEffect, Suspense } from "react"
+import { useState, useEffect } from "react"
 import { createClient } from "@/lib/supabase"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import Link from "next/link"
 import { Loader2, Check } from "lucide-react"
@@ -28,57 +28,57 @@ const PROPERTY_COUNT_OPTIONS = [
 ] as const
 
 const PLAN_CONFIG: Record<string, { label: string; range: string; count: number; color: string; emoji: string }> = {
-  solo: { label: "Solo", range: "1-5", count: 5, color: "bg-blue-50 border-blue-200 text-blue-700", emoji: "👤" },
-  pro: { label: "Pro", range: "6-20", count: 20, color: "bg-orange-50 border-orange-300 text-orange-700", emoji: "⭐" },
-  agence: { label: "Agence", range: "20+", count: 50, color: "bg-amber-50 border-amber-300 text-amber-700", emoji: "🏢" },
+  solo:   { label: "Solo",   range: "1-5",  count: 5,  color: "bg-blue-50 border-blue-200 text-blue-700",     emoji: "👤" },
+  pro:    { label: "Pro",    range: "6-20", count: 20, color: "bg-orange-50 border-orange-300 text-orange-700", emoji: "⭐" },
+  agence: { label: "Agence", range: "20+",  count: 50, color: "bg-amber-50 border-amber-300 text-amber-700",  emoji: "🏢" },
 }
 
-// Inner component that uses useSearchParams — must be wrapped in Suspense
-function RegisterForm() {
-  const router = useRouter()
-  const searchParams = useSearchParams()
-  const supabase = createClient()
-  const [isLoading, setIsLoading] = useState(false)
+// Reads ?plan= from URL purely client-side — avoids useSearchParams + Suspense BAILOUT entirely
+function getPlanParam(): string {
+  if (typeof window === "undefined") return ""
+  return new URLSearchParams(window.location.search).get("plan") ?? ""
+}
 
-  const planParam = searchParams.get("plan") ?? ""
+export default function RegisterPage() {
+  const router   = useRouter()
+  const supabase = createClient()
+
+  const [isLoading, setIsLoading] = useState(false)
+  const [planParam, setPlanParam] = useState("")
   const selectedPlan = PLAN_CONFIG[planParam] ?? null
 
-  const [fullName, setFullName] = useState("")
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [confirmPassword, setConfirmPassword] = useState("")
-  const [propertyRange, setPropertyRange] = useState("")
-  const [propertyCount, setPropertyCount] = useState(5)
+  const [fullName,         setFullName]         = useState("")
+  const [email,            setEmail]            = useState("")
+  const [password,         setPassword]         = useState("")
+  const [confirmPassword,  setConfirmPassword]  = useState("")
+  const [propertyRange,    setPropertyRange]    = useState("")
+  const [propertyCount,    setPropertyCount]    = useState(5)
 
   const [errors, setErrors] = useState<{
-    full_name?: string
-    email?: string
-    password?: string
-    confirm_password?: string
+    full_name?: string; email?: string; password?: string; confirm_password?: string
   }>({})
 
-  // Pre-select plan from URL param
+  // Read plan param client-side after mount — no SSR conflict
   useEffect(() => {
-    if (selectedPlan) {
-      setPropertyRange(selectedPlan.range)
-      setPropertyCount(selectedPlan.count)
+    const plan = getPlanParam()
+    setPlanParam(plan)
+    const cfg = PLAN_CONFIG[plan]
+    if (cfg) {
+      setPropertyRange(cfg.range)
+      setPropertyCount(cfg.count)
     }
-  }, [planParam]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [])
 
   function validate() {
     const errs: typeof errors = {}
-    if (!fullName || fullName.trim().length < 2) {
+    if (!fullName || fullName.trim().length < 2)
       errs.full_name = "Le nom doit contenir au moins 2 caractères"
-    }
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
       errs.email = "Email invalide"
-    }
-    if (!password || password.length < 6) {
+    if (!password || password.length < 6)
       errs.password = "Le mot de passe doit contenir au moins 6 caractères"
-    }
-    if (password !== confirmPassword) {
+    if (password !== confirmPassword)
       errs.confirm_password = "Les mots de passe ne correspondent pas"
-    }
     setErrors(errs)
     return Object.keys(errs).length === 0
   }
@@ -96,11 +96,11 @@ function RegisterForm() {
       })
 
       if (authError) {
-        if (authError.message.includes("already registered")) {
-          toast.error("Cet email est déjà utilisé. Connectez-vous ou utilisez un autre email.")
-        } else {
-          toast.error(authError.message)
-        }
+        toast.error(
+          authError.message.includes("already registered")
+            ? "Cet email est déjà utilisé. Connectez-vous ou utilisez un autre email."
+            : authError.message
+        )
         return
       }
 
@@ -113,16 +113,16 @@ function RegisterForm() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          user_id: authData.user.id,
-          full_name: fullName,
+          user_id:        authData.user.id,
+          full_name:      fullName,
           email,
           property_count: propertyCount,
         }),
       })
 
       if (!setupRes.ok) {
-        const errorBody = await setupRes.json().catch(() => null)
-        toast.error(errorBody?.error ?? "Erreur lors de la configuration du compte")
+        const body = await setupRes.json().catch(() => null)
+        toast.error(body?.error ?? "Erreur lors de la configuration du compte")
         return
       }
 
@@ -156,65 +156,48 @@ function RegisterForm() {
           <div className="flex flex-col gap-1.5">
             <Label htmlFor="full_name">Nom complet</Label>
             <Input
-              id="full_name"
-              type="text"
-              autoComplete="name"
-              disabled={isLoading}
-              value={fullName}
+              id="full_name" type="text" autoComplete="name"
+              disabled={isLoading} value={fullName}
               onChange={(e) => setFullName(e.target.value)}
               aria-invalid={!!errors.full_name}
+              placeholder="Moussa Diallo"
             />
-            {errors.full_name && (
-              <p className="text-xs text-red-500">{errors.full_name}</p>
-            )}
+            {errors.full_name && <p className="text-xs text-red-500">{errors.full_name}</p>}
           </div>
 
           <div className="flex flex-col gap-1.5">
             <Label htmlFor="email">Email</Label>
             <Input
-              id="email"
-              type="email"
-              autoComplete="email"
-              disabled={isLoading}
-              value={email}
+              id="email" type="email" autoComplete="email"
+              disabled={isLoading} value={email}
               onChange={(e) => setEmail(e.target.value)}
               aria-invalid={!!errors.email}
+              placeholder="vous@example.com"
             />
-            {errors.email && (
-              <p className="text-xs text-red-500">{errors.email}</p>
-            )}
+            {errors.email && <p className="text-xs text-red-500">{errors.email}</p>}
           </div>
 
           <div className="flex flex-col gap-1.5">
             <Label htmlFor="password">Mot de passe</Label>
             <Input
-              id="password"
-              type="password"
-              autoComplete="new-password"
-              disabled={isLoading}
-              value={password}
+              id="password" type="password" autoComplete="new-password"
+              disabled={isLoading} value={password}
               onChange={(e) => setPassword(e.target.value)}
               aria-invalid={!!errors.password}
+              placeholder="6 caractères minimum"
             />
-            {errors.password && (
-              <p className="text-xs text-red-500">{errors.password}</p>
-            )}
+            {errors.password && <p className="text-xs text-red-500">{errors.password}</p>}
           </div>
 
           <div className="flex flex-col gap-1.5">
             <Label htmlFor="confirm_password">Confirmer le mot de passe</Label>
             <Input
-              id="confirm_password"
-              type="password"
-              autoComplete="new-password"
-              disabled={isLoading}
-              value={confirmPassword}
+              id="confirm_password" type="password" autoComplete="new-password"
+              disabled={isLoading} value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               aria-invalid={!!errors.confirm_password}
             />
-            {errors.confirm_password && (
-              <p className="text-xs text-red-500">{errors.confirm_password}</p>
-            )}
+            {errors.confirm_password && <p className="text-xs text-red-500">{errors.confirm_password}</p>}
           </div>
 
           <div className="flex flex-col gap-1.5">
@@ -230,63 +213,38 @@ function RegisterForm() {
               disabled={isLoading}
               className="h-10 w-full rounded-lg border border-input bg-transparent px-3 py-2 text-sm transition-colors outline-none focus-visible:border-ring disabled:pointer-events-none disabled:opacity-50"
             >
-              <option value="" disabled>
-                Sélectionnez une tranche
-              </option>
+              <option value="" disabled>Sélectionnez une tranche</option>
               {PROPERTY_COUNT_OPTIONS.map((opt) => (
-                <option key={opt.value} value={opt.value}>
-                  {opt.label}
-                </option>
+                <option key={opt.value} value={opt.value}>{opt.label}</option>
               ))}
             </select>
           </div>
 
           <Button
-            type="submit"
-            disabled={isLoading}
+            type="submit" disabled={isLoading}
             className="mt-2 h-10 w-full bg-[#f97316] text-white hover:bg-[#ea6c0e]"
           >
             {isLoading ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Création en cours...
-              </>
+              <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Création en cours...</>
             ) : (
-              "Créer mon compte"
+              "Créer mon compte — 14 jours gratuits"
             )}
           </Button>
+
+          <p className="text-center text-xs text-gray-400">
+            Sans engagement · Sans carte bancaire
+          </p>
         </form>
       </CardContent>
 
       <CardFooter className="justify-center">
         <p className="text-sm text-muted-foreground">
           Vous avez déjà un compte ?{" "}
-          <Link
-            href="/login"
-            className="font-medium text-[#f97316] underline-offset-4 hover:underline"
-          >
+          <Link href="/login" className="font-medium text-[#f97316] underline-offset-4 hover:underline">
             Se connecter
           </Link>
         </p>
       </CardFooter>
     </Card>
-  )
-}
-
-// Outer page wraps the form in Suspense (required for useSearchParams)
-export default function RegisterPage() {
-  return (
-    <Suspense fallback={
-      <Card className="w-full border-0 bg-white/95 shadow-2xl backdrop-blur">
-        <CardHeader className="text-center">
-          <CardTitle className="text-xl text-[#1a2744]">Créer un compte</CardTitle>
-        </CardHeader>
-        <CardContent className="flex justify-center py-8">
-          <Loader2 className="h-6 w-6 animate-spin text-[#f97316]" />
-        </CardContent>
-      </Card>
-    }>
-      <RegisterForm />
-    </Suspense>
   )
 }
