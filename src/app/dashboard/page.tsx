@@ -221,46 +221,49 @@ export default function DashboardPage() {
           {schedules.length === 0 ? (
             <p className="text-center text-gray-400 py-6">Aucune échéance ce mois</p>
           ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Locataire</TableHead>
-                  <TableHead>Bien / Unité</TableHead>
-                  <TableHead>Montant</TableHead>
-                  <TableHead>Échéance</TableHead>
-                  <TableHead>Statut</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {schedules.map((s) => {
-                  const lease = s.leases
-                  const status = statusConfig[s.status] ?? statusConfig.pending
-                  return (
-                    <TableRow key={s.id}>
-                      <TableCell className="font-medium">
-                        {lease?.tenants ? `${lease.tenants.first_name} ${lease.tenants.last_name}` : "-"}
-                      </TableCell>
-                      <TableCell>{lease?.units?.properties?.name ?? "-"} — {lease?.units?.unit_number ?? "-"}</TableCell>
-                      <TableCell className="font-medium">{formatFCFA(s.amount_fcfa)}</TableCell>
-                      <TableCell>{formatDateFR(s.due_date)}</TableCell>
-                      <TableCell><Badge className={status.color}>{status.label}</Badge></TableCell>
-                      <TableCell className="text-right">
-                        {s.status !== "paid" && (
-                          <Button
-                            size="sm"
-                            className="bg-[#f97316] hover:bg-[#ea580c] text-white"
-                            onClick={() => { setSelectedScheduleId(s.id); setPayDialogOpen(true) }}
-                          >
-                            <CreditCard className="w-3 h-3 mr-1" /> Encaisser
-                          </Button>
-                        )}
-                      </TableCell>
-                    </TableRow>
-                  )
-                })}
-              </TableBody>
-            </Table>
+            <div className="overflow-x-auto -mx-6 px-6">
+              <Table className="min-w-[600px]">
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Locataire</TableHead>
+                    <TableHead className="hidden sm:table-cell">Bien / Unité</TableHead>
+                    <TableHead>Montant</TableHead>
+                    <TableHead className="hidden sm:table-cell">Échéance</TableHead>
+                    <TableHead>Statut</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {schedules.map((s) => {
+                    const lease = s.leases
+                    const status = statusConfig[s.status] ?? statusConfig.pending
+                    return (
+                      <TableRow key={s.id}>
+                        <TableCell className="font-medium">
+                          {lease?.tenants ? `${lease.tenants.first_name} ${lease.tenants.last_name}` : "-"}
+                        </TableCell>
+                        <TableCell className="hidden sm:table-cell">{lease?.units?.properties?.name ?? "-"} — {lease?.units?.unit_number ?? "-"}</TableCell>
+                        <TableCell className="font-medium">{formatFCFA(s.amount_fcfa)}</TableCell>
+                        <TableCell className="hidden sm:table-cell">{formatDateFR(s.due_date)}</TableCell>
+                        <TableCell><Badge className={status.color}>{status.label}</Badge></TableCell>
+                        <TableCell className="text-right">
+                          {s.status !== "paid" && (
+                            <Button
+                              size="sm"
+                              className="bg-[#f97316] hover:bg-[#ea580c] text-white"
+                              onClick={() => { setSelectedScheduleId(s.id); setPayDialogOpen(true) }}
+                            >
+                              <CreditCard className="w-3 h-3 mr-1" />
+                              <span className="hidden sm:inline">Encaisser</span>
+                            </Button>
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    )
+                  })}
+                </TableBody>
+              </Table>
+            </div>
           )}
         </CardContent>
       </Card>

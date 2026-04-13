@@ -1,5 +1,8 @@
+"use client"
+
+import { useState } from "react"
 import Link from "next/link"
-import { Building2, Bell, FileText, ChevronDown, Check, ArrowRight, Shield, Smartphone, BarChart3 } from "lucide-react"
+import { Building2, Bell, FileText, ChevronDown, Check, ArrowRight, Shield, Smartphone, BarChart3, Menu, X } from "lucide-react"
 
 const PLANS = [
   {
@@ -10,6 +13,7 @@ const PLANS = [
     features: ["Jusqu'à 5 biens", "Rappels WhatsApp automatiques", "Quittances PDF", "1 utilisateur"],
     cta: "Commencer gratuitement",
     popular: false,
+    variant: "solo" as const,
   },
   {
     name: "Pro",
@@ -19,6 +23,7 @@ const PLANS = [
     features: ["Jusqu'à 25 biens", "Rappels WhatsApp automatiques", "Quittances PDF", "Rapports mensuels", "3 utilisateurs", "Support prioritaire"],
     cta: "Essai gratuit 14 jours",
     popular: true,
+    variant: "pro" as const,
   },
   {
     name: "Agence",
@@ -28,6 +33,7 @@ const PLANS = [
     features: ["Biens illimités", "Rappels WhatsApp automatiques", "Quittances PDF", "Rapports avancés", "Utilisateurs illimités", "API & intégrations", "Support dédié"],
     cta: "Contacter l'équipe",
     popular: false,
+    variant: "agence" as const,
   },
 ]
 
@@ -43,6 +49,8 @@ const FAQ = [
 ]
 
 export default function LandingPage() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
   return (
     <div className="min-h-screen bg-white">
       {/* ─── Header ─── */}
@@ -60,14 +68,45 @@ export default function LandingPage() {
             <a href="#faq" className="hover:text-[#1a2744] transition-colors">FAQ</a>
           </nav>
           <div className="flex items-center gap-3">
-            <Link href="/login" className="text-sm text-gray-600 hover:text-[#1a2744] transition-colors">
+            <Link href="/login" className="hidden sm:block text-sm text-gray-600 hover:text-[#1a2744] transition-colors">
               Connexion
             </Link>
             <Link href="/register" className="text-sm bg-[#f97316] hover:bg-[#ea580c] text-white px-4 py-2 rounded-lg transition-colors">
               Essai gratuit
             </Link>
+            {/* Mobile hamburger */}
+            <button
+              className="md:hidden p-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label="Menu"
+            >
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
           </div>
         </div>
+        {/* Mobile nav dropdown */}
+        {mobileMenuOpen && (
+          <div className="md:hidden border-t bg-white/95 backdrop-blur shadow-lg">
+            <nav className="max-w-6xl mx-auto px-4 py-4 flex flex-col gap-1">
+              <a href="#fonctionnalites" onClick={() => setMobileMenuOpen(false)}
+                className="py-3 px-2 text-sm font-medium text-gray-700 hover:text-[#f97316] border-b border-gray-100 transition-colors">
+                Fonctionnalités
+              </a>
+              <a href="#tarifs" onClick={() => setMobileMenuOpen(false)}
+                className="py-3 px-2 text-sm font-medium text-gray-700 hover:text-[#f97316] border-b border-gray-100 transition-colors">
+                Tarifs
+              </a>
+              <a href="#faq" onClick={() => setMobileMenuOpen(false)}
+                className="py-3 px-2 text-sm font-medium text-gray-700 hover:text-[#f97316] border-b border-gray-100 transition-colors">
+                FAQ
+              </a>
+              <Link href="/login" onClick={() => setMobileMenuOpen(false)}
+                className="py-3 px-2 text-sm font-medium text-gray-700 hover:text-[#f97316] transition-colors">
+                Connexion
+              </Link>
+            </nav>
+          </div>
+        )}
       </header>
 
       {/* ─── Hero ─── */}
@@ -158,40 +197,98 @@ export default function LandingPage() {
             <h2 className="text-3xl md:text-4xl font-bold text-[#1a2744] mb-4">Des tarifs simples et transparents</h2>
             <p className="text-gray-500">Tous les prix sont en FCFA. Aucun frais caché.</p>
           </div>
-          <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-            {PLANS.map((plan) => (
-              <div key={plan.name} className={`rounded-2xl p-8 ${plan.popular ? "bg-[#1a2744] text-white ring-4 ring-[#f97316] scale-105" : "bg-gray-50 text-[#1a2744]"} relative`}>
-                {plan.popular && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#f97316] text-white text-xs font-bold px-3 py-1 rounded-full">
-                    POPULAIRE
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 max-w-5xl mx-auto items-center">
+            {PLANS.map((plan) => {
+              if (plan.variant === "solo") return (
+                <div key={plan.name} className="relative rounded-2xl p-8 bg-gradient-to-br from-sky-50 via-blue-50 to-indigo-50 border-2 border-blue-200 shadow-md hover:shadow-lg transition-shadow">
+                  <div className="absolute top-0 left-0 right-0 h-1 rounded-t-2xl bg-gradient-to-r from-blue-400 to-sky-400" />
+                  <div className="inline-flex items-center gap-1.5 bg-blue-100 text-blue-700 text-xs font-semibold px-3 py-1 rounded-full mb-4">
+                    <span>👤</span> Propriétaire solo
                   </div>
-                )}
-                <h3 className="text-xl font-bold mb-1">{plan.name}</h3>
-                <p className={`text-sm mb-4 ${plan.popular ? "text-gray-300" : "text-gray-500"}`}>{plan.description}</p>
-                <div className="flex items-baseline gap-1 mb-6">
-                  <span className="text-4xl font-bold">{plan.price}</span>
-                  <span className={`text-sm ${plan.popular ? "text-gray-300" : "text-gray-500"}`}>FCFA{plan.period}</span>
+                  <h3 className="text-2xl font-bold text-[#1a2744] mb-1">{plan.name}</h3>
+                  <p className="text-sm text-gray-500 mb-5">{plan.description}</p>
+                  <div className="flex items-baseline gap-1 mb-6">
+                    <span className="text-4xl font-bold text-[#1a2744]">{plan.price}</span>
+                    <span className="text-sm text-gray-500 ml-1">FCFA{plan.period}</span>
+                  </div>
+                  <ul className="space-y-3 mb-8">
+                    {plan.features.map((feature) => (
+                      <li key={feature} className="flex items-start gap-2 text-sm text-gray-700">
+                        <Check className="w-4 h-4 mt-0.5 flex-shrink-0 text-blue-500" />
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <Link
+                    href="/register?plan=solo"
+                    className="block text-center py-3 rounded-xl font-semibold transition-all bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white shadow-sm hover:shadow"
+                  >
+                    {plan.cta}
+                  </Link>
                 </div>
-                <ul className="space-y-3 mb-8">
-                  {plan.features.map((feature) => (
-                    <li key={feature} className="flex items-start gap-2 text-sm">
-                      <Check className={`w-4 h-4 mt-0.5 flex-shrink-0 ${plan.popular ? "text-[#f97316]" : "text-green-500"}`} />
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-                <Link
-                  href="/register"
-                  className={`block text-center py-3 rounded-lg font-semibold transition-colors ${
-                    plan.popular
-                      ? "bg-[#f97316] hover:bg-[#ea580c] text-white"
-                      : "bg-[#1a2744] hover:bg-[#1a2744]/90 text-white"
-                  }`}
-                >
-                  {plan.cta}
-                </Link>
-              </div>
-            ))}
+              )
+
+              if (plan.variant === "pro") return (
+                <div key={plan.name} className="relative rounded-2xl p-8 bg-[#1a2744] text-white ring-4 ring-[#f97316] shadow-2xl md:scale-105 z-10">
+                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#f97316] to-[#ea580c] text-white text-xs font-bold px-4 py-1.5 rounded-full shadow-lg tracking-wide">
+                    ⭐ POPULAIRE
+                  </div>
+                  <div className="inline-flex items-center gap-1.5 bg-white/10 text-orange-300 text-xs font-semibold px-3 py-1 rounded-full mb-4">
+                    <span>🏆</span> Meilleur rapport qualité/prix
+                  </div>
+                  <h3 className="text-2xl font-bold mb-1">{plan.name}</h3>
+                  <p className="text-sm text-gray-300 mb-5">{plan.description}</p>
+                  <div className="flex items-baseline gap-1 mb-6">
+                    <span className="text-4xl font-bold">{plan.price}</span>
+                    <span className="text-sm text-gray-300 ml-1">FCFA{plan.period}</span>
+                  </div>
+                  <ul className="space-y-3 mb-8">
+                    {plan.features.map((feature) => (
+                      <li key={feature} className="flex items-start gap-2 text-sm">
+                        <Check className="w-4 h-4 mt-0.5 flex-shrink-0 text-[#f97316]" />
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <Link
+                    href="/register?plan=pro"
+                    className="block text-center py-3 rounded-xl font-semibold transition-all bg-[#f97316] hover:bg-[#ea580c] text-white shadow-lg hover:shadow-xl"
+                  >
+                    {plan.cta}
+                  </Link>
+                </div>
+              )
+
+              // Agence
+              return (
+                <div key={plan.name} className="relative rounded-2xl p-8 bg-gradient-to-br from-[#1a1a2e] via-[#16213e] to-[#0f3460] text-white border-2 border-amber-500/40 shadow-md hover:shadow-xl transition-shadow">
+                  <div className="absolute top-0 left-0 right-0 h-1 rounded-t-2xl bg-gradient-to-r from-amber-400 to-yellow-500" />
+                  <div className="inline-flex items-center gap-1.5 bg-amber-500/20 text-amber-300 text-xs font-semibold px-3 py-1 rounded-full mb-4">
+                    <span>🏢</span> Agence professionnelle
+                  </div>
+                  <h3 className="text-2xl font-bold mb-1">{plan.name}</h3>
+                  <p className="text-sm text-amber-200/70 mb-5">{plan.description}</p>
+                  <div className="flex items-baseline gap-1 mb-6">
+                    <span className="text-4xl font-bold">{plan.price}</span>
+                    <span className="text-sm text-amber-200/70 ml-1">FCFA{plan.period}</span>
+                  </div>
+                  <ul className="space-y-3 mb-8">
+                    {plan.features.map((feature) => (
+                      <li key={feature} className="flex items-start gap-2 text-sm text-white/90">
+                        <Check className="w-4 h-4 mt-0.5 flex-shrink-0 text-amber-400" />
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <Link
+                    href="/register?plan=agence"
+                    className="block text-center py-3 rounded-xl font-semibold transition-all bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-[#1a1a2e] shadow-sm hover:shadow"
+                  >
+                    {plan.cta}
+                  </Link>
+                </div>
+              )
+            })}
           </div>
         </div>
       </section>

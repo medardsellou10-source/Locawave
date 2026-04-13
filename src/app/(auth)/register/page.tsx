@@ -2,12 +2,12 @@
 
 export const dynamic = "force-dynamic"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { createClient } from "@/lib/supabase"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { toast } from "sonner"
 import Link from "next/link"
-import { Loader2 } from "lucide-react"
+import { Loader2, Check } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -27,10 +27,20 @@ const PROPERTY_COUNT_OPTIONS = [
   { label: "Plus de 20 biens", value: "20+", numericValue: 50 },
 ] as const
 
+const PLAN_CONFIG: Record<string, { label: string; range: string; count: number; color: string; emoji: string }> = {
+  solo: { label: "Solo", range: "1-5", count: 5, color: "bg-blue-50 border-blue-200 text-blue-700", emoji: "👤" },
+  pro: { label: "Pro", range: "6-20", count: 20, color: "bg-orange-50 border-orange-300 text-orange-700", emoji: "⭐" },
+  agence: { label: "Agence", range: "20+", count: 50, color: "bg-amber-50 border-amber-300 text-amber-700", emoji: "🏢" },
+}
+
 export default function RegisterPage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const supabase = createClient()
   const [isLoading, setIsLoading] = useState(false)
+
+  const planParam = searchParams.get("plan") ?? ""
+  const selectedPlan = PLAN_CONFIG[planParam] ?? null
 
   const [fullName, setFullName] = useState("")
   const [email, setEmail] = useState("")
@@ -38,6 +48,14 @@ export default function RegisterPage() {
   const [confirmPassword, setConfirmPassword] = useState("")
   const [propertyRange, setPropertyRange] = useState("")
   const [propertyCount, setPropertyCount] = useState(5)
+
+  // Pre-select plan from URL param
+  useEffect(() => {
+    if (selectedPlan) {
+      setPropertyRange(selectedPlan.range)
+      setPropertyCount(selectedPlan.count)
+    }
+  }, [planParam]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const [errors, setErrors] = useState<{
     full_name?: string
@@ -124,6 +142,13 @@ export default function RegisterPage() {
         <CardDescription>
           Commencez à gérer vos biens locatifs en quelques minutes
         </CardDescription>
+        {selectedPlan && (
+          <div className={`mt-3 inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-sm font-medium ${selectedPlan.color}`}>
+            <span>{selectedPlan.emoji}</span>
+            <span>Plan <strong>{selectedPlan.label}</strong> sélectionné</span>
+            <Check className="w-4 h-4" />
+          </div>
+        )}
       </CardHeader>
 
       <CardContent>

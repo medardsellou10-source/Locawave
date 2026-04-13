@@ -85,41 +85,43 @@ export default function LeasesPage() {
           </Button>
         </div>
       ) : (
-        <Card>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Locataire</TableHead>
-                <TableHead>Bien / Unité</TableHead>
-                <TableHead>Loyer</TableHead>
-                <TableHead>Échéance</TableHead>
-                <TableHead>Début</TableHead>
-                <TableHead>Fin</TableHead>
-                <TableHead>Statut</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {leases.map((lease) => (
-                <TableRow key={lease.id}>
-                  <TableCell className="font-medium">
-                    {lease.tenants ? `${lease.tenants.first_name} ${lease.tenants.last_name}` : "-"}
-                  </TableCell>
-                  <TableCell>
-                    {lease.units?.properties?.name ?? "-"} — {lease.units?.unit_number ?? "-"}
-                  </TableCell>
-                  <TableCell className="font-medium">{formatFCFA(lease.rent_fcfa)}</TableCell>
-                  <TableCell>Le {lease.due_day} du mois</TableCell>
-                  <TableCell>{formatDateFR(lease.start_date)}</TableCell>
-                  <TableCell>{formatDateFR(lease.end_date)}</TableCell>
-                  <TableCell>
-                    <Badge variant={lease.status === "active" ? "default" : "secondary"}>
-                      {lease.status === "active" ? "Actif" : "Terminé"}
-                    </Badge>
-                  </TableCell>
+        <Card className="overflow-hidden">
+          <div className="overflow-x-auto">
+            <Table className="min-w-[640px]">
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Locataire</TableHead>
+                  <TableHead>Bien / Unité</TableHead>
+                  <TableHead>Loyer</TableHead>
+                  <TableHead className="hidden lg:table-cell">Échéance</TableHead>
+                  <TableHead className="hidden md:table-cell">Début</TableHead>
+                  <TableHead className="hidden md:table-cell">Fin</TableHead>
+                  <TableHead>Statut</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {leases.map((lease) => (
+                  <TableRow key={lease.id}>
+                    <TableCell className="font-medium whitespace-nowrap">
+                      {lease.tenants ? `${lease.tenants.first_name} ${lease.tenants.last_name}` : "-"}
+                    </TableCell>
+                    <TableCell className="whitespace-nowrap">
+                      {lease.units?.properties?.name ?? "-"} — {lease.units?.unit_number ?? "-"}
+                    </TableCell>
+                    <TableCell className="font-medium whitespace-nowrap">{formatFCFA(lease.rent_fcfa)}</TableCell>
+                    <TableCell className="hidden lg:table-cell whitespace-nowrap">Le {lease.due_day} du mois</TableCell>
+                    <TableCell className="hidden md:table-cell whitespace-nowrap">{formatDateFR(lease.start_date)}</TableCell>
+                    <TableCell className="hidden md:table-cell whitespace-nowrap">{formatDateFR(lease.end_date)}</TableCell>
+                    <TableCell>
+                      <Badge variant={lease.status === "active" ? "default" : "secondary"}>
+                        {lease.status === "active" ? "Actif" : "Terminé"}
+                      </Badge>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
         </Card>
       )}
     </div>

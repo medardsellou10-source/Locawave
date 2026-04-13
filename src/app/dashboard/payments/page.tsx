@@ -64,19 +64,21 @@ export default function PaymentsPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-6">
         <h1 className="text-2xl font-bold text-[#1a2744]">Paiements</h1>
         <div className="flex gap-2">
           <Input
             type="month"
             value={filterMonth}
             onChange={(e) => setFilterMonth(e.target.value)}
-            className="w-40"
+            className="w-36 sm:w-40"
           />
           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger>
-              <Button className="bg-[#f97316] hover:bg-[#ea580c] text-white">
-                <Plus className="w-4 h-4 mr-2" /> Encaisser
+              <Button className="bg-[#f97316] hover:bg-[#ea580c] text-white whitespace-nowrap">
+                <Plus className="w-4 h-4 mr-1 sm:mr-2" />
+                <span className="hidden sm:inline">Encaisser</span>
+                <span className="sm:hidden">+</span>
               </Button>
             </DialogTrigger>
             <DialogContent className="max-w-lg">
@@ -96,40 +98,42 @@ export default function PaymentsPage() {
           <p className="text-gray-400">Les paiements enregistrés apparaîtront ici</p>
         </div>
       ) : (
-        <Card>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Date</TableHead>
-                <TableHead>Locataire</TableHead>
-                <TableHead>Bien / Unité</TableHead>
-                <TableHead>Montant</TableHead>
-                <TableHead>Méthode</TableHead>
-                <TableHead>Référence</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {payments.map((p) => {
-                const lease = p.rent_schedules?.leases
-                return (
-                  <TableRow key={p.id}>
-                    <TableCell>{formatDateFR(p.paid_at)}</TableCell>
-                    <TableCell className="font-medium">
-                      {lease?.tenants ? `${lease.tenants.first_name} ${lease.tenants.last_name}` : "-"}
-                    </TableCell>
-                    <TableCell>
-                      {lease?.units?.properties?.name ?? "-"} — {lease?.units?.unit_number ?? "-"}
-                    </TableCell>
-                    <TableCell className="font-medium text-green-600">{formatFCFA(p.amount_fcfa)}</TableCell>
-                    <TableCell>
-                      <Badge variant="outline">{methodLabels[p.method] ?? p.method}</Badge>
-                    </TableCell>
-                    <TableCell className="text-gray-500">{p.reference ?? "-"}</TableCell>
-                  </TableRow>
-                )
-              })}
-            </TableBody>
-          </Table>
+        <Card className="overflow-hidden">
+          <div className="overflow-x-auto">
+            <Table className="min-w-[560px]">
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Date</TableHead>
+                  <TableHead>Locataire</TableHead>
+                  <TableHead className="hidden md:table-cell">Bien / Unité</TableHead>
+                  <TableHead>Montant</TableHead>
+                  <TableHead>Méthode</TableHead>
+                  <TableHead className="hidden sm:table-cell">Référence</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {payments.map((p) => {
+                  const lease = p.rent_schedules?.leases
+                  return (
+                    <TableRow key={p.id}>
+                      <TableCell className="whitespace-nowrap">{formatDateFR(p.paid_at)}</TableCell>
+                      <TableCell className="font-medium">
+                        {lease?.tenants ? `${lease.tenants.first_name} ${lease.tenants.last_name}` : "-"}
+                      </TableCell>
+                      <TableCell className="hidden md:table-cell">
+                        {lease?.units?.properties?.name ?? "-"} — {lease?.units?.unit_number ?? "-"}
+                      </TableCell>
+                      <TableCell className="font-medium text-green-600 whitespace-nowrap">{formatFCFA(p.amount_fcfa)}</TableCell>
+                      <TableCell>
+                        <Badge variant="outline">{methodLabels[p.method] ?? p.method}</Badge>
+                      </TableCell>
+                      <TableCell className="hidden sm:table-cell text-gray-500">{p.reference ?? "-"}</TableCell>
+                    </TableRow>
+                  )
+                })}
+              </TableBody>
+            </Table>
+          </div>
         </Card>
       )}
     </div>

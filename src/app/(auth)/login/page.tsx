@@ -7,7 +7,7 @@ import { createClient } from "@/lib/supabase"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import Link from "next/link"
-import { Loader2, Mail } from "lucide-react"
+import { Loader2, Mail, ArrowLeft } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -27,6 +27,10 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [isMagicLinkLoading, setIsMagicLinkLoading] = useState(false)
   const [showMagicLink, setShowMagicLink] = useState(false)
+  const [showForgotPassword, setShowForgotPassword] = useState(false)
+  const [forgotEmail, setForgotEmail] = useState("")
+  const [resetSent, setResetSent] = useState(false)
+  const [isResetLoading, setIsResetLoading] = useState(false)
 
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -72,6 +76,28 @@ export default function LoginPage() {
     }
   }
 
+  async function handleForgotPassword() {
+    if (!forgotEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(forgotEmail)) {
+      toast.error("Veuillez entrer un email valide")
+      return
+    }
+    setIsResetLoading(true)
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(forgotEmail, {
+        redirectTo: `${window.location.origin}/reset-password`,
+      })
+      if (error) {
+        toast.error(error.message)
+        return
+      }
+      setResetSent(true)
+    } catch {
+      toast.error("Une erreur inattendue est survenue")
+    } finally {
+      setIsResetLoading(false)
+    }
+  }
+
   async function handleMagicLink() {
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       setErrors({ email: "Veuillez entrer un email valide" })
@@ -97,6 +123,73 @@ export default function LoginPage() {
     } finally {
       setIsMagicLinkLoading(false)
     }
+  }
+
+  // ─── Forgot password view ───
+  if (showForgotPassword) {
+    if (resetSent) {
+      return (
+        <Card className="w-full border-0 bg-white/95 shadow-2xl backdrop-blur">
+          <CardHeader className="text-center">
+            <div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
+              <Mail className="h-6 w-6 text-green-600" />
+            </div>
+            <CardTitle className="text-xl">Email envoyé !</CardTitle>
+            <CardDescription>
+              Un lien de réinitialisation a été envoyé à <strong>{forgotEmail}</strong>.
+              Vérifiez votre boîte mail (et les spams).
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Button variant="outline" className="w-full" onClick={() => {
+              setShowForgotPassword(false)
+              setResetSent(false)
+              setForgotEmail("")
+            }}>
+              <ArrowLeft className="mr-2 h-4 w-4" /> Retour à la connexion
+            </Button>
+          </CardContent>
+        </Card>
+      )
+    }
+
+    return (
+      <Card className="w-full border-0 bg-white/95 shadow-2xl backdrop-blur">
+        <CardHeader className="text-center">
+          <CardTitle className="text-xl text-[#1a2744]">Mot de passe oublié</CardTitle>
+          <CardDescription>
+            Entrez votre email pour recevoir un lien de réinitialisation
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="flex flex-col gap-1.5">
+            <Label htmlFor="forgot-email">Email</Label>
+            <Input
+              id="forgot-email"
+              type="email"
+              placeholder="vous@example.com"
+              value={forgotEmail}
+              onChange={(e) => setForgotEmail(e.target.value)}
+              disabled={isResetLoading}
+            />
+          </div>
+          <Button
+            className="w-full bg-[#f97316] hover:bg-[#ea6c0e] text-white"
+            onClick={handleForgotPassword}
+            disabled={isResetLoading}
+          >
+            {isResetLoading ? (
+              <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Envoi en cours...</>
+            ) : (
+              "Envoyer le lien de réinitialisation"
+            )}
+          </Button>
+          <Button variant="ghost" className="w-full" onClick={() => setShowForgotPassword(false)}>
+            <ArrowLeft className="mr-2 h-4 w-4" /> Retour à la connexion
+          </Button>
+        </CardContent>
+      </Card>
+    )
   }
 
   if (showMagicLink) {
@@ -153,7 +246,16 @@ export default function LoginPage() {
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <Label htmlFor="password">Mot de passe</Label>
+            <div className="flex items-center justify-between">
+              <Label htmlFor="password">Mot de passe</Label>
+              <button
+                type="button"
+                onClick={() => { setForgotEmail(email); setShowForgotPassword(true) }}
+                className="text-xs text-[#f97316] hover:underline"
+              >
+                Mot de passe oublié ?
+              </button>
+            </div>
             <Input
               id="password"
               type="password"

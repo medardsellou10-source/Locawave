@@ -84,11 +84,23 @@ export default function SettingsPage() {
       <h1 className="text-2xl font-bold text-[#1a2744] mb-6">Paramètres</h1>
 
       <Tabs defaultValue="profile">
-        <TabsList className="mb-6">
-          <TabsTrigger value="profile"><Building2 className="w-4 h-4 mr-1" /> Organisation</TabsTrigger>
-          <TabsTrigger value="templates"><MessageCircle className="w-4 h-4 mr-1" /> Messages WhatsApp</TabsTrigger>
-          <TabsTrigger value="billing"><CreditCard className="w-4 h-4 mr-1" /> Facturation</TabsTrigger>
-          <TabsTrigger value="privacy"><Shield className="w-4 h-4 mr-1" /> RGPD</TabsTrigger>
+        <TabsList className="mb-6 grid grid-cols-2 sm:flex h-auto gap-1 p-1">
+          <TabsTrigger value="profile" className="flex items-center gap-1 text-xs sm:text-sm py-2">
+            <Building2 className="w-4 h-4 flex-shrink-0" />
+            <span>Organisation</span>
+          </TabsTrigger>
+          <TabsTrigger value="templates" className="flex items-center gap-1 text-xs sm:text-sm py-2">
+            <MessageCircle className="w-4 h-4 flex-shrink-0" />
+            <span className="hidden sm:inline">Messages</span><span className="sm:hidden">WhatsApp</span>
+          </TabsTrigger>
+          <TabsTrigger value="billing" className="flex items-center gap-1 text-xs sm:text-sm py-2">
+            <CreditCard className="w-4 h-4 flex-shrink-0" />
+            <span>Facturation</span>
+          </TabsTrigger>
+          <TabsTrigger value="privacy" className="flex items-center gap-1 text-xs sm:text-sm py-2">
+            <Shield className="w-4 h-4 flex-shrink-0" />
+            <span>RGPD</span>
+          </TabsTrigger>
         </TabsList>
 
         {/* Profil organisation */}
@@ -100,7 +112,7 @@ export default function SettingsPage() {
                 <Label>Nom de l'organisation</Label>
                 <Input value={orgName} onChange={(e) => setOrgName(e.target.value)} />
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <Label>Numéro Wave</Label>
                   <Input placeholder="+221 77..." value={waveNumber} onChange={(e) => setWaveNumber(e.target.value)} />
