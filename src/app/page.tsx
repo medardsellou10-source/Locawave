@@ -3,6 +3,7 @@
 import { useState } from "react"
 import Link from "next/link"
 import { Building2, Bell, FileText, ChevronDown, Check, ArrowRight, Shield, Smartphone, BarChart3, Menu, X } from "lucide-react"
+import { Hero3DHouses } from "@/components/app/Hero3DHouses"
 
 const PLANS = [
   {
@@ -112,28 +113,33 @@ export default function LandingPage() {
       {/* ─── Hero ─── */}
       <section className="relative overflow-hidden bg-gradient-to-br from-[#1a2744] via-[#1e3a5f] to-[#1a2744] text-white">
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSA2MCAwIEwgMCAwIDAgNjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjAzKSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')] opacity-50" />
-        <div className="max-w-6xl mx-auto px-4 py-20 md:py-32 relative">
-          <div className="max-w-3xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 bg-white/10 rounded-full px-4 py-1.5 text-sm mb-6">
-              <Smartphone className="w-4 h-4" />
-              <span>Conçu pour le Sénégal et la diaspora</span>
+        <div className="max-w-6xl mx-auto px-4 py-16 md:py-24 lg:py-28 relative">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
+            <div className="text-center lg:text-left">
+              <div className="inline-flex items-center gap-2 bg-white/10 rounded-full px-4 py-1.5 text-sm mb-6 backdrop-blur">
+                <Smartphone className="w-4 h-4" />
+                <span>Conçu pour le Sénégal et la diaspora</span>
+              </div>
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6">
+                Gérez vos loyers au Sénégal,{" "}
+                <span className="text-[#f97316]">depuis n'importe où</span>
+              </h1>
+              <p className="text-lg md:text-xl text-gray-300 mb-8 max-w-xl mx-auto lg:mx-0">
+                Rappels WhatsApp automatiques, quittances PDF, suivi des paiements Wave — tout ce qu'il faut pour gérer vos biens immobiliers en toute sérénité.
+              </p>
+              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+                <Link href="/register" className="w-full sm:w-auto bg-[#f97316] hover:bg-[#ea580c] text-white px-8 py-3.5 rounded-lg text-lg font-semibold transition-colors flex items-center justify-center gap-2 shadow-lg shadow-orange-500/20">
+                  Commencer gratuitement <ArrowRight className="w-5 h-5" />
+                </Link>
+                <a href="#fonctionnalites" className="w-full sm:w-auto border border-white/30 hover:bg-white/10 text-white px-8 py-3.5 rounded-lg text-lg transition-colors text-center">
+                  Découvrir
+                </a>
+              </div>
+              <p className="text-sm text-gray-400 mt-4">14 jours d'essai gratuit — Aucune carte requise</p>
             </div>
-            <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-6">
-              Gérez vos loyers au Sénégal,{" "}
-              <span className="text-[#f97316]">depuis n'importe où</span>
-            </h1>
-            <p className="text-lg md:text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-              Rappels WhatsApp automatiques, quittances PDF, suivi des paiements Wave — tout ce qu'il faut pour gérer vos biens immobiliers en toute sérénité.
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link href="/register" className="w-full sm:w-auto bg-[#f97316] hover:bg-[#ea580c] text-white px-8 py-3.5 rounded-lg text-lg font-semibold transition-colors flex items-center justify-center gap-2">
-                Commencer gratuitement <ArrowRight className="w-5 h-5" />
-              </Link>
-              <a href="#fonctionnalites" className="w-full sm:w-auto border border-white/30 hover:bg-white/10 text-white px-8 py-3.5 rounded-lg text-lg transition-colors text-center">
-                Découvrir
-              </a>
+            <div className="relative lg:pl-4">
+              <Hero3DHouses />
             </div>
-            <p className="text-sm text-gray-400 mt-4">14 jours d'essai gratuit — Aucune carte requise</p>
           </div>
         </div>
         <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-white to-transparent" />
