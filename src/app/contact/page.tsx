@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { Building2, Mail, MessageCircle, Clock } from "lucide-react"
 import type { Metadata } from "next"
+import { SUPPORT_WHATSAPP, SUPPORT_EMAIL } from "@/lib/contact"
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -8,7 +9,7 @@ export const metadata: Metadata = {
 }
 
 export default function ContactPage() {
-  const waLink = `https://wa.me/212610249872?text=${encodeURIComponent("Bonjour Locawave, j'ai une question concernant votre service.")}`
+  const waLink = `https://wa.me/${SUPPORT_WHATSAPP}?text=${encodeURIComponent("Bonjour Locawave, j'ai une question concernant votre service.")}`
 
   return (
     <div className="min-h-screen bg-white">
@@ -46,14 +47,14 @@ export default function ContactPage() {
           </a>
 
           {/* Email */}
-          <a href="mailto:support@locawave.sn"
+          <a href={`mailto:${SUPPORT_EMAIL}`}
             className="flex flex-col items-center text-center gap-3 p-6 rounded-2xl border-2 border-[#f97316]/20 bg-orange-50 hover:border-[#f97316] hover:shadow-md transition-all group">
             <div className="w-12 h-12 rounded-xl bg-[#f97316] flex items-center justify-center group-hover:scale-110 transition-transform">
               <Mail className="w-6 h-6 text-white" />
             </div>
             <div>
               <div className="font-semibold text-gray-800">Email</div>
-              <div className="text-sm text-gray-500 mt-1">support@locawave.sn</div>
+              <div className="text-sm text-gray-500 mt-1">{SUPPORT_EMAIL}</div>
               <div className="text-xs text-[#f97316] font-medium mt-2">Envoyer un email →</div>
             </div>
           </a>

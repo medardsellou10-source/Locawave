@@ -64,6 +64,10 @@ export function LeaseForm({ onSuccess }: LeaseFormProps) {
     if (!rent || isNaN(Number(rent)) || Number(rent) <= 0) errs.rent = "Le loyer doit être positif"
     const dd = parseInt(dueDay)
     if (isNaN(dd) || dd < 1 || dd > 31) errs.due_day = "Le jour d'échéance doit être entre 1 et 31"
+    if (deposit) {
+      const dep = parseInt(deposit)
+      if (isNaN(dep) || dep < 0) errs.deposit = "La caution ne peut pas être négative"
+    }
     setErrors(errs)
     return Object.keys(errs).length === 0
   }
@@ -164,7 +168,8 @@ export function LeaseForm({ onSuccess }: LeaseFormProps) {
 
       <div>
         <Label htmlFor="deposit">Caution (FCFA)</Label>
-        <Input id="deposit" type="number" placeholder="0" value={deposit} onChange={e => setDeposit(e.target.value)} />
+        <Input id="deposit" type="number" min={0} placeholder="0" value={deposit} onChange={e => setDeposit(e.target.value)} />
+        {errors.deposit && <p className="text-sm text-red-500 mt-1">{errors.deposit}</p>}
       </div>
 
       <Button type="submit" className="w-full bg-[#f97316] hover:bg-[#ea580c] text-white" disabled={saving}>

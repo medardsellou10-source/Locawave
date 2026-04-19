@@ -462,14 +462,15 @@ export default function LandingPage() {
             <div>
               <h4 className="text-white font-semibold mb-3">Légal</h4>
               <ul className="space-y-2 text-sm">
-                <li><a href="#" className="hover:text-white transition-colors">Mentions légales</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Politique de confidentialité</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">CGU</a></li>
+                <li><Link href="/mentions-legales" className="hover:text-white transition-colors">Mentions légales</Link></li>
+                <li><Link href="/mentions-legales#donnees" className="hover:text-white transition-colors">Politique de confidentialité</Link></li>
+                <li><Link href="/mentions-legales#cgu" className="hover:text-white transition-colors">CGU</Link></li>
               </ul>
             </div>
             <div>
               <h4 className="text-white font-semibold mb-3">Contact</h4>
               <ul className="space-y-2 text-sm">
+                <li><Link href="/contact" className="hover:text-white transition-colors">Nous contacter</Link></li>
                 <li>support@locawave.sn</li>
                 <li>Dakar, Sénégal</li>
               </ul>

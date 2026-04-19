@@ -38,7 +38,7 @@ export default function MentionsLegalesPage() {
               <p><span className="font-medium">Activité :</span> Éditeur de logiciel SaaS — gestion locative</p>
               <p><span className="font-medium">Siège social :</span> Dakar, Sénégal</p>
               <p><span className="font-medium">Email :</span> support@locawave.sn</p>
-              <p><span className="font-medium">Site :</span> https://locawave.vercel.app</p>
+              <p><span className="font-medium">Site :</span> https://locawave.sn</p>
             </div>
           </section>
 

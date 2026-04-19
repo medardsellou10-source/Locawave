@@ -1,7 +1,9 @@
 "use client"
 
+import { SUPPORT_WHATSAPP } from "@/lib/contact"
+
 export function WhatsAppSupportButton() {
-  const phoneNumber = "212610249872"
+  const phoneNumber = SUPPORT_WHATSAPP
   const message = encodeURIComponent(
     "Bonjour Locawave, j'ai besoin d'aide avec l'application. 🙏"
   )
