@@ -71,6 +71,20 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // 3. Garantir le profil canonique (role owner pour ce funnel B2B).
+    //    Idempotent : le trigger on_auth_user_created a déjà pu le créer.
+    const { error: profileError } = await supabase
+      .from("profiles")
+      .upsert(
+        { id: user_id, full_name, role: "owner" as const },
+        { onConflict: "id" }
+      )
+
+    if (profileError) {
+      // Non bloquant : l'org et le user existent ; on logue seulement.
+      console.error("Avertissement upsert profil:", profileError)
+    }
+
     return NextResponse.json({ org_id: org.id }, { status: 201 })
   } catch (error) {
     console.error("Erreur setup-org:", error)
