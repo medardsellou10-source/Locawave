@@ -463,8 +463,8 @@ export default function LandingPage() {
               <h4 className="text-white font-semibold mb-3">Légal</h4>
               <ul className="space-y-2 text-sm">
                 <li><Link href="/mentions-legales" className="hover:text-white transition-colors">Mentions légales</Link></li>
-                <li><Link href="/mentions-legales#donnees" className="hover:text-white transition-colors">Politique de confidentialité</Link></li>
-                <li><Link href="/mentions-legales#cgu" className="hover:text-white transition-colors">CGU</Link></li>
+                <li><Link href="/politique-confidentialite" className="hover:text-white transition-colors">Politique de confidentialité</Link></li>
+                <li><Link href="/cgu" className="hover:text-white transition-colors">CGU</Link></li>
               </ul>
             </div>
             <div>

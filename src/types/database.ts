@@ -447,6 +447,7 @@ export type Database = {
           address: string | null
           city: string
           created_at: string | null
+          geo: unknown
           id: string
           name: string
           neighborhood: string | null
@@ -459,6 +460,7 @@ export type Database = {
           address?: string | null
           city?: string
           created_at?: string | null
+          geo?: unknown
           id?: string
           name: string
           neighborhood?: string | null
@@ -471,6 +473,7 @@ export type Database = {
           address?: string | null
           city?: string
           created_at?: string | null
+          geo?: unknown
           id?: string
           name?: string
           neighborhood?: string | null
