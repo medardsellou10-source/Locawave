@@ -38,21 +38,41 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet"
 
-const NAV_ITEMS = [
-  { href: "/dashboard", label: "Tableau de bord", icon: LayoutDashboard },
-  { href: "/dashboard/properties", label: "Biens", icon: Building2 },
-  { href: "/dashboard/tenants", label: "Locataires", icon: Users },
-  { href: "/dashboard/leases", label: "Baux", icon: FileText },
-  { href: "/dashboard/payments", label: "Paiements", icon: CreditCard },
-  { href: "/dashboard/finances", label: "Finances", icon: Wallet },
-  { href: "/dashboard/incidents", label: "Incidents", icon: AlertTriangle },
-  { href: "/dashboard/chantiers", label: "Chantiers", icon: HardHat },
-  { href: "/dashboard/prestataires", label: "Prestataires", icon: Wrench },
-  { href: "/dashboard/annonces", label: "Annonces", icon: Megaphone },
-  { href: "/litiges", label: "Litiges", icon: Scale },
-  { href: "/dashboard/reports", label: "Rapports", icon: BarChart3 },
-  { href: "/dashboard/verification", label: "Vérification", icon: ShieldCheck },
-  { href: "/dashboard/settings", label: "Paramètres", icon: Settings },
+const NAV_SECTIONS = [
+  {
+    label: "Gérer",
+    items: [
+      { href: "/dashboard", label: "Tableau de bord", icon: LayoutDashboard },
+      { href: "/dashboard/properties", label: "Biens", icon: Building2 },
+      { href: "/dashboard/tenants", label: "Locataires", icon: Users },
+      { href: "/dashboard/leases", label: "Baux", icon: FileText },
+      { href: "/dashboard/payments", label: "Paiements", icon: CreditCard },
+      { href: "/dashboard/finances", label: "Finances", icon: Wallet },
+    ],
+  },
+  {
+    label: "Travaux & confiance",
+    items: [
+      { href: "/dashboard/incidents", label: "Incidents", icon: AlertTriangle },
+      { href: "/dashboard/chantiers", label: "Chantiers", icon: HardHat },
+      { href: "/dashboard/prestataires", label: "Prestataires", icon: Wrench },
+      { href: "/litiges", label: "Litiges", icon: Scale },
+    ],
+  },
+  {
+    label: "Croître",
+    items: [
+      { href: "/dashboard/annonces", label: "Annonces", icon: Megaphone },
+      { href: "/dashboard/reports", label: "Rapports", icon: BarChart3 },
+    ],
+  },
+  {
+    label: "Compte",
+    items: [
+      { href: "/dashboard/verification", label: "Vérification", icon: ShieldCheck },
+      { href: "/dashboard/settings", label: "Paramètres", icon: Settings },
+    ],
+  },
 ] as const
 
 const PAGE_TITLES: Record<string, string> = {
@@ -159,26 +179,31 @@ function SidebarContent({ pathname, onNavigate }: { pathname: string; onNavigate
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 space-y-1 px-3 py-4">
-        {NAV_ITEMS.map((item) => {
-          const active = isActive(item.href)
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              onClick={onNavigate}
-              className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
-                active
-                  ? "border-l-3 bg-white/10 text-orange-400"
-                  : "text-white/70 hover:bg-white/5 hover:text-white/90"
-              }`}
-              style={active ? { borderLeftColor: "#f97316" } : undefined}
-            >
-              <item.icon className="h-5 w-5 shrink-0" />
-              {item.label}
-            </Link>
-          )
-        })}
+      <nav className="flex-1 space-y-4 overflow-y-auto px-3 py-4">
+        {NAV_SECTIONS.map((section) => (
+          <div key={section.label} className="space-y-1">
+            <p className="px-3 pb-1 text-[10px] font-semibold uppercase tracking-wider text-white/35">{section.label}</p>
+            {section.items.map((item) => {
+              const active = isActive(item.href)
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={onNavigate}
+                  className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all ${
+                    active
+                      ? "border-l-[3px] bg-white/10 text-orange-400"
+                      : "text-white/70 hover:bg-white/5 hover:text-white/90"
+                  }`}
+                  style={active ? { borderLeftColor: "#f97316" } : undefined}
+                >
+                  <item.icon className="h-5 w-5 shrink-0" />
+                  {item.label}
+                </Link>
+              )
+            })}
+          </div>
+        ))}
         {isAdmin && (
           <Link
             href="/dashboard/admin/kyc"

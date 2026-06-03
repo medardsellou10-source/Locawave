@@ -15,7 +15,9 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { ArrowRight, Wallet, Clock, AlertTriangle, TrendingUp, CreditCard } from "lucide-react"
+import { StatCard } from "@/components/app/StatCard"
+import { EmptyState } from "@/components/app/EmptyState"
+import { ArrowRight, Wallet, Clock, AlertTriangle, TrendingUp, CreditCard, CalendarClock } from "lucide-react"
 
 type KPIData = {
   collected: number
@@ -169,45 +171,10 @@ export default function DashboardPage() {
           ))
         ) : kpis ? (
           <>
-            <Card>
-              <CardHeader className="pb-2 flex flex-row items-center justify-between">
-                <CardTitle className="text-sm font-medium text-gray-500">Encaissé ce mois</CardTitle>
-                <Wallet className="w-4 h-4 text-green-500" />
-              </CardHeader>
-              <CardContent>
-                <p className="text-2xl font-bold text-green-600">{formatFCFA(kpis.collected)}</p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="pb-2 flex flex-row items-center justify-between">
-                <CardTitle className="text-sm font-medium text-gray-500">En attente</CardTitle>
-                <Clock className="w-4 h-4 text-orange-500" />
-              </CardHeader>
-              <CardContent>
-                <p className="text-2xl font-bold text-orange-600">{formatFCFA(kpis.pending)}</p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="pb-2 flex flex-row items-center justify-between">
-                <CardTitle className="text-sm font-medium text-gray-500">En retard</CardTitle>
-                <AlertTriangle className="w-4 h-4 text-red-500" />
-              </CardHeader>
-              <CardContent>
-                <p className="text-2xl font-bold text-red-600">{formatFCFA(kpis.late)}</p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="pb-2 flex flex-row items-center justify-between">
-                <CardTitle className="text-sm font-medium text-gray-500">Taux recouvrement</CardTitle>
-                <TrendingUp className="w-4 h-4 text-blue-500" />
-              </CardHeader>
-              <CardContent>
-                <p className="text-2xl font-bold text-[#1a2744]">{kpis.recoveryRate}%</p>
-                <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
-                  <div className="bg-[#f97316] h-2 rounded-full" style={{ width: `${kpis.recoveryRate}%` }} />
-                </div>
-              </CardContent>
-            </Card>
+            <StatCard label="Encaissé ce mois" value={formatFCFA(kpis.collected)} icon={Wallet} tone="green" />
+            <StatCard label="En attente" value={formatFCFA(kpis.pending)} icon={Clock} tone="orange" />
+            <StatCard label="En retard" value={formatFCFA(kpis.late)} icon={AlertTriangle} tone="red" />
+            <StatCard label="Taux recouvrement" value={`${kpis.recoveryRate}%`} icon={TrendingUp} tone="navy" progress={kpis.recoveryRate} />
           </>
         ) : null}
       </div>
@@ -219,7 +186,7 @@ export default function DashboardPage() {
         </CardHeader>
         <CardContent>
           {schedules.length === 0 ? (
-            <p className="text-center text-gray-400 py-6">Aucune échéance ce mois</p>
+            <EmptyState icon={CalendarClock} title="Aucune échéance ce mois" description="Les loyers à venir apparaîtront ici dès qu'un bail sera actif." />
           ) : (
             <div className="overflow-x-auto -mx-6 px-6">
               <Table className="min-w-[600px]">

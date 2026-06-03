@@ -15,6 +15,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { EmptyState } from "@/components/app/EmptyState"
 import { HardHat, Plus, Loader2, ArrowRight } from "lucide-react"
 import { toast } from "sonner"
 
@@ -119,7 +120,7 @@ export default function ChantiersPage() {
       <p className="text-gray-500 text-sm mb-4">Suivez vos travaux phase par phase : photos/vidéos en temps réel, validation et paiement sécurisé par jalon.</p>
 
       {loading ? <Skeleton className="h-40" /> : projects.length === 0 ? (
-        <div className="text-center py-16 text-gray-400">Aucun chantier. Créez votre premier projet de construction ou rénovation.</div>
+        <EmptyState icon={HardHat} title="Aucun chantier" description="Créez votre premier projet de construction ou rénovation et suivez-le phase par phase." />
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {projects.map((p) => {
