@@ -1038,6 +1038,73 @@ export type Database = {
           },
         ]
       }
+      recurring_bookings: {
+        Row: {
+          active: boolean | null
+          amount_fcfa: number | null
+          client_id: string
+          created_at: string | null
+          frequency: string
+          id: string
+          next_run: string | null
+          provider_id: string
+          service_id: string | null
+          title: string | null
+          updated_at: string | null
+          weekday: number | null
+        }
+        Insert: {
+          active?: boolean | null
+          amount_fcfa?: number | null
+          client_id: string
+          created_at?: string | null
+          frequency?: string
+          id?: string
+          next_run?: string | null
+          provider_id: string
+          service_id?: string | null
+          title?: string | null
+          updated_at?: string | null
+          weekday?: number | null
+        }
+        Update: {
+          active?: boolean | null
+          amount_fcfa?: number | null
+          client_id?: string
+          created_at?: string | null
+          frequency?: string
+          id?: string
+          next_run?: string | null
+          provider_id?: string
+          service_id?: string | null
+          title?: string | null
+          updated_at?: string | null
+          weekday?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "recurring_bookings_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "recurring_bookings_provider_id_fkey"
+            columns: ["provider_id"]
+            isOneToOne: false
+            referencedRelation: "provider_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "recurring_bookings_service_id_fkey"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "provider_services"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       referrals: {
         Row: {
           created_at: string | null
@@ -1791,6 +1858,7 @@ export type Database = {
         | { Args: { table_name: string }; Returns: string }
       enablelongtransactions: { Args: never; Returns: string }
       equals: { Args: { geom1: unknown; geom2: unknown }; Returns: boolean }
+      generate_due_bookings: { Args: never; Returns: number }
       geometry: { Args: { "": string }; Returns: unknown }
       geometry_above: {
         Args: { geom1: unknown; geom2: unknown }

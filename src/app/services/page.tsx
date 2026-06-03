@@ -45,6 +45,10 @@ export default function ServicesPage() {
   const [reviews, setReviews] = useState<Review[]>([])
   const [authed, setAuthed] = useState(false)
   const [chatOpen, setChatOpen] = useState(false)
+  const [bookOpen, setBookOpen] = useState(false)
+  const [bookFreq, setBookFreq] = useState("weekly")
+  const [bookAmount, setBookAmount] = useState("")
+  const [bookTitle, setBookTitle] = useState("")
 
   const search = useCallback(async (c: { lat: number; lng: number } | null) => {
     setLoading(true); setSearched(true)
@@ -74,6 +78,21 @@ export default function ServicesPage() {
     setReviews((rev as Review[]) ?? [])
     setAuthed(!!user)
     setChatOpen(false)
+  }
+
+  async function createBooking() {
+    if (!selected) return
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) { toast.error("Connectez-vous d'abord"); return }
+    const { error } = await supabase.from("recurring_bookings").insert({
+      client_id: user.id, provider_id: selected.id,
+      title: bookTitle || `Service ${selected.trades?.[0] ?? ""}`.trim(),
+      frequency: bookFreq, amount_fcfa: bookAmount ? parseInt(bookAmount) : null,
+      next_run: new Date().toISOString().slice(0, 10),
+    })
+    if (error) { toast.error("Erreur lors de la réservation"); return }
+    toast.success("Réservation récurrente créée — séquestre à chaque échéance")
+    setBookOpen(false); setBookTitle(""); setBookAmount("")
   }
 
   const center: [number, number] = coords ? [coords.lat, coords.lng] : DAKAR
@@ -187,6 +206,28 @@ export default function ServicesPage() {
                     <MessageCircle className="w-4 h-4 mr-2" /> Connectez-vous pour contacter
                   </Button>
                 </Link>
+              )}
+              {authed && !chatOpen && (
+                <div className="border-t pt-3">
+                  {!bookOpen ? (
+                    <Button variant="outline" className="w-full" onClick={() => setBookOpen(true)}>
+                      Réservation récurrente (ménage, etc.)
+                    </Button>
+                  ) : (
+                    <div className="space-y-2">
+                      <Input placeholder="Intitulé (ex: Ménage hebdomadaire)" value={bookTitle} onChange={(e) => setBookTitle(e.target.value)} />
+                      <div className="grid grid-cols-2 gap-2">
+                        <select value={bookFreq} onChange={(e) => setBookFreq(e.target.value)} className="h-10 rounded-md border border-input bg-background px-3 text-sm">
+                          <option value="weekly">Chaque semaine</option>
+                          <option value="biweekly">Toutes les 2 semaines</option>
+                          <option value="monthly">Chaque mois</option>
+                        </select>
+                        <Input type="number" placeholder="Montant FCFA / passage" value={bookAmount} onChange={(e) => setBookAmount(e.target.value)} />
+                      </div>
+                      <Button onClick={createBooking} className="w-full bg-[#1a2744] hover:bg-[#0f1a2e] text-white">Confirmer la réservation récurrente</Button>
+                    </div>
+                  )}
+                </div>
               )}
               <p className="text-[11px] text-gray-400 text-center">Échangez dans l'app — ne communiquez jamais votre numéro avant d'engager.</p>
             </div>
