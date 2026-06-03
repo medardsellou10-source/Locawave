@@ -55,6 +55,57 @@ export type Database = {
           },
         ]
       }
+      applications: {
+        Row: {
+          applicant_id: string
+          applicant_name: string | null
+          created_at: string | null
+          documents: string[] | null
+          id: string
+          listing_id: string
+          message: string | null
+          status: string
+          tenant_score: number | null
+        }
+        Insert: {
+          applicant_id: string
+          applicant_name?: string | null
+          created_at?: string | null
+          documents?: string[] | null
+          id?: string
+          listing_id: string
+          message?: string | null
+          status?: string
+          tenant_score?: number | null
+        }
+        Update: {
+          applicant_id?: string
+          applicant_name?: string | null
+          created_at?: string | null
+          documents?: string[] | null
+          id?: string
+          listing_id?: string
+          message?: string | null
+          status?: string
+          tenant_score?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "applications_applicant_id_fkey"
+            columns: ["applicant_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "applications_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       audit_log: {
         Row: {
           action: string
@@ -493,6 +544,103 @@ export type Database = {
             columns: ["unit_id"]
             isOneToOne: false
             referencedRelation: "units"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      listings: {
+        Row: {
+          area_m2: number | null
+          available_from: string | null
+          charges_fcfa: number | null
+          city: string | null
+          created_at: string | null
+          deposit_fcfa: number | null
+          description: string | null
+          geo: unknown
+          id: string
+          is_verified: boolean | null
+          org_id: string | null
+          owner_id: string
+          photos: string[] | null
+          property_id: string | null
+          published_at: string | null
+          quartier: string | null
+          rent_fcfa: number
+          rooms: number | null
+          status: string
+          title: string
+          type: string
+          updated_at: string | null
+        }
+        Insert: {
+          area_m2?: number | null
+          available_from?: string | null
+          charges_fcfa?: number | null
+          city?: string | null
+          created_at?: string | null
+          deposit_fcfa?: number | null
+          description?: string | null
+          geo?: unknown
+          id?: string
+          is_verified?: boolean | null
+          org_id?: string | null
+          owner_id: string
+          photos?: string[] | null
+          property_id?: string | null
+          published_at?: string | null
+          quartier?: string | null
+          rent_fcfa: number
+          rooms?: number | null
+          status?: string
+          title: string
+          type?: string
+          updated_at?: string | null
+        }
+        Update: {
+          area_m2?: number | null
+          available_from?: string | null
+          charges_fcfa?: number | null
+          city?: string | null
+          created_at?: string | null
+          deposit_fcfa?: number | null
+          description?: string | null
+          geo?: unknown
+          id?: string
+          is_verified?: boolean | null
+          org_id?: string | null
+          owner_id?: string
+          photos?: string[] | null
+          property_id?: string | null
+          published_at?: string | null
+          quartier?: string | null
+          rent_fcfa?: number
+          rooms?: number | null
+          status?: string
+          title?: string
+          type?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "listings_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "listings_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "listings_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
             referencedColumns: ["id"]
           },
         ]
@@ -1333,6 +1481,38 @@ export type Database = {
           },
         ]
       }
+      saved_searches: {
+        Row: {
+          alert_enabled: boolean | null
+          created_at: string | null
+          criteria: Json
+          id: string
+          user_id: string
+        }
+        Insert: {
+          alert_enabled?: boolean | null
+          created_at?: string | null
+          criteria?: Json
+          id?: string
+          user_id: string
+        }
+        Update: {
+          alert_enabled?: boolean | null
+          created_at?: string | null
+          criteria?: Json
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "saved_searches_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       spatial_ref_sys: {
         Row: {
           auth_name: string | null
@@ -1544,6 +1724,51 @@ export type Database = {
             columns: ["org_id"]
             isOneToOne: false
             referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      visits: {
+        Row: {
+          applicant_id: string
+          created_at: string | null
+          id: string
+          listing_id: string
+          mode: string
+          scheduled_at: string | null
+          status: string
+        }
+        Insert: {
+          applicant_id: string
+          created_at?: string | null
+          id?: string
+          listing_id: string
+          mode?: string
+          scheduled_at?: string | null
+          status?: string
+        }
+        Update: {
+          applicant_id?: string
+          created_at?: string | null
+          id?: string
+          listing_id?: string
+          mode?: string
+          scheduled_at?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "visits_applicant_id_fkey"
+            columns: ["applicant_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "visits_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
             referencedColumns: ["id"]
           },
         ]
@@ -2000,6 +2225,33 @@ export type Database = {
       }
       postgis_version: { Args: never; Returns: string }
       postgis_wagyu_version: { Args: never; Returns: string }
+      search_listings: {
+        Args: {
+          p_city?: string
+          p_lat?: number
+          p_lng?: number
+          p_max_rent?: number
+          p_min_rooms?: number
+          p_radius_km?: number
+          p_type?: string
+        }
+        Returns: {
+          area_m2: number
+          charges_fcfa: number
+          city: string
+          distance_km: number
+          id: string
+          is_verified: boolean
+          lat: number
+          lng: number
+          photos: string[]
+          quartier: string
+          rent_fcfa: number
+          rooms: number
+          title: string
+          type: string
+        }[]
+      }
       search_providers: {
         Args: {
           p_lat?: number
