@@ -14,7 +14,7 @@ import { toast } from "sonner"
 
 type Row = {
   id: string; bio: string | null; trades: string[]; quartier: string | null; city: string | null
-  is_verified: boolean; profiles: { full_name: string } | null
+  is_verified: boolean; display_name: string | null
 }
 
 export default function AdminProvidersPage() {
@@ -33,7 +33,7 @@ export default function AdminProvidersPage() {
     setAllowed(true)
     const { data } = await supabase
       .from("provider_profiles")
-      .select("id, bio, trades, quartier, city, is_verified, profiles!id(full_name)")
+      .select("id, bio, trades, quartier, city, is_verified, display_name")
       .eq("is_verified", false)
       .order("created_at", { ascending: true })
     setRows((data as Row[]) ?? [])
@@ -65,7 +65,7 @@ export default function AdminProvidersPage() {
           {rows.map((r) => (
             <Card key={r.id}><CardContent className="py-4 flex items-center justify-between gap-3 flex-wrap">
               <div>
-                <p className="font-medium text-[#1a2744]">{r.profiles?.full_name ?? "Prestataire"}</p>
+                <p className="font-medium text-[#1a2744]">{r.display_name ?? "Prestataire"}</p>
                 <p className="text-sm text-gray-500">{(r.trades ?? []).join(", ") || "—"} · {r.quartier ?? ""} {r.city ?? ""}</p>
                 {r.bio && <p className="text-xs text-gray-400 mt-1 max-w-lg">{r.bio}</p>}
               </div>

@@ -856,6 +856,7 @@ export type Database = {
           bio: string | null
           city: string | null
           created_at: string | null
+          display_name: string | null
           geo: unknown
           id: string
           is_verified: boolean | null
@@ -871,6 +872,7 @@ export type Database = {
           bio?: string | null
           city?: string | null
           created_at?: string | null
+          display_name?: string | null
           geo?: unknown
           id: string
           is_verified?: boolean | null
@@ -886,6 +888,7 @@ export type Database = {
           bio?: string | null
           city?: string | null
           created_at?: string | null
+          display_name?: string | null
           geo?: unknown
           id?: string
           is_verified?: boolean | null

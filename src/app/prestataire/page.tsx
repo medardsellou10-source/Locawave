@@ -16,7 +16,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { CheckCircle2, Clock, Loader2, MapPin, Plus, Wrench } from "lucide-react"
 import { toast } from "sonner"
 
-type Profile = { id: string; bio: string | null; trades: string[]; quartier: string | null; city: string | null; languages: string[]; is_verified: boolean }
+type Profile = { id: string; display_name: string | null; bio: string | null; trades: string[]; quartier: string | null; city: string | null; languages: string[]; is_verified: boolean }
 type Service = { id: string; trade: string; title: string; base_price: number | null; price_unit: string }
 type WorkOrder = { id: string; description: string | null; amount_fcfa: number | null; status: string; escrow_status: string; created_at: string }
 
@@ -32,6 +32,7 @@ export default function PrestatairePage() {
   const [saving, setSaving] = useState(false)
 
   // form
+  const [displayName, setDisplayName] = useState("")
   const [bio, setBio] = useState("")
   const [trades, setTrades] = useState("")
   const [quartier, setQuartier] = useState("")
@@ -49,14 +50,19 @@ export default function PrestatairePage() {
     if (!user) return
     setUid(user.id)
     const { data: p } = await supabase.from("provider_profiles")
-      .select("id, bio, trades, quartier, city, languages, is_verified").eq("id", user.id).maybeSingle()
+      .select("id, display_name, bio, trades, quartier, city, languages, is_verified").eq("id", user.id).maybeSingle()
+    // Nom par défaut depuis le profil (lisible par soi-même)
+    const { data: prof } = await supabase.from("profiles").select("full_name").eq("id", user.id).maybeSingle()
     if (p) {
       setProfile(p as Profile)
+      setDisplayName(p.display_name ?? prof?.full_name ?? "")
       setBio(p.bio ?? ""); setTrades((p.trades ?? []).join(", ")); setQuartier(p.quartier ?? ""); setCity(p.city ?? "Dakar")
       const { data: svc } = await supabase.from("provider_services").select("id, trade, title, base_price, price_unit").eq("provider_id", user.id)
       setServices((svc as Service[]) ?? [])
       const { data: wo } = await supabase.from("work_orders").select("id, description, amount_fcfa, status, escrow_status, created_at").eq("provider_id", user.id).order("created_at", { ascending: false })
       setWorkOrders((wo as WorkOrder[]) ?? [])
+    } else {
+      setDisplayName(prof?.full_name ?? "")
     }
     setLoading(false)
   }, [])
@@ -67,7 +73,7 @@ export default function PrestatairePage() {
     if (!uid) return
     setSaving(true)
     const payload: Record<string, unknown> = {
-      id: uid, bio: bio || null,
+      id: uid, display_name: displayName || null, bio: bio || null,
       trades: trades.split(",").map((t) => t.trim()).filter(Boolean),
       quartier: quartier || null, city: city || "Dakar",
     }
@@ -120,6 +126,7 @@ export default function PrestatairePage() {
       <Card>
         <CardHeader className="pb-2"><CardTitle className="text-base">{profile ? "Mon profil" : "Créer mon profil prestataire"}</CardTitle></CardHeader>
         <CardContent className="space-y-3">
+          <div><Label>Nom affiché</Label><Input value={displayName} onChange={(e) => setDisplayName(e.target.value)} placeholder="Cheikh Plomberie" /></div>
           <div><Label>Présentation</Label><Textarea value={bio} onChange={(e) => setBio(e.target.value)} rows={2} placeholder="Votre expérience, vos spécialités…" /></div>
           <div><Label>Métiers (séparés par des virgules)</Label><Input value={trades} onChange={(e) => setTrades(e.target.value)} placeholder="Plomberie, Électricité" /></div>
           <div className="grid grid-cols-2 gap-3">

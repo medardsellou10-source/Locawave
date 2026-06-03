@@ -60,14 +60,13 @@ export default function IncidentsPage() {
     const { data: { user } } = await supabase.auth.getUser()
     if (user) setOwnerId(user.id)
     const [{ data: provs }, { data: trusted }] = await Promise.all([
-      supabase.from("provider_profiles").select("id, trades, profiles!id(full_name)").eq("is_verified", true),
+      supabase.from("provider_profiles").select("id, trades, display_name").eq("is_verified", true),
       user ? supabase.from("trusted_providers").select("provider_id").eq("owner_id", user.id) : Promise.resolve({ data: [] as { provider_id: string }[] }),
     ])
     const trustedSet = new Set((trusted ?? []).map((t) => t.provider_id))
     setProviders((provs ?? []).map((p) => ({
       id: p.id,
-      // @ts-expect-error relation
-      name: p.profiles?.full_name ?? "Prestataire",
+      name: p.display_name ?? "Prestataire",
       trades: p.trades ?? [],
       trusted: trustedSet.has(p.id),
     })))
