@@ -29,6 +29,7 @@ export interface CreateTransactionInput {
   returnUrl: string
   cancelUrl: string
   callbackUrl: string // webhook PSP → Edge Function psp-webhook
+  appUrl?: string // domaine réel de l'app (pour le lien simulation)
 }
 
 export interface CreateTransactionResult {
@@ -71,7 +72,7 @@ export async function createPspTransaction(
 
   // === Mode simulation (par défaut, aucun compte requis) ===
   // Génère une page de paiement factice interne ; le webhook peut être simulé.
-  const base = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"
+  const base = input.appUrl ?? process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"
   return {
     provider: "simulation",
     providerRef: `SIM-${input.reference}`,

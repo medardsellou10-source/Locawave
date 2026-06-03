@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
 
   // 2) Créer la transaction chez le PSP
   const ref = `RS-${schedule.id.slice(0, 8)}-${Date.now().toString(36)}`
-  const base = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"
+  const base = request.nextUrl.origin || process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 
   // @ts-expect-error relations typées en tableau par le générateur
@@ -62,6 +62,7 @@ export async function POST(request: NextRequest) {
       returnUrl: `${base}/pay/merci`,
       cancelUrl: `${base}/pay/annule`,
       callbackUrl: `${supabaseUrl}/functions/v1/psp-webhook`,
+      appUrl: base,
     })
   } catch (e) {
     return NextResponse.json(

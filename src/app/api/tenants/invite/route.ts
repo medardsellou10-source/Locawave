@@ -38,7 +38,9 @@ export async function POST(request: NextRequest) {
   }
 
   const admin = createAdminClient()
-  const base = process.env.NEXT_PUBLIC_APP_URL ?? new URL(request.url).origin
+  // Domaine réel de la requête (fiable en prod, contrairement à NEXT_PUBLIC_APP_URL
+  // qui peut pointer localhost). Fallback sur la variable d'env si besoin.
+  const base = request.nextUrl.origin || process.env.NEXT_PUBLIC_APP_URL || ""
   const redirectTo = `${base}/auth/callback?next=/locataire`
 
   // 2) Générer le lien magique (invite si nouveau, magiclink si déjà lié)
