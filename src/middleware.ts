@@ -38,8 +38,9 @@ export async function middleware(request: NextRequest) {
 
   const path = request.nextUrl.pathname
 
-  // Routes protégées : /dashboard/**, /locataire/**, /prestataire/** nécessitent une session
-  if (!session && (path.startsWith("/dashboard") || path.startsWith("/locataire") || path.startsWith("/prestataire"))) {
+  // Routes protégées : nécessitent une session (espaces + litiges/avantages transverses)
+  if (!session && (path.startsWith("/dashboard") || path.startsWith("/locataire") || path.startsWith("/prestataire")
+      || path.startsWith("/litiges") || path.startsWith("/avantages"))) {
     return NextResponse.redirect(new URL("/login", request.url))
   }
 
@@ -95,5 +96,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard", "/dashboard/:path*", "/locataire", "/locataire/:path*", "/prestataire", "/prestataire/:path*", "/login", "/register"],
+  matcher: ["/dashboard", "/dashboard/:path*", "/locataire", "/locataire/:path*", "/prestataire", "/prestataire/:path*", "/litiges", "/litiges/:path*", "/avantages", "/avantages/:path*", "/login", "/register"],
 }

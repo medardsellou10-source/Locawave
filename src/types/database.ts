@@ -236,6 +236,116 @@ export type Database = {
           },
         ]
       }
+      disputes: {
+        Row: {
+          against_id: string | null
+          amount_frozen_fcfa: number | null
+          contest_deadline: string | null
+          created_at: string | null
+          description: string | null
+          id: string
+          incident_id: string | null
+          lease_id: string | null
+          opened_by: string
+          org_id: string | null
+          reason: string
+          resolution: string | null
+          resolved_at: string | null
+          resolved_by: string | null
+          status: string
+          updated_at: string | null
+          work_order_id: string | null
+        }
+        Insert: {
+          against_id?: string | null
+          amount_frozen_fcfa?: number | null
+          contest_deadline?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          incident_id?: string | null
+          lease_id?: string | null
+          opened_by: string
+          org_id?: string | null
+          reason: string
+          resolution?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          status?: string
+          updated_at?: string | null
+          work_order_id?: string | null
+        }
+        Update: {
+          against_id?: string | null
+          amount_frozen_fcfa?: number | null
+          contest_deadline?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          incident_id?: string | null
+          lease_id?: string | null
+          opened_by?: string
+          org_id?: string | null
+          reason?: string
+          resolution?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          status?: string
+          updated_at?: string | null
+          work_order_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "disputes_against_id_fkey"
+            columns: ["against_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "disputes_incident_id_fkey"
+            columns: ["incident_id"]
+            isOneToOne: false
+            referencedRelation: "incidents"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "disputes_lease_id_fkey"
+            columns: ["lease_id"]
+            isOneToOne: false
+            referencedRelation: "leases"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "disputes_opened_by_fkey"
+            columns: ["opened_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "disputes_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "disputes_resolved_by_fkey"
+            columns: ["resolved_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "disputes_work_order_id_fkey"
+            columns: ["work_order_id"]
+            isOneToOne: false
+            referencedRelation: "work_orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       expenses: {
         Row: {
           amount_fcfa: number
@@ -420,6 +530,56 @@ export type Database = {
             columns: ["org_id"]
             isOneToOne: false
             referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      insurance_enrollments: {
+        Row: {
+          created_at: string | null
+          enrolled_at: string | null
+          expires_at: string | null
+          id: string
+          kind: string
+          monthly_fcfa: number | null
+          profile_id: string
+          provider_name: string | null
+          reference: string | null
+          status: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          enrolled_at?: string | null
+          expires_at?: string | null
+          id?: string
+          kind: string
+          monthly_fcfa?: number | null
+          profile_id: string
+          provider_name?: string | null
+          reference?: string | null
+          status?: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          enrolled_at?: string | null
+          expires_at?: string | null
+          id?: string
+          kind?: string
+          monthly_fcfa?: number | null
+          profile_id?: string
+          provider_name?: string | null
+          reference?: string | null
+          status?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "insurance_enrollments_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -1597,6 +1757,78 @@ export type Database = {
           },
         ]
       }
+      training_modules: {
+        Row: {
+          badge_label: string | null
+          category: string | null
+          description: string | null
+          key: string
+          sort_order: number | null
+          title: string
+        }
+        Insert: {
+          badge_label?: string | null
+          category?: string | null
+          description?: string | null
+          key: string
+          sort_order?: number | null
+          title: string
+        }
+        Update: {
+          badge_label?: string | null
+          category?: string | null
+          description?: string | null
+          key?: string
+          sort_order?: number | null
+          title?: string
+        }
+        Relationships: []
+      }
+      training_progress: {
+        Row: {
+          completed_at: string | null
+          created_at: string | null
+          id: string
+          module_key: string
+          profile_id: string
+          progress: number
+          updated_at: string | null
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string | null
+          id?: string
+          module_key: string
+          profile_id: string
+          progress?: number
+          updated_at?: string | null
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string | null
+          id?: string
+          module_key?: string
+          profile_id?: string
+          progress?: number
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "training_progress_module_key_fkey"
+            columns: ["module_key"]
+            isOneToOne: false
+            referencedRelation: "training_modules"
+            referencedColumns: ["key"]
+          },
+          {
+            foreignKeyName: "training_progress_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       trusted_providers: {
         Row: {
           created_at: string | null
@@ -2225,6 +2457,10 @@ export type Database = {
       }
       postgis_version: { Args: never; Returns: string }
       postgis_wagyu_version: { Args: never; Returns: string }
+      recompute_provider_trust_score: {
+        Args: { p_provider: string }
+        Returns: undefined
+      }
       search_listings: {
         Args: {
           p_city?: string

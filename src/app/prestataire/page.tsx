@@ -7,6 +7,9 @@ import { createClient } from "@/lib/supabase"
 import { formatFCFA, formatDateFR } from "@/lib/formatters"
 import { KycUpload } from "@/components/app/KycUpload"
 import { Inbox } from "@/components/app/Inbox"
+import { TrustBadge } from "@/components/app/TrustBadge"
+import { DisputeDialog } from "@/components/app/DisputeDialog"
+import Link from "next/link"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -14,12 +17,12 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Skeleton } from "@/components/ui/skeleton"
-import { CheckCircle2, Clock, Loader2, MapPin, Plus, Wrench } from "lucide-react"
+import { CheckCircle2, Clock, Loader2, MapPin, Plus, Wrench, Scale, HeartPulse } from "lucide-react"
 import { toast } from "sonner"
 
-type Profile = { id: string; display_name: string | null; bio: string | null; trades: string[]; quartier: string | null; city: string | null; languages: string[]; is_verified: boolean }
+type Profile = { id: string; display_name: string | null; bio: string | null; trades: string[]; quartier: string | null; city: string | null; languages: string[]; is_verified: boolean; trust_score: number | null; jobs_done: number | null }
 type Service = { id: string; trade: string; title: string; base_price: number | null; price_unit: string }
-type WorkOrder = { id: string; description: string | null; amount_fcfa: number | null; status: string; escrow_status: string; created_at: string }
+type WorkOrder = { id: string; description: string | null; amount_fcfa: number | null; status: string; escrow_status: string; created_at: string; client_id: string | null; org_id: string | null }
 
 const WO_STATUS: Record<string, string> = { pending: "En attente", assigned: "Assignée", in_progress: "En cours", completed: "Terminée", cancelled: "Annulée" }
 
@@ -51,7 +54,7 @@ export default function PrestatairePage() {
     if (!user) return
     setUid(user.id)
     const { data: p } = await supabase.from("provider_profiles")
-      .select("id, display_name, bio, trades, quartier, city, languages, is_verified").eq("id", user.id).maybeSingle()
+      .select("id, display_name, bio, trades, quartier, city, languages, is_verified, trust_score, jobs_done").eq("id", user.id).maybeSingle()
     // Nom par défaut depuis le profil (lisible par soi-même)
     const { data: prof } = await supabase.from("profiles").select("full_name").eq("id", user.id).maybeSingle()
     if (p) {
@@ -60,7 +63,7 @@ export default function PrestatairePage() {
       setBio(p.bio ?? ""); setTrades((p.trades ?? []).join(", ")); setQuartier(p.quartier ?? ""); setCity(p.city ?? "Dakar")
       const { data: svc } = await supabase.from("provider_services").select("id, trade, title, base_price, price_unit").eq("provider_id", user.id)
       setServices((svc as Service[]) ?? [])
-      const { data: wo } = await supabase.from("work_orders").select("id, description, amount_fcfa, status, escrow_status, created_at").eq("provider_id", user.id).order("created_at", { ascending: false })
+      const { data: wo } = await supabase.from("work_orders").select("id, description, amount_fcfa, status, escrow_status, created_at, client_id, org_id").eq("provider_id", user.id).order("created_at", { ascending: false })
       setWorkOrders((wo as WorkOrder[]) ?? [])
     } else {
       setDisplayName(prof?.full_name ?? "")
@@ -114,13 +117,22 @@ export default function PrestatairePage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-[#1a2744] flex items-center gap-2"><Wrench className="w-6 h-6 text-[#f97316]" /> Espace prestataire</h1>
-        {profile && (
-          <Badge className={`mt-1 gap-1 ${profile.is_verified ? "bg-green-100 text-green-700" : "bg-orange-100 text-orange-700"}`}>
-            {profile.is_verified ? <><CheckCircle2 className="w-3.5 h-3.5" /> Profil vérifié</> : <><Clock className="w-3.5 h-3.5" /> En attente de vérification</>}
-          </Badge>
-        )}
+      <div className="flex items-start justify-between gap-3 flex-wrap">
+        <div>
+          <h1 className="text-2xl font-bold text-[#1a2744] flex items-center gap-2"><Wrench className="w-6 h-6 text-[#f97316]" /> Espace prestataire</h1>
+          {profile && (
+            <div className="mt-1 flex items-center gap-2 flex-wrap">
+              <Badge className={`gap-1 ${profile.is_verified ? "bg-green-100 text-green-700" : "bg-orange-100 text-orange-700"}`}>
+                {profile.is_verified ? <><CheckCircle2 className="w-3.5 h-3.5" /> Profil vérifié</> : <><Clock className="w-3.5 h-3.5" /> En attente de vérification</>}
+              </Badge>
+              <TrustBadge score={profile.trust_score} jobs={profile.jobs_done} />
+            </div>
+          )}
+        </div>
+        <div className="flex gap-2">
+          <Link href="/avantages"><Button variant="outline" size="sm"><HeartPulse className="w-4 h-4 mr-1" /> Avantages</Button></Link>
+          <Link href="/litiges"><Button variant="outline" size="sm"><Scale className="w-4 h-4 mr-1" /> Litiges</Button></Link>
+        </div>
       </div>
 
       {/* Profil */}
@@ -192,6 +204,9 @@ export default function PrestatairePage() {
                         <Badge variant="outline">{WO_STATUS[w.status] ?? w.status}</Badge>
                         {w.status === "assigned" && <Button size="sm" variant="outline" onClick={() => setWoStatus(w.id, "in_progress")}>Démarrer</Button>}
                         {w.status === "in_progress" && <Button size="sm" className="bg-green-600 hover:bg-green-700 text-white" onClick={() => setWoStatus(w.id, "completed")}>Terminer</Button>}
+                        {w.escrow_status === "held" && (
+                          <DisputeDialog workOrderId={w.id} orgId={w.org_id} againstId={w.client_id} amountFcfa={w.amount_fcfa} onOpened={load} />
+                        )}
                       </div>
                     </div>
                   ))}

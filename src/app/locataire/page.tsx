@@ -9,7 +9,7 @@ import { PayNowButton } from "@/components/app/PayNowButton"
 import { KycUpload } from "@/components/app/KycUpload"
 import { TenantIncidents } from "@/components/app/TenantIncidents"
 import { Inbox } from "@/components/app/Inbox"
-import { Sparkles, FileText, Home } from "lucide-react"
+import { Sparkles, FileText, Home, HeartPulse, Scale } from "lucide-react"
 
 export const dynamic = "force-dynamic"
 
@@ -60,6 +60,10 @@ export default async function LocatairePage() {
           Bonjour {tenant?.first_name ?? ""} 👋
         </h1>
         <p className="text-gray-500 text-sm">Votre espace locataire</p>
+        <div className="flex gap-2 mt-3">
+          <Link href="/avantages"><Button variant="outline" size="sm"><HeartPulse className="w-4 h-4 mr-1" /> Avantages</Button></Link>
+          <Link href="/litiges"><Button variant="outline" size="sm"><Scale className="w-4 h-4 mr-1" /> Litiges</Button></Link>
+        </div>
       </div>
 
       {/* Logement */}

@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { MessageThread } from "@/components/app/MessageThread"
+import { TrustBadge } from "@/components/app/TrustBadge"
 import { Building2, MapPin, Search, Star, Loader2, MessageCircle, CheckCircle2 } from "lucide-react"
 import { toast } from "sonner"
 
@@ -164,9 +165,9 @@ export default function ServicesPage() {
           <DialogHeader><DialogTitle>{selected?.display_name ?? "Prestataire"}</DialogTitle></DialogHeader>
           {selected && (
             <div className="space-y-4">
-              <div className="flex items-center gap-3 text-sm">
+              <div className="flex items-center gap-2 text-sm flex-wrap">
                 <Badge className="bg-green-100 text-green-700 gap-1"><CheckCircle2 className="w-3 h-3" /> Vérifié</Badge>
-                <span className="flex items-center gap-1"><Star className="w-3.5 h-3.5 text-amber-500" /> {Number(selected.trust_score ?? 0).toFixed(1)}</span>
+                <TrustBadge score={selected.trust_score} jobs={selected.jobs_done} />
                 <span className="text-gray-500">{selected.quartier} {selected.city}</span>
               </div>
               {selected.bio && <p className="text-sm text-gray-600">{selected.bio}</p>}
