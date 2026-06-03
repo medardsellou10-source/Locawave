@@ -3,6 +3,7 @@
 export const dynamic = "force-dynamic"
 
 import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase"
 import { useOrganization } from "@/hooks/useOrganization"
 import { formatFCFA, formatDateFR } from "@/lib/formatters"
@@ -32,6 +33,7 @@ export default function LeasesPage() {
   const [loading, setLoading] = useState(true)
   const [dialogOpen, setDialogOpen] = useState(false)
   const { org } = useOrganization()
+  const router = useRouter()
   const supabase = createClient()
 
   async function fetchLeases() {
@@ -101,7 +103,8 @@ export default function LeasesPage() {
               </TableHeader>
               <TableBody>
                 {leases.map((lease) => (
-                  <TableRow key={lease.id}>
+                  <TableRow key={lease.id} className="cursor-pointer hover:bg-gray-50"
+                    onClick={() => router.push(`/dashboard/leases/${lease.id}`)}>
                     <TableCell className="font-medium whitespace-nowrap">
                       {lease.tenants ? `${lease.tenants.first_name} ${lease.tenants.last_name}` : "-"}
                     </TableCell>

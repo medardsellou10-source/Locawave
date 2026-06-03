@@ -93,6 +93,60 @@ export type Database = {
           },
         ]
       }
+      deposits: {
+        Row: {
+          amount_fcfa: number
+          created_at: string | null
+          id: string
+          lease_id: string
+          note: string | null
+          org_id: string
+          psp_reference: string | null
+          released_amount_fcfa: number
+          status: string
+          updated_at: string | null
+        }
+        Insert: {
+          amount_fcfa: number
+          created_at?: string | null
+          id?: string
+          lease_id: string
+          note?: string | null
+          org_id: string
+          psp_reference?: string | null
+          released_amount_fcfa?: number
+          status?: string
+          updated_at?: string | null
+        }
+        Update: {
+          amount_fcfa?: number
+          created_at?: string | null
+          id?: string
+          lease_id?: string
+          note?: string | null
+          org_id?: string
+          psp_reference?: string | null
+          released_amount_fcfa?: number
+          status?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "deposits_lease_id_fkey"
+            columns: ["lease_id"]
+            isOneToOne: false
+            referencedRelation: "leases"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "deposits_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       expenses: {
         Row: {
           amount_fcfa: number
@@ -137,6 +191,66 @@ export type Database = {
             columns: ["property_id"]
             isOneToOne: false
             referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      inspections: {
+        Row: {
+          created_at: string | null
+          done_at: string | null
+          id: string
+          lease_id: string
+          meter_readings: Json | null
+          notes: string | null
+          org_id: string
+          owner_signature: string | null
+          photos: string[] | null
+          rooms: Json | null
+          tenant_signature: string | null
+          type: string
+        }
+        Insert: {
+          created_at?: string | null
+          done_at?: string | null
+          id?: string
+          lease_id: string
+          meter_readings?: Json | null
+          notes?: string | null
+          org_id: string
+          owner_signature?: string | null
+          photos?: string[] | null
+          rooms?: Json | null
+          tenant_signature?: string | null
+          type: string
+        }
+        Update: {
+          created_at?: string | null
+          done_at?: string | null
+          id?: string
+          lease_id?: string
+          meter_readings?: Json | null
+          notes?: string | null
+          org_id?: string
+          owner_signature?: string | null
+          photos?: string[] | null
+          rooms?: Json | null
+          tenant_signature?: string | null
+          type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "inspections_lease_id_fkey"
+            columns: ["lease_id"]
+            isOneToOne: false
+            referencedRelation: "leases"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "inspections_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
             referencedColumns: ["id"]
           },
         ]
