@@ -243,6 +243,7 @@ export type Database = {
           contest_deadline: string | null
           created_at: string | null
           description: string | null
+          escrow_outcome: string | null
           id: string
           incident_id: string | null
           lease_id: string | null
@@ -262,6 +263,7 @@ export type Database = {
           contest_deadline?: string | null
           created_at?: string | null
           description?: string | null
+          escrow_outcome?: string | null
           id?: string
           incident_id?: string | null
           lease_id?: string | null
@@ -281,6 +283,7 @@ export type Database = {
           contest_deadline?: string | null
           created_at?: string | null
           description?: string | null
+          escrow_outcome?: string | null
           id?: string
           incident_id?: string | null
           lease_id?: string | null

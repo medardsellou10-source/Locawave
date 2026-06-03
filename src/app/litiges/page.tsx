@@ -55,8 +55,7 @@ export default function LitigesPage() {
 
   async function cancelDispute(d: Dispute) {
     setBusy(d.id)
-    // restaurer le séquestre (disputed -> held) si applicable
-    if (d.work_order_id) await supabase.from("work_orders").update({ escrow_status: "held" }).eq("id", d.work_order_id).eq("escrow_status", "disputed")
+    // Le dégel du séquestre (disputed -> held) est fait par le trigger DB.
     const { error } = await supabase.from("disputes").update({ status: "cancelled" }).eq("id", d.id)
     setBusy(null)
     if (error) { toast.error("Erreur"); return }
@@ -66,13 +65,9 @@ export default function LitigesPage() {
   async function resolve(d: Dispute, outcome: "client" | "provider") {
     setBusy(d.id)
     const resolution = resolutions[d.id] || (outcome === "client" ? "Litige tranché en faveur du client : remboursement." : "Litige tranché en faveur du prestataire : libération des fonds.")
-    if (d.work_order_id) {
-      await supabase.from("work_orders")
-        .update({ escrow_status: outcome === "client" ? "refunded" : "released" })
-        .eq("id", d.work_order_id)
-    }
+    // Le mouvement du séquestre est piloté par le trigger via escrow_outcome (RLS-safe).
     const { error } = await supabase.from("disputes")
-      .update({ status: "resolved", resolution, resolved_by: uid, resolved_at: new Date().toISOString() })
+      .update({ status: "resolved", resolution, escrow_outcome: outcome === "client" ? "refund" : "release", resolved_by: uid, resolved_at: new Date().toISOString() })
       .eq("id", d.id)
     setBusy(null)
     if (error) { toast.error("Erreur"); return }
