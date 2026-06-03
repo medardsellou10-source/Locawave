@@ -40,6 +40,7 @@ export default function TenantDetailPage() {
   const [loading, setLoading] = useState(true)
   const [editDialogOpen, setEditDialogOpen] = useState(false)
   const [inviting, setInviting] = useState(false)
+  const [inviteLink, setInviteLink] = useState<string | null>(null)
 
   async function fetchData() {
     if (!org || !params.id) return
@@ -79,8 +80,9 @@ export default function TenantDetailPage() {
         toast.success(
           data.whatsapp_sent
             ? "Invitation envoyée au locataire par WhatsApp"
-            : "Invitation générée (lien envoyé par email)"
+            : "Invitation générée — partagez le lien ci-dessous"
         )
+        if (data.invite_link) setInviteLink(data.invite_link as string)
         fetchData()
       } else {
         toast.error(data.error ?? "Échec de l'invitation")
@@ -170,6 +172,26 @@ export default function TenantDetailPage() {
           </Button>
         </div>
       </div>
+
+      {inviteLink && (
+        <Card className="border-[#f97316]/40 bg-orange-50/50">
+          <CardContent className="py-4 space-y-2">
+            <p className="text-sm font-medium text-[#1a2744]">Lien d'accès à l'espace locataire</p>
+            <div className="flex gap-2">
+              <input
+                readOnly
+                value={inviteLink}
+                className="flex-1 text-xs rounded border bg-white px-2 py-1.5 text-gray-600"
+                onFocus={(e) => e.currentTarget.select()}
+              />
+              <Button size="sm" variant="outline" onClick={() => {
+                navigator.clipboard.writeText(inviteLink); toast.success("Lien copié")
+              }}>Copier</Button>
+            </div>
+            <p className="text-xs text-gray-500">Lien à usage unique. Partagez-le au locataire (WhatsApp/email).</p>
+          </CardContent>
+        </Card>
+      )}
 
       <Card>
         <CardHeader><CardTitle className="text-lg">Informations</CardTitle></CardHeader>

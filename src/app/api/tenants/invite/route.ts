@@ -96,5 +96,11 @@ export async function POST(request: NextRequest) {
     }
   }
 
-  return NextResponse.json({ success: true, whatsapp_sent: whatsappSent })
+  // invite_link renvoyé pour permettre à l'owner de copier/partager le lien
+  // (ex. si l'envoi WhatsApp échoue). Lien magique à usage unique.
+  return NextResponse.json({
+    success: true,
+    whatsapp_sent: whatsappSent,
+    invite_link: actionLink ?? null,
+  })
 }
