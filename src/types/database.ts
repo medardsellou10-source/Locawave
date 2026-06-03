@@ -542,6 +542,48 @@ export type Database = {
           },
         ]
       }
+      messages: {
+        Row: {
+          body: string
+          created_at: string | null
+          id: string
+          read_at: string | null
+          recipient_id: string
+          sender_id: string
+        }
+        Insert: {
+          body: string
+          created_at?: string | null
+          id?: string
+          read_at?: string | null
+          recipient_id: string
+          sender_id: string
+        }
+        Update: {
+          body?: string
+          created_at?: string | null
+          id?: string
+          read_at?: string | null
+          recipient_id?: string
+          sender_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_recipient_id_fkey"
+            columns: ["recipient_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "messages_sender_id_fkey"
+            columns: ["sender_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       notification_templates: {
         Row: {
           created_at: string | null
@@ -1890,6 +1932,27 @@ export type Database = {
       }
       postgis_version: { Args: never; Returns: string }
       postgis_wagyu_version: { Args: never; Returns: string }
+      search_providers: {
+        Args: {
+          p_lat?: number
+          p_lng?: number
+          p_radius_km?: number
+          p_trade?: string
+        }
+        Returns: {
+          bio: string
+          city: string
+          display_name: string
+          distance_km: number
+          id: string
+          jobs_done: number
+          lat: number
+          lng: number
+          quartier: string
+          trades: string[]
+          trust_score: number
+        }[]
+      }
       st_3dclosestpoint: {
         Args: { geom1: unknown; geom2: unknown }
         Returns: unknown

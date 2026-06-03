@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation"
+import Link from "next/link"
 import { createServerClient } from "@/lib/supabase-server"
 import { formatFCFA, formatDateFR } from "@/lib/formatters"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -161,12 +162,14 @@ export default async function LocatairePage() {
       {/* Vérification d'identité (KYC) */}
       <KycUpload />
 
-      {/* Action future (placeholder) */}
-      <Button variant="outline" disabled className="w-full h-auto py-3 flex-col gap-1">
-        <Sparkles className="w-5 h-5 text-gray-400" />
-        <span className="text-xs">Trouver un service</span>
-        <span className="text-[10px] text-gray-400">Bientôt</span>
-      </Button>
+      {/* Trouver un service de proximité */}
+      <Link href="/services">
+        <Button variant="outline" className="w-full h-auto py-3 flex-col gap-1">
+          <Sparkles className="w-5 h-5 text-[#f97316]" />
+          <span className="text-xs">Trouver un service</span>
+          <span className="text-[10px] text-gray-400">Plombiers, ménage, garde d'enfants…</span>
+        </Button>
+      </Link>
     </div>
   )
 }
