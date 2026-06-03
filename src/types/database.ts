@@ -195,6 +195,86 @@ export type Database = {
           },
         ]
       }
+      incidents: {
+        Row: {
+          category: string
+          charge_to: string | null
+          created_at: string | null
+          description: string | null
+          geo: unknown
+          id: string
+          lease_id: string | null
+          media_urls: string[] | null
+          org_id: string
+          property_id: string | null
+          reporter_id: string | null
+          status: string
+          updated_at: string | null
+          urgency: string
+        }
+        Insert: {
+          category?: string
+          charge_to?: string | null
+          created_at?: string | null
+          description?: string | null
+          geo?: unknown
+          id?: string
+          lease_id?: string | null
+          media_urls?: string[] | null
+          org_id: string
+          property_id?: string | null
+          reporter_id?: string | null
+          status?: string
+          updated_at?: string | null
+          urgency?: string
+        }
+        Update: {
+          category?: string
+          charge_to?: string | null
+          created_at?: string | null
+          description?: string | null
+          geo?: unknown
+          id?: string
+          lease_id?: string | null
+          media_urls?: string[] | null
+          org_id?: string
+          property_id?: string | null
+          reporter_id?: string | null
+          status?: string
+          updated_at?: string | null
+          urgency?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "incidents_lease_id_fkey"
+            columns: ["lease_id"]
+            isOneToOne: false
+            referencedRelation: "leases"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "incidents_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "incidents_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "incidents_reporter_id_fkey"
+            columns: ["reporter_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       inspections: {
         Row: {
           created_at: string | null

@@ -6,7 +6,8 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { PayNowButton } from "@/components/app/PayNowButton"
 import { KycUpload } from "@/components/app/KycUpload"
-import { AlertTriangle, Sparkles, FileText, Home } from "lucide-react"
+import { TenantIncidents } from "@/components/app/TenantIncidents"
+import { Sparkles, FileText, Home } from "lucide-react"
 
 export const dynamic = "force-dynamic"
 
@@ -27,7 +28,7 @@ export default async function LocatairePage() {
   // Bail actif + unité + bien (RLS : tenant_reads_lease/unit/property)
   const { data: lease } = await supabase
     .from("leases")
-    .select("id, rent_fcfa, start_date, end_date, status, units(unit_number, properties(name, address, city))")
+    .select("id, org_id, rent_fcfa, start_date, end_date, status, units(property_id, unit_number, properties(name, address, city))")
     .order("start_date", { ascending: false })
     .limit(1)
     .maybeSingle()
@@ -152,22 +153,20 @@ export default async function LocatairePage() {
         </CardContent>
       </Card>
 
+      {/* Incidents (signalement + suivi temps réel) */}
+      {lease && (
+        <TenantIncidents orgId={lease.org_id} leaseId={lease.id} propertyId={unit?.property_id ?? null} />
+      )}
+
       {/* Vérification d'identité (KYC) */}
       <KycUpload />
 
-      {/* Actions futures (placeholders) */}
-      <div className="grid grid-cols-2 gap-3">
-        <Button variant="outline" disabled className="h-auto py-3 flex-col gap-1">
-          <AlertTriangle className="w-5 h-5 text-gray-400" />
-          <span className="text-xs">Signaler un incident</span>
-          <span className="text-[10px] text-gray-400">Bientôt</span>
-        </Button>
-        <Button variant="outline" disabled className="h-auto py-3 flex-col gap-1">
-          <Sparkles className="w-5 h-5 text-gray-400" />
-          <span className="text-xs">Trouver un service</span>
-          <span className="text-[10px] text-gray-400">Bientôt</span>
-        </Button>
-      </div>
+      {/* Action future (placeholder) */}
+      <Button variant="outline" disabled className="w-full h-auto py-3 flex-col gap-1">
+        <Sparkles className="w-5 h-5 text-gray-400" />
+        <span className="text-xs">Trouver un service</span>
+        <span className="text-[10px] text-gray-400">Bientôt</span>
+      </Button>
     </div>
   )
 }
