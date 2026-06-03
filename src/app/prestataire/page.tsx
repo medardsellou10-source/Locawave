@@ -17,12 +17,13 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Skeleton } from "@/components/ui/skeleton"
-import { CheckCircle2, Clock, Loader2, MapPin, Plus, Wrench, Scale, HeartPulse } from "lucide-react"
+import { CheckCircle2, Clock, Loader2, MapPin, Plus, Wrench, Scale, HeartPulse, HardHat, ArrowRight } from "lucide-react"
 import { toast } from "sonner"
 
 type Profile = { id: string; display_name: string | null; bio: string | null; trades: string[]; quartier: string | null; city: string | null; languages: string[]; is_verified: boolean; trust_score: number | null; jobs_done: number | null }
 type Service = { id: string; trade: string; title: string; base_price: number | null; price_unit: string }
 type WorkOrder = { id: string; description: string | null; amount_fcfa: number | null; status: string; escrow_status: string; created_at: string; client_id: string | null; org_id: string | null }
+type Chantier = { id: string; title: string; status: string; total_budget_fcfa: number | null }
 
 const WO_STATUS: Record<string, string> = { pending: "En attente", assigned: "Assignée", in_progress: "En cours", completed: "Terminée", cancelled: "Annulée" }
 
@@ -32,6 +33,7 @@ export default function PrestatairePage() {
   const [profile, setProfile] = useState<Profile | null>(null)
   const [services, setServices] = useState<Service[]>([])
   const [workOrders, setWorkOrders] = useState<WorkOrder[]>([])
+  const [chantiers, setChantiers] = useState<Chantier[]>([])
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
 
@@ -65,6 +67,8 @@ export default function PrestatairePage() {
       setServices((svc as Service[]) ?? [])
       const { data: wo } = await supabase.from("work_orders").select("id, description, amount_fcfa, status, escrow_status, created_at, client_id, org_id").eq("provider_id", user.id).order("created_at", { ascending: false })
       setWorkOrders((wo as WorkOrder[]) ?? [])
+      const { data: ch } = await supabase.from("construction_projects").select("id, title, status, total_budget_fcfa").eq("provider_id", user.id).order("created_at", { ascending: false })
+      setChantiers((ch as Chantier[]) ?? [])
     } else {
       setDisplayName(prof?.full_name ?? "")
     }
@@ -209,6 +213,25 @@ export default function PrestatairePage() {
                         )}
                       </div>
                     </div>
+                  ))}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* Chantiers (chef de chantier) */}
+          <Card>
+            <CardHeader className="pb-2"><CardTitle className="text-base flex items-center gap-2"><HardHat className="w-5 h-5 text-[#f97316]" /> Mes chantiers</CardTitle></CardHeader>
+            <CardContent>
+              {chantiers.length === 0 ? (
+                <p className="text-sm text-gray-500">Aucun chantier assigné. Un propriétaire peut vous désigner chef de chantier.</p>
+              ) : (
+                <div className="divide-y">
+                  {chantiers.map((c) => (
+                    <Link key={c.id} href={`/prestataire/chantiers/${c.id}`} className="flex items-center justify-between py-3 hover:text-[#f97316]">
+                      <span><span className="font-medium">{c.title}</span> <span className="text-gray-400 text-sm">· {formatFCFA(c.total_budget_fcfa ?? 0)}</span></span>
+                      <span className="flex items-center gap-1 text-sm">{c.status} <ArrowRight className="w-4 h-4" /></span>
+                    </Link>
                   ))}
                 </div>
               )}

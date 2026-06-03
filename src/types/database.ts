@@ -182,6 +182,80 @@ export type Database = {
           },
         ]
       }
+      construction_projects: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          geo: unknown
+          id: string
+          org_id: string | null
+          owner_id: string
+          property_id: string | null
+          provider_id: string | null
+          status: string
+          title: string
+          total_budget_fcfa: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          geo?: unknown
+          id?: string
+          org_id?: string | null
+          owner_id: string
+          property_id?: string | null
+          provider_id?: string | null
+          status?: string
+          title: string
+          total_budget_fcfa?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          geo?: unknown
+          id?: string
+          org_id?: string | null
+          owner_id?: string
+          property_id?: string | null
+          provider_id?: string | null
+          status?: string
+          title?: string
+          total_budget_fcfa?: number | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "construction_projects_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "construction_projects_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "construction_projects_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "construction_projects_provider_id_fkey"
+            columns: ["provider_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       deposits: {
         Row: {
           amount_fcfa: number
@@ -895,6 +969,64 @@ export type Database = {
           },
         ]
       }
+      milestone_updates: {
+        Row: {
+          author_id: string
+          created_at: string | null
+          id: string
+          kind: string
+          media_urls: string[] | null
+          milestone_id: string
+          note: string | null
+          project_id: string
+          taken_at: string | null
+        }
+        Insert: {
+          author_id: string
+          created_at?: string | null
+          id?: string
+          kind?: string
+          media_urls?: string[] | null
+          milestone_id: string
+          note?: string | null
+          project_id: string
+          taken_at?: string | null
+        }
+        Update: {
+          author_id?: string
+          created_at?: string | null
+          id?: string
+          kind?: string
+          media_urls?: string[] | null
+          milestone_id?: string
+          note?: string | null
+          project_id?: string
+          taken_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "milestone_updates_author_id_fkey"
+            columns: ["author_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "milestone_updates_milestone_id_fkey"
+            columns: ["milestone_id"]
+            isOneToOne: false
+            referencedRelation: "project_milestones"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "milestone_updates_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "construction_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       notification_templates: {
         Row: {
           created_at: string | null
@@ -1153,6 +1285,62 @@ export type Database = {
           updated_at?: string | null
         }
         Relationships: []
+      }
+      project_milestones: {
+        Row: {
+          amount_fcfa: number
+          approved_at: string | null
+          created_at: string | null
+          description: string | null
+          escrow_status: string
+          id: string
+          order_index: number
+          project_id: string
+          psp_reference: string | null
+          status: string
+          submitted_at: string | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          amount_fcfa?: number
+          approved_at?: string | null
+          created_at?: string | null
+          description?: string | null
+          escrow_status?: string
+          id?: string
+          order_index?: number
+          project_id: string
+          psp_reference?: string | null
+          status?: string
+          submitted_at?: string | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          amount_fcfa?: number
+          approved_at?: string | null
+          created_at?: string | null
+          description?: string | null
+          escrow_status?: string
+          id?: string
+          order_index?: number
+          project_id?: string
+          psp_reference?: string | null
+          status?: string
+          submitted_at?: string | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_milestones_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "construction_projects"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       properties: {
         Row: {
