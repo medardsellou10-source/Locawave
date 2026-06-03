@@ -85,7 +85,10 @@ export default function ReportsPage() {
 
   async function exportCSV() {
     if (!org) return
-    const res = await fetch(`/api/export/payments?org_id=${org.id}`)
+    const now = new Date()
+    const startDate = `${now.getFullYear()}-01-01`
+    const endDate = `${now.getFullYear()}-12-31`
+    const res = await fetch(`/api/export/payments?startDate=${startDate}&endDate=${endDate}`)
     const blob = await res.blob()
     const url = URL.createObjectURL(blob)
     const a = document.createElement("a")

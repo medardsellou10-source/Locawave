@@ -1,10 +1,15 @@
 import { NextRequest, NextResponse } from "next/server"
-import { createAdminClient } from "@/lib/supabase-server"
+import { createServerClient } from "@/lib/supabase-server"
 
 export const dynamic = "force-dynamic"
 
 export async function GET(request: NextRequest) {
-  const supabase = createAdminClient()
+  // Client authentifié : la RLS limite aux paiements de l'organisation de l'utilisateur
+  // (évite toute fuite inter-comptes). NE PAS utiliser le client admin ici.
+  const supabase = await createServerClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return NextResponse.json({ error: "Non authentifié" }, { status: 401 })
+
   const { searchParams } = new URL(request.url)
 
   const startDate = searchParams.get("startDate")

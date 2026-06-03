@@ -10,6 +10,7 @@ import {
   FileText,
   CreditCard,
   BarChart3,
+  Wallet,
   Settings,
   LogOut,
   Menu,
@@ -37,6 +38,7 @@ const NAV_ITEMS = [
   { href: "/dashboard/tenants", label: "Locataires", icon: Users },
   { href: "/dashboard/leases", label: "Baux", icon: FileText },
   { href: "/dashboard/payments", label: "Paiements", icon: CreditCard },
+  { href: "/dashboard/finances", label: "Finances", icon: Wallet },
   { href: "/dashboard/reports", label: "Rapports", icon: BarChart3 },
   { href: "/dashboard/settings", label: "Paramètres", icon: Settings },
 ] as const
@@ -47,6 +49,7 @@ const PAGE_TITLES: Record<string, string> = {
   "/dashboard/tenants": "Locataires",
   "/dashboard/leases": "Baux",
   "/dashboard/payments": "Paiements",
+  "/dashboard/finances": "Finances",
   "/dashboard/reports": "Rapports",
   "/dashboard/settings": "Paramètres",
   "/dashboard/onboarding": "Configuration",
