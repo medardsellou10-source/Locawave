@@ -11,6 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
 import { ArrowLeft, Star, Loader2, CheckCircle2, Users, CalendarClock, Video, MapPin } from "lucide-react"
 import { toast } from "sonner"
 
@@ -33,6 +34,7 @@ export default function OwnerListingDetailPage() {
   const [visits, setVisits] = useState<Visit[]>([])
   const [loading, setLoading] = useState(true)
   const [accepting, setAccepting] = useState<string | null>(null)
+  const [confirmApp, setConfirmApp] = useState<Application | null>(null)
 
   const load = useCallback(async () => {
     const { data: l } = await supabase.from("listings").select("id, title, rent_fcfa, status, quartier, city").eq("id", listingId).maybeSingle()
@@ -51,7 +53,7 @@ export default function OwnerListingDetailPage() {
   useEffect(() => { load() }, [load])
 
   async function accept(applicationId: string) {
-    if (!confirm("Accepter cette candidature ? Un bail sera créé et l'annonce dépubliée.")) return
+    setConfirmApp(null)
     setAccepting(applicationId)
     const res = await fetch("/api/listings/accept", {
       method: "POST", headers: { "Content-Type": "application/json" },
@@ -94,7 +96,7 @@ export default function OwnerListingDetailPage() {
               </div>
               {a.message && <p className="text-sm text-gray-600 mt-2">{a.message}</p>}
               {a.status === "pending" && listing.status !== "rented" && (
-                <Button size="sm" onClick={() => accept(a.id)} disabled={accepting === a.id} className="mt-3 bg-[#f97316] hover:bg-[#ea580c] text-white">
+                <Button size="sm" onClick={() => setConfirmApp(a)} disabled={accepting === a.id} className="mt-3 bg-[#f97316] hover:bg-[#ea580c] text-white">
                   {accepting === a.id ? <Loader2 className="w-4 h-4 animate-spin" /> : <><CheckCircle2 className="w-4 h-4 mr-1" /> Accepter → créer le bail</>}
                 </Button>
               )}
@@ -117,6 +119,23 @@ export default function OwnerListingDetailPage() {
           ))}
         </CardContent>
       </Card>
+
+      <Dialog open={!!confirmApp} onOpenChange={(o) => { if (!o) setConfirmApp(null) }}>
+        <DialogContent className="max-w-md">
+          <DialogHeader><DialogTitle>Accepter la candidature ?</DialogTitle></DialogHeader>
+          <p className="text-sm text-gray-600">
+            Vous acceptez la candidature de <strong>{confirmApp?.applicant_name ?? "ce candidat"}</strong>.
+            Un <strong>bail</strong> sera créé (loyer {formatFCFA(listing.rent_fcfa)} / mois, 12 échéances) et l'annonce sera
+            automatiquement <strong>dépubliée</strong>. Cette action est définitive.
+          </p>
+          <DialogFooter className="gap-2">
+            <Button variant="outline" onClick={() => setConfirmApp(null)}>Annuler</Button>
+            <Button onClick={() => confirmApp && accept(confirmApp.id)} className="bg-[#f97316] hover:bg-[#ea580c] text-white">
+              <CheckCircle2 className="w-4 h-4 mr-1" /> Confirmer et créer le bail
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
