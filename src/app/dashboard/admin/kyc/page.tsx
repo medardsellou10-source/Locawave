@@ -44,7 +44,7 @@ export default function AdminKycPage() {
 
     const { data } = await supabase
       .from("kyc_documents")
-      .select("id, doc_type, doc_url, status, created_at, profile_id, profiles(full_name, role)")
+      .select("id, doc_type, doc_url, status, created_at, profile_id, profiles!profile_id(full_name, role)")
       .eq("status", "pending")
       .order("created_at", { ascending: true })
     setRows((data as KycRow[]) ?? [])
