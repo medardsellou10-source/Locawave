@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { PayNowButton } from "@/components/app/PayNowButton"
 import { KycUpload } from "@/components/app/KycUpload"
 import { TenantIncidents } from "@/components/app/TenantIncidents"
+import { Inbox } from "@/components/app/Inbox"
 import { Sparkles, FileText, Home } from "lucide-react"
 
 export const dynamic = "force-dynamic"
@@ -158,6 +159,9 @@ export default async function LocatairePage() {
       {lease && (
         <TenantIncidents orgId={lease.org_id} leaseId={lease.id} propertyId={unit?.property_id ?? null} />
       )}
+
+      {/* Messagerie */}
+      <Inbox />
 
       {/* Vérification d'identité (KYC) */}
       <KycUpload />

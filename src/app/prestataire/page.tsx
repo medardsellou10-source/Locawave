@@ -6,6 +6,7 @@ import { useEffect, useState, useCallback } from "react"
 import { createClient } from "@/lib/supabase"
 import { formatFCFA, formatDateFR } from "@/lib/formatters"
 import { KycUpload } from "@/components/app/KycUpload"
+import { Inbox } from "@/components/app/Inbox"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -145,6 +146,8 @@ export default function PrestatairePage() {
 
       {profile && (
         <>
+          <Inbox />
+
           {/* Services */}
           <Card>
             <CardHeader className="pb-2"><CardTitle className="text-base">Mes prestations</CardTitle></CardHeader>
