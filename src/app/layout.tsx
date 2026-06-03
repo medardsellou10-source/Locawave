@@ -1,9 +1,10 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
 import { WhatsAppSupportButton } from "@/components/app/WhatsAppSupportButton";
+import { PWARegister } from "@/components/app/PWARegister";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -53,6 +54,18 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://locawave.sn",
   },
+  manifest: "/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Locawave",
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#f97316",
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({
@@ -68,6 +81,7 @@ export default function RootLayout({
         {children}
         <Toaster richColors position="top-center" />
         <WhatsAppSupportButton />
+        <PWARegister />
       </body>
     </html>
   );

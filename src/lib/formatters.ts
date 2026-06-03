@@ -7,6 +7,26 @@ export function formatFCFA(amount: number): string {
 }
 
 /**
+ * Taux de conversion FCFA → EUR (XOF est arrimé à l'euro : 1 EUR = 655.957 FCFA).
+ * Surcouchable via NEXT_PUBLIC_FCFA_PER_EUR si besoin.
+ */
+export const FCFA_PER_EUR: number = Number(
+  process.env.NEXT_PUBLIC_FCFA_PER_EUR ?? 655.957
+)
+
+/**
+ * Formate un montant dans la devise choisie. FCFA par défaut ; EUR pour la diaspora.
+ * Exemple : formatMoney(150000) → "150 000 FCFA" ; formatMoney(150000, "EUR") → "228,68 €"
+ */
+export function formatMoney(amount: number, currency: "FCFA" | "EUR" = "FCFA"): string {
+  if (currency === "EUR") {
+    const eur = amount / FCFA_PER_EUR
+    return new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" }).format(eur)
+  }
+  return new Intl.NumberFormat("fr-FR").format(amount) + " FCFA"
+}
+
+/**
  * Formate une date en format français
  * Exemple : "2026-04-11" → "11 avril 2026"
  */
