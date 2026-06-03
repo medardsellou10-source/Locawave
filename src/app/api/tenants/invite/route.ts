@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
 
   const admin = createAdminClient()
   const base = process.env.NEXT_PUBLIC_APP_URL ?? new URL(request.url).origin
-  const redirectTo = `${base}/locataire`
+  const redirectTo = `${base}/auth/callback?next=/locataire`
 
   // 2) Générer le lien magique (invite si nouveau, magiclink si déjà lié)
   const type = tenant.profile_id ? "magiclink" : "invite"
