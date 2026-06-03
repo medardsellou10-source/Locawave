@@ -315,6 +315,8 @@ export type Database = {
           method: string
           org_id: string
           paid_at: string | null
+          psp_provider: string | null
+          psp_reference: string | null
           reference: string | null
           rent_schedule_id: string
           screenshot_url: string | null
@@ -326,6 +328,8 @@ export type Database = {
           method: string
           org_id: string
           paid_at?: string | null
+          psp_provider?: string | null
+          psp_reference?: string | null
           reference?: string | null
           rent_schedule_id: string
           screenshot_url?: string | null
@@ -337,6 +341,8 @@ export type Database = {
           method?: string
           org_id?: string
           paid_at?: string | null
+          psp_provider?: string | null
+          psp_reference?: string | null
           reference?: string | null
           rent_schedule_id?: string
           screenshot_url?: string | null
@@ -587,6 +593,9 @@ export type Database = {
           id: string
           lease_id: string
           org_id: string
+          payment_link: string | null
+          payment_link_expires_at: string | null
+          payment_link_ref: string | null
           reminder_count: number | null
           reminder_sent_at: string | null
           status: string
@@ -599,6 +608,9 @@ export type Database = {
           id?: string
           lease_id: string
           org_id: string
+          payment_link?: string | null
+          payment_link_expires_at?: string | null
+          payment_link_ref?: string | null
           reminder_count?: number | null
           reminder_sent_at?: string | null
           status?: string
@@ -611,6 +623,9 @@ export type Database = {
           id?: string
           lease_id?: string
           org_id?: string
+          payment_link?: string | null
+          payment_link_expires_at?: string | null
+          payment_link_ref?: string | null
           reminder_count?: number | null
           reminder_sent_at?: string | null
           status?: string

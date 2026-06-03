@@ -14,7 +14,8 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { CreditCard, Plus, Download } from "lucide-react"
+import { CreditCard, Plus, Link2, Loader2, Check } from "lucide-react"
+import { toast } from "sonner"
 
 type PaymentRow = {
   id: string
@@ -31,36 +32,85 @@ type PaymentRow = {
   } | null
 }
 
+type ScheduleRow = {
+  id: string
+  due_date: string
+  amount_fcfa: number
+  status: string
+  payment_link: string | null
+  leases: {
+    tenants: { first_name: string; last_name: string; whatsapp: string } | null
+    units: { unit_number: string; properties: { name: string } | null } | null
+  } | null
+}
+
 const methodLabels: Record<string, string> = {
-  wave: "Wave", orange_money: "Orange Money", cash: "Espèces",
+  wave: "Wave", orange_money: "Orange Money", cash: "Espèces", psp: "Lien PSP",
 }
 
 export default function PaymentsPage() {
   const [payments, setPayments] = useState<PaymentRow[]>([])
+  const [schedules, setSchedules] = useState<ScheduleRow[]>([])
   const [loading, setLoading] = useState(true)
   const [dialogOpen, setDialogOpen] = useState(false)
+  const [sendingId, setSendingId] = useState<string | null>(null)
   const [filterMonth, setFilterMonth] = useState(() => new Date().toISOString().slice(0, 7))
   const { org } = useOrganization()
   const supabase = createClient()
 
-  async function fetchPayments() {
+  async function fetchAll() {
     if (!org) return
     const startDate = `${filterMonth}-01`
     const endDate = new Date(Number(filterMonth.split("-")[0]), Number(filterMonth.split("-")[1]), 0).toISOString().split("T")[0]
 
-    const { data } = await supabase
-      .from("payments")
-      .select("id, amount_fcfa, method, reference, paid_at, rent_schedules(due_date, leases(tenants(first_name, last_name), units(unit_number, properties(name))))")
-      .eq("org_id", org.id)
-      .gte("paid_at", startDate)
-      .lte("paid_at", endDate + "T23:59:59")
-      .order("paid_at", { ascending: false })
+    const [{ data: pays }, { data: scheds }] = await Promise.all([
+      supabase
+        .from("payments")
+        .select("id, amount_fcfa, method, reference, paid_at, rent_schedules(due_date, leases(tenants(first_name, last_name), units(unit_number, properties(name))))")
+        .eq("org_id", org.id)
+        .gte("paid_at", startDate)
+        .lte("paid_at", endDate + "T23:59:59")
+        .order("paid_at", { ascending: false }),
+      supabase
+        .from("rent_schedules")
+        .select("id, due_date, amount_fcfa, status, payment_link, leases(tenants(first_name, last_name, whatsapp), units(unit_number, properties(name)))")
+        .eq("org_id", org.id)
+        .in("status", ["pending", "late"])
+        .order("due_date", { ascending: true }),
+    ])
 
-    setPayments((data as PaymentRow[]) ?? [])
+    setPayments((pays as PaymentRow[]) ?? [])
+    setSchedules((scheds as ScheduleRow[]) ?? [])
     setLoading(false)
   }
 
-  useEffect(() => { if (org) fetchPayments() }, [org, filterMonth])
+  useEffect(() => { if (org) fetchAll() }, [org, filterMonth])
+
+  async function sendPaymentLink(scheduleId: string) {
+    setSendingId(scheduleId)
+    try {
+      const res = await fetch("/api/psp/create-link", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ rent_schedule_id: scheduleId }),
+      })
+      const data = await res.json()
+      if (res.ok && data.success) {
+        toast.success(
+          data.whatsapp_sent
+            ? "Lien de paiement envoyé au locataire par WhatsApp"
+            : "Lien de paiement généré"
+        )
+        fetchAll()
+      } else {
+        toast.error(data.error ?? "Échec de génération du lien")
+      }
+    } catch {
+      toast.error("Erreur réseau")
+    } finally {
+      setSendingId(null)
+    }
+  }
 
   return (
     <div>
@@ -83,11 +133,70 @@ export default function PaymentsPage() {
             </DialogTrigger>
             <DialogContent className="max-w-lg">
               <DialogHeader><DialogTitle>Enregistrer un paiement</DialogTitle></DialogHeader>
-              <PaymentForm onSuccess={() => { setDialogOpen(false); fetchPayments() }} />
+              <PaymentForm onSuccess={() => { setDialogOpen(false); fetchAll() }} />
             </DialogContent>
           </Dialog>
         </div>
       </div>
+
+      {/* Échéances à encaisser — envoi de lien de paiement (Wave/OM via PSP) */}
+      {!loading && schedules.length > 0 && (
+        <Card className="mb-6 overflow-hidden">
+          <div className="px-4 py-3 border-b bg-orange-50/60">
+            <h2 className="font-semibold text-[#1a2744]">À encaisser ({schedules.length})</h2>
+            <p className="text-xs text-gray-500">Envoyez un lien de paiement sécurisé au locataire par WhatsApp.</p>
+          </div>
+          <div className="overflow-x-auto">
+            <Table className="min-w-[560px]">
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Échéance</TableHead>
+                  <TableHead>Locataire</TableHead>
+                  <TableHead>Montant</TableHead>
+                  <TableHead>Statut</TableHead>
+                  <TableHead className="text-right">Action</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {schedules.map((s) => {
+                  const lease = s.leases
+                  return (
+                    <TableRow key={s.id}>
+                      <TableCell className="whitespace-nowrap">{formatDateFR(s.due_date)}</TableCell>
+                      <TableCell className="font-medium">
+                        {lease?.tenants ? `${lease.tenants.first_name} ${lease.tenants.last_name}` : "-"}
+                      </TableCell>
+                      <TableCell className="font-medium whitespace-nowrap">{formatFCFA(s.amount_fcfa)}</TableCell>
+                      <TableCell>
+                        {s.status === "late"
+                          ? <Badge variant="outline" className="border-red-300 text-red-600">En retard</Badge>
+                          : <Badge variant="outline">À venir</Badge>}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <Button
+                          size="sm"
+                          variant={s.payment_link ? "outline" : "default"}
+                          className={s.payment_link ? "" : "bg-[#1a2744] hover:bg-[#0f1a2e] text-white"}
+                          disabled={sendingId === s.id}
+                          onClick={() => sendPaymentLink(s.id)}
+                        >
+                          {sendingId === s.id ? (
+                            <><Loader2 className="w-3.5 h-3.5 mr-1 animate-spin" /> Envoi...</>
+                          ) : s.payment_link ? (
+                            <><Check className="w-3.5 h-3.5 mr-1" /> Renvoyer le lien</>
+                          ) : (
+                            <><Link2 className="w-3.5 h-3.5 mr-1" /> Lien de paiement</>
+                          )}
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  )
+                })}
+              </TableBody>
+            </Table>
+          </div>
+        </Card>
+      )}
 
       {loading ? (
         <Skeleton className="h-64" />
