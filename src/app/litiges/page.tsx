@@ -11,6 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Textarea } from "@/components/ui/textarea"
+import { EmptyState } from "@/components/app/EmptyState"
 import { Building2, Loader2, ShieldAlert, Scale } from "lucide-react"
 import { toast } from "sonner"
 
@@ -91,7 +92,7 @@ export default function LitigesPage() {
         <p className="text-gray-500 text-sm mb-5">Suivi des litiges et gel des fonds en séquestre pendant la médiation.{isAdmin && " Vous êtes médiateur (admin)."}</p>
 
         {loading ? <div className="flex justify-center py-10"><Loader2 className="w-6 h-6 animate-spin text-[#f97316]" /></div>
-          : disputes.length === 0 ? <div className="text-center py-16 text-gray-400">Aucun litige. Tout roule 👍</div>
+          : disputes.length === 0 ? <EmptyState icon={Scale} title="Aucun litige" description="Tout roule 👍 Les litiges éventuels et leur médiation apparaîtront ici." />
           : (
           <div className="space-y-3">
             {disputes.map((d) => {

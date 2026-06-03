@@ -14,6 +14,7 @@ import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { MessageThread } from "@/components/app/MessageThread"
 import { TrustBadge } from "@/components/app/TrustBadge"
+import { EmptyState } from "@/components/app/EmptyState"
 import { Building2, MapPin, Search, Star, Loader2, MessageCircle, CheckCircle2 } from "lucide-react"
 import { toast } from "sonner"
 
@@ -136,7 +137,7 @@ export default function ServicesPage() {
         ) : !searched ? (
           <p className="text-gray-400 text-center py-10">Lancez une recherche pour voir les prestataires.</p>
         ) : results.length === 0 ? (
-          <p className="text-gray-400 text-center py-10">Aucun prestataire vérifié trouvé. Élargissez la zone ou le métier.</p>
+          <EmptyState icon={Search} title="Aucun prestataire trouvé" description="Élargissez la zone ou changez de métier pour voir plus d'artisans vérifiés." />
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {results.map((r) => (

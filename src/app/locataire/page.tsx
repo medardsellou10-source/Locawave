@@ -55,14 +55,13 @@ export default async function LocatairePage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-[#1a2744]">
-          Bonjour {tenant?.first_name ?? ""} 👋
-        </h1>
-        <p className="text-gray-500 text-sm">Votre espace locataire</p>
-        <div className="flex gap-2 mt-3">
-          <Link href="/avantages"><Button variant="outline" size="sm"><HeartPulse className="w-4 h-4 mr-1" /> Avantages</Button></Link>
-          <Link href="/litiges"><Button variant="outline" size="sm"><Scale className="w-4 h-4 mr-1" /> Litiges</Button></Link>
+      <div className="rounded-2xl bg-gradient-to-br from-[#1a2744] to-[#1e3a5f] p-6 text-white shadow-sm">
+        <h1 className="text-2xl font-bold">Bonjour {tenant?.first_name ?? ""} 👋</h1>
+        <p className="text-sm text-gray-300">Votre espace locataire — loyers, quittances, incidents et services.</p>
+        <div className="mt-4 flex gap-2 flex-wrap">
+          <Link href="/avantages"><Button size="sm" className="bg-white/10 hover:bg-white/20 text-white border-0"><HeartPulse className="w-4 h-4 mr-1" /> Avantages</Button></Link>
+          <Link href="/litiges"><Button size="sm" className="bg-white/10 hover:bg-white/20 text-white border-0"><Scale className="w-4 h-4 mr-1" /> Litiges</Button></Link>
+          <Link href="/services"><Button size="sm" className="bg-[#f97316] hover:bg-[#ea580c] text-white"><Sparkles className="w-4 h-4 mr-1" /> Trouver un service</Button></Link>
         </div>
       </div>
 
@@ -169,15 +168,6 @@ export default async function LocatairePage() {
 
       {/* Vérification d'identité (KYC) */}
       <KycUpload />
-
-      {/* Trouver un service de proximité */}
-      <Link href="/services">
-        <Button variant="outline" className="w-full h-auto py-3 flex-col gap-1">
-          <Sparkles className="w-5 h-5 text-[#f97316]" />
-          <span className="text-xs">Trouver un service</span>
-          <span className="text-[10px] text-gray-400">Plombiers, ménage, garde d'enfants…</span>
-        </Button>
-      </Link>
     </div>
   )
 }

@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { EmptyState } from "@/components/app/EmptyState"
 import { Building2, MapPin, Search, Loader2, CheckCircle2, Home } from "lucide-react"
 import { toast } from "sonner"
 
@@ -97,7 +98,7 @@ export default function AnnoncesPublicPage() {
 
         {loading ? <div className="flex justify-center py-10"><Loader2 className="w-6 h-6 animate-spin text-[#f97316]" /></div>
           : !searched ? <p className="text-gray-400 text-center py-10">Lancez une recherche pour voir les logements.</p>
-          : results.length === 0 ? <p className="text-gray-400 text-center py-10">Aucune annonce trouvée. Élargissez les critères.</p>
+          : results.length === 0 ? <EmptyState icon={Home} title="Aucune annonce trouvée" description="Élargissez vos critères (budget, type, zone) pour voir plus de logements." />
           : (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {results.map((l) => (
