@@ -2,7 +2,7 @@
 
 import { usePathname, useRouter } from "next/navigation"
 import Link from "next/link"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import {
   LayoutDashboard,
   Building2,
@@ -11,6 +11,7 @@ import {
   CreditCard,
   BarChart3,
   Wallet,
+  ShieldCheck,
   Settings,
   LogOut,
   Menu,
@@ -40,6 +41,7 @@ const NAV_ITEMS = [
   { href: "/dashboard/payments", label: "Paiements", icon: CreditCard },
   { href: "/dashboard/finances", label: "Finances", icon: Wallet },
   { href: "/dashboard/reports", label: "Rapports", icon: BarChart3 },
+  { href: "/dashboard/verification", label: "Vérification", icon: ShieldCheck },
   { href: "/dashboard/settings", label: "Paramètres", icon: Settings },
 ] as const
 
@@ -51,6 +53,8 @@ const PAGE_TITLES: Record<string, string> = {
   "/dashboard/payments": "Paiements",
   "/dashboard/finances": "Finances",
   "/dashboard/reports": "Rapports",
+  "/dashboard/verification": "Vérification",
+  "/dashboard/admin/kyc": "Validation KYC",
   "/dashboard/settings": "Paramètres",
   "/dashboard/onboarding": "Configuration",
   "/dashboard/billing": "Facturation",
@@ -110,6 +114,15 @@ function SidebarContent({ pathname, onNavigate }: { pathname: string; onNavigate
   const { org, loading: orgLoading } = useOrganization()
   const router = useRouter()
   const supabase = createClient()
+  const [isAdmin, setIsAdmin] = useState(false)
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (!user) return
+      supabase.from("profiles").select("role").eq("id", user.id).single()
+        .then(({ data }) => setIsAdmin(data?.role === "admin"))
+    })
+  }, [])
 
   const handleLogout = async () => {
     await supabase.auth.signOut()
@@ -152,6 +165,21 @@ function SidebarContent({ pathname, onNavigate }: { pathname: string; onNavigate
             </Link>
           )
         })}
+        {isAdmin && (
+          <Link
+            href="/dashboard/admin/kyc"
+            onClick={onNavigate}
+            className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
+              pathname.startsWith("/dashboard/admin")
+                ? "border-l-3 bg-white/10 text-orange-400"
+                : "text-white/70 hover:bg-white/5 hover:text-white/90"
+            }`}
+            style={pathname.startsWith("/dashboard/admin") ? { borderLeftColor: "#f97316" } : undefined}
+          >
+            <ShieldCheck className="h-5 w-5 shrink-0" />
+            Validation KYC
+          </Link>
+        )}
       </nav>
 
       <Separator className="bg-white/10" />

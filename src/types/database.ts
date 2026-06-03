@@ -55,6 +55,44 @@ export type Database = {
           },
         ]
       }
+      audit_log: {
+        Row: {
+          action: string
+          actor_id: string | null
+          at: string | null
+          entity: string
+          entity_id: string | null
+          id: string
+          payload: Json | null
+        }
+        Insert: {
+          action: string
+          actor_id?: string | null
+          at?: string | null
+          entity: string
+          entity_id?: string | null
+          id?: string
+          payload?: Json | null
+        }
+        Update: {
+          action?: string
+          actor_id?: string | null
+          at?: string | null
+          entity?: string
+          entity_id?: string | null
+          id?: string
+          payload?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "audit_log_actor_id_fkey"
+            columns: ["actor_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       expenses: {
         Row: {
           amount_fcfa: number
@@ -99,6 +137,57 @@ export type Database = {
             columns: ["property_id"]
             isOneToOne: false
             referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      kyc_documents: {
+        Row: {
+          created_at: string | null
+          doc_type: string
+          doc_url: string
+          id: string
+          note: string | null
+          profile_id: string
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: string
+        }
+        Insert: {
+          created_at?: string | null
+          doc_type: string
+          doc_url: string
+          id?: string
+          note?: string | null
+          profile_id: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+        }
+        Update: {
+          created_at?: string | null
+          doc_type?: string
+          doc_url?: string
+          id?: string
+          note?: string | null
+          profile_id?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "kyc_documents_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "kyc_documents_reviewed_by_fkey"
+            columns: ["reviewed_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -644,6 +733,77 @@ export type Database = {
             columns: ["org_id"]
             isOneToOne: false
             referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      reports: {
+        Row: {
+          author_id: string | null
+          created_at: string | null
+          geo: unknown
+          id: string
+          lease_id: string | null
+          media_urls: string[] | null
+          note: string | null
+          org_id: string
+          property_id: string | null
+          taken_at: string | null
+          type: string
+        }
+        Insert: {
+          author_id?: string | null
+          created_at?: string | null
+          geo?: unknown
+          id?: string
+          lease_id?: string | null
+          media_urls?: string[] | null
+          note?: string | null
+          org_id: string
+          property_id?: string | null
+          taken_at?: string | null
+          type?: string
+        }
+        Update: {
+          author_id?: string | null
+          created_at?: string | null
+          geo?: unknown
+          id?: string
+          lease_id?: string | null
+          media_urls?: string[] | null
+          note?: string | null
+          org_id?: string
+          property_id?: string | null
+          taken_at?: string | null
+          type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reports_author_id_fkey"
+            columns: ["author_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reports_lease_id_fkey"
+            columns: ["lease_id"]
+            isOneToOne: false
+            referencedRelation: "leases"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reports_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reports_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
             referencedColumns: ["id"]
           },
         ]

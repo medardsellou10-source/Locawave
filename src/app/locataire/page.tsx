@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { PayNowButton } from "@/components/app/PayNowButton"
+import { KycUpload } from "@/components/app/KycUpload"
 import { AlertTriangle, Sparkles, FileText, Home } from "lucide-react"
 
 export const dynamic = "force-dynamic"
@@ -150,6 +151,9 @@ export default async function LocatairePage() {
           )}
         </CardContent>
       </Card>
+
+      {/* Vérification d'identité (KYC) */}
+      <KycUpload />
 
       {/* Actions futures (placeholders) */}
       <div className="grid grid-cols-2 gap-3">
