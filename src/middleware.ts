@@ -36,29 +36,49 @@ export async function middleware(request: NextRequest) {
     data: { session },
   } = await supabase.auth.getSession()
 
-  // Routes protégées : /dashboard/** nécessite une session
-  if (!session && request.nextUrl.pathname.startsWith("/dashboard")) {
-    const redirectUrl = new URL("/login", request.url)
-    return NextResponse.redirect(redirectUrl)
+  const path = request.nextUrl.pathname
+
+  // Routes protégées : /dashboard/** et /locataire/** nécessitent une session
+  if (!session && (path.startsWith("/dashboard") || path.startsWith("/locataire"))) {
+    return NextResponse.redirect(new URL("/login", request.url))
   }
 
-  // Si connecté et sur /login ou /register, rediriger vers dashboard
-  if (session && (request.nextUrl.pathname === "/login" || request.nextUrl.pathname === "/register")) {
-    return NextResponse.redirect(new URL("/dashboard", request.url))
-  }
-
-  // Vérification plan expiré — rediriger vers /dashboard/billing
-  if (session && request.nextUrl.pathname.startsWith("/dashboard") && request.nextUrl.pathname !== "/dashboard/billing") {
-    const { data: user } = await supabase
-      .from("users")
-      .select("org_id, organizations(plan, plan_expires_at)")
+  if (session) {
+    // Rôle canonique du compte (owner/tenant/provider/seeker/admin)
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("role")
       .eq("id", session.user.id)
       .single()
+    const role = profile?.role
+    const isTenant = role === "tenant"
 
-    if (user?.organizations) {
-      const org = user.organizations as { plan: string; plan_expires_at: string | null }
-      if (org.plan === "trial" && org.plan_expires_at && new Date(org.plan_expires_at) < new Date()) {
-        return NextResponse.redirect(new URL("/dashboard/billing", request.url))
+    // Aiguillage par rôle
+    if (isTenant && path.startsWith("/dashboard")) {
+      return NextResponse.redirect(new URL("/locataire", request.url))
+    }
+    if (!isTenant && path.startsWith("/locataire")) {
+      return NextResponse.redirect(new URL("/dashboard", request.url))
+    }
+
+    // Connecté sur /login ou /register → vers son espace selon le rôle
+    if (path === "/login" || path === "/register") {
+      return NextResponse.redirect(new URL(isTenant ? "/locataire" : "/dashboard", request.url))
+    }
+
+    // Vérification plan expiré — uniquement pour les comptes B2B (non locataires)
+    if (!isTenant && path.startsWith("/dashboard") && path !== "/dashboard/billing") {
+      const { data: user } = await supabase
+        .from("users")
+        .select("org_id, organizations(plan, plan_expires_at)")
+        .eq("id", session.user.id)
+        .single()
+
+      if (user?.organizations) {
+        const org = user.organizations as { plan: string; plan_expires_at: string | null }
+        if (org.plan === "trial" && org.plan_expires_at && new Date(org.plan_expires_at) < new Date()) {
+          return NextResponse.redirect(new URL("/dashboard/billing", request.url))
+        }
       }
     }
   }
@@ -67,5 +87,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard", "/dashboard/:path*", "/login", "/register"],
+  matcher: ["/dashboard", "/dashboard/:path*", "/locataire", "/locataire/:path*", "/login", "/register"],
 }

@@ -15,7 +15,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { ArrowLeft, Edit, Trash2, MessageCircle, Phone, Mail, Briefcase, CreditCard } from "lucide-react"
+import { ArrowLeft, Edit, Trash2, MessageCircle, Phone, Mail, Briefcase, CreditCard, UserPlus, Loader2, Check } from "lucide-react"
 import { toast } from "sonner"
 import type { Database } from "@/types/database"
 
@@ -39,6 +39,7 @@ export default function TenantDetailPage() {
   const [leases, setLeases] = useState<LeaseWithDetails[]>([])
   const [loading, setLoading] = useState(true)
   const [editDialogOpen, setEditDialogOpen] = useState(false)
+  const [inviting, setInviting] = useState(false)
 
   async function fetchData() {
     if (!org || !params.id) return
@@ -63,6 +64,33 @@ export default function TenantDetailPage() {
   useEffect(() => {
     if (org) fetchData()
   }, [org, params.id])
+
+  async function invitePortal() {
+    if (!tenant) return
+    setInviting(true)
+    try {
+      const res = await fetch("/api/tenants/invite", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ tenant_id: tenant.id }),
+      })
+      const data = await res.json()
+      if (res.ok && data.success) {
+        toast.success(
+          data.whatsapp_sent
+            ? "Invitation envoyée au locataire par WhatsApp"
+            : "Invitation générée (lien envoyé par email)"
+        )
+        fetchData()
+      } else {
+        toast.error(data.error ?? "Échec de l'invitation")
+      }
+    } catch {
+      toast.error("Erreur réseau")
+    } finally {
+      setInviting(false)
+    }
+  }
 
   async function deleteTenant() {
     if (!tenant || !confirm("Supprimer ce locataire ?")) return
@@ -112,6 +140,21 @@ export default function TenantDetailPage() {
             onClick={() => window.open(whatsappLink(tenant.whatsapp), "_blank")}
           >
             <MessageCircle className="w-4 h-4 mr-1" /> WhatsApp
+          </Button>
+          <Button
+            variant={tenant.profile_id ? "outline" : "default"}
+            size="sm"
+            className={tenant.profile_id ? "" : "bg-[#1a2744] hover:bg-[#0f1a2e] text-white"}
+            onClick={invitePortal}
+            disabled={inviting}
+          >
+            {inviting ? (
+              <><Loader2 className="w-4 h-4 mr-1 animate-spin" /> Envoi...</>
+            ) : tenant.profile_id ? (
+              <><Check className="w-4 h-4 mr-1" /> Portail activé — renvoyer</>
+            ) : (
+              <><UserPlus className="w-4 h-4 mr-1" /> Inviter au portail</>
+            )}
           </Button>
           <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
             <DialogTrigger>

@@ -683,6 +683,7 @@ export type Database = {
           id_document_type: string | null
           last_name: string
           org_id: string
+          profile_id: string | null
           updated_at: string | null
           whatsapp: string
         }
@@ -696,6 +697,7 @@ export type Database = {
           id_document_type?: string | null
           last_name: string
           org_id: string
+          profile_id?: string | null
           updated_at?: string | null
           whatsapp: string
         }
@@ -709,6 +711,7 @@ export type Database = {
           id_document_type?: string | null
           last_name?: string
           org_id?: string
+          profile_id?: string | null
           updated_at?: string | null
           whatsapp?: string
         }
@@ -718,6 +721,13 @@ export type Database = {
             columns: ["org_id"]
             isOneToOne: false
             referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tenants_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -1742,6 +1752,11 @@ export type Database = {
         Args: { geom: unknown; move: number; wrap: number }
         Returns: unknown
       }
+      tenant_lease_ids: { Args: never; Returns: string[] }
+      tenant_payment_ids: { Args: never; Returns: string[] }
+      tenant_property_ids: { Args: never; Returns: string[] }
+      tenant_schedule_ids: { Args: never; Returns: string[] }
+      tenant_unit_ids: { Args: never; Returns: string[] }
       unlockrows: { Args: { "": string }; Returns: number }
       updategeometrysrid: {
         Args: {
