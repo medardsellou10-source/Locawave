@@ -172,6 +172,10 @@ export default function ServicesPage() {
               </div>
               {selected.bio && <p className="text-sm text-gray-600">{selected.bio}</p>}
 
+              <Link href={`/prestataires/${selected.id}`} className="text-sm text-[#f97316] hover:underline inline-flex items-center gap-1">
+                Voir la fiche complète (réalisations, certifications, avis) →
+              </Link>
+
               {services.length > 0 && (
                 <div>
                   <p className="text-sm font-medium mb-1">Prestations</p>

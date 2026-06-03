@@ -11,7 +11,8 @@ import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Wrench, Star, MapPin, Search, BookmarkPlus, BookmarkCheck, CheckCircle2 } from "lucide-react"
+import Link from "next/link"
+import { Wrench, Star, MapPin, Search, BookmarkPlus, BookmarkCheck, CheckCircle2, ExternalLink } from "lucide-react"
 import { toast } from "sonner"
 
 type Provider = {
@@ -117,6 +118,9 @@ export default function DashboardProvidersPage() {
                 <span className="text-gray-500">{selected.quartier} {selected.city}</span>
               </div>
               {selected.bio && <p className="text-sm text-gray-600">{selected.bio}</p>}
+              <Link href={`/prestataires/${selected.id}`} target="_blank" className="text-sm text-[#f97316] hover:underline inline-flex items-center gap-1">
+                <ExternalLink className="w-3.5 h-3.5" /> Voir la fiche complète
+              </Link>
               {services.length > 0 && (
                 <div>
                   <p className="text-sm font-medium mb-1">Prestations</p>

@@ -9,6 +9,7 @@ import { KycUpload } from "@/components/app/KycUpload"
 import { Inbox } from "@/components/app/Inbox"
 import { TrustBadge } from "@/components/app/TrustBadge"
 import { DisputeDialog } from "@/components/app/DisputeDialog"
+import { MediaUploader } from "@/components/app/MediaUploader"
 import Link from "next/link"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -17,13 +18,15 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Skeleton } from "@/components/ui/skeleton"
-import { CheckCircle2, Clock, Loader2, MapPin, Plus, Wrench, Scale, HeartPulse, HardHat, ArrowRight } from "lucide-react"
+import { CheckCircle2, Clock, Loader2, MapPin, Plus, Wrench, Scale, HeartPulse, HardHat, ArrowRight, Images, Award, Trash2, ExternalLink } from "lucide-react"
 import { toast } from "sonner"
 
 type Profile = { id: string; display_name: string | null; bio: string | null; trades: string[]; quartier: string | null; city: string | null; languages: string[]; is_verified: boolean; trust_score: number | null; jobs_done: number | null }
 type Service = { id: string; trade: string; title: string; base_price: number | null; price_unit: string }
 type WorkOrder = { id: string; description: string | null; amount_fcfa: number | null; status: string; escrow_status: string; created_at: string; client_id: string | null; org_id: string | null }
 type Chantier = { id: string; title: string; status: string; total_budget_fcfa: number | null }
+type Portfolio = { id: string; media_url: string; caption: string | null }
+type Cert = { id: string; label: string; issuer: string | null }
 
 const WO_STATUS: Record<string, string> = { pending: "En attente", assigned: "Assignée", in_progress: "En cours", completed: "Terminée", cancelled: "Annulée" }
 
@@ -34,8 +37,14 @@ export default function PrestatairePage() {
   const [services, setServices] = useState<Service[]>([])
   const [workOrders, setWorkOrders] = useState<WorkOrder[]>([])
   const [chantiers, setChantiers] = useState<Chantier[]>([])
+  const [portfolio, setPortfolio] = useState<Portfolio[]>([])
+  const [certs, setCerts] = useState<Cert[]>([])
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
+
+  // certification form
+  const [certLabel, setCertLabel] = useState("")
+  const [certIssuer, setCertIssuer] = useState("")
 
   // form
   const [displayName, setDisplayName] = useState("")
@@ -69,6 +78,10 @@ export default function PrestatairePage() {
       setWorkOrders((wo as WorkOrder[]) ?? [])
       const { data: ch } = await supabase.from("construction_projects").select("id, title, status, total_budget_fcfa").eq("provider_id", user.id).order("created_at", { ascending: false })
       setChantiers((ch as Chantier[]) ?? [])
+      const { data: pf } = await supabase.from("portfolio_items").select("id, media_url, caption").eq("provider_id", user.id).order("created_at", { ascending: false })
+      setPortfolio((pf as Portfolio[]) ?? [])
+      const { data: ce } = await supabase.from("certifications").select("id, label, issuer").eq("provider_id", user.id).order("created_at", { ascending: false })
+      setCerts((ce as Cert[]) ?? [])
     } else {
       setDisplayName(prof?.full_name ?? "")
     }
@@ -117,6 +130,26 @@ export default function PrestatairePage() {
     if (error) toast.error("Erreur"); else { toast.success("Mission mise à jour"); load() }
   }
 
+  async function addPortfolio(urls: string[]) {
+    if (!uid) return
+    const rows = urls.map((u) => ({ provider_id: uid, media_url: u, caption: null }))
+    const { error } = await supabase.from("portfolio_items").insert(rows)
+    if (error) { toast.error("Erreur"); return }
+    load()
+  }
+  async function removePortfolio(id: string) {
+    await supabase.from("portfolio_items").delete().eq("id", id); load()
+  }
+  async function addCert() {
+    if (!uid || !certLabel) { toast.error("Intitulé requis"); return }
+    const { error } = await supabase.from("certifications").insert({ provider_id: uid, label: certLabel, issuer: certIssuer || null })
+    if (error) { toast.error("Erreur"); return }
+    setCertLabel(""); setCertIssuer(""); toast.success("Certification ajoutée"); load()
+  }
+  async function removeCert(id: string) {
+    await supabase.from("certifications").delete().eq("id", id); load()
+  }
+
   if (loading) return <div className="space-y-4"><Skeleton className="h-8 w-48" /><Skeleton className="h-64" /></div>
 
   return (
@@ -133,7 +166,8 @@ export default function PrestatairePage() {
             </div>
           )}
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 flex-wrap">
+          {profile?.is_verified && <Link href={`/prestataires/${profile.id}`} target="_blank"><Button variant="outline" size="sm"><ExternalLink className="w-4 h-4 mr-1" /> Ma fiche publique</Button></Link>}
           <Link href="/avantages"><Button variant="outline" size="sm"><HeartPulse className="w-4 h-4 mr-1" /> Avantages</Button></Link>
           <Link href="/litiges"><Button variant="outline" size="sm"><Scale className="w-4 h-4 mr-1" /> Litiges</Button></Link>
         </div>
@@ -216,6 +250,48 @@ export default function PrestatairePage() {
                   ))}
                 </div>
               )}
+            </CardContent>
+          </Card>
+
+          {/* Portfolio / réalisations */}
+          <Card>
+            <CardHeader className="pb-2"><CardTitle className="text-base flex items-center gap-2"><Images className="w-5 h-5 text-[#f97316]" /> Mes réalisations</CardTitle></CardHeader>
+            <CardContent className="space-y-3">
+              {portfolio.length > 0 ? (
+                <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                  {portfolio.map((it) => (
+                    <div key={it.id} className="relative group">
+                      <img src={it.media_url} alt={it.caption ?? ""} className="w-full h-24 object-cover rounded-lg" />
+                      <button onClick={() => removePortfolio(it.id)} className="absolute top-1 right-1 bg-white/90 rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity" title="Supprimer">
+                        <Trash2 className="w-3.5 h-3.5 text-red-500" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              ) : <p className="text-sm text-gray-500">Ajoutez des photos de vos chantiers/réalisations pour inspirer confiance.</p>}
+              <MediaUploader bucket="reports" accept="image/*" maxMb={5} label="Ajouter des photos" onUploaded={addPortfolio} />
+            </CardContent>
+          </Card>
+
+          {/* Certifications */}
+          <Card>
+            <CardHeader className="pb-2"><CardTitle className="text-base flex items-center gap-2"><Award className="w-5 h-5 text-[#f97316]" /> Certifications</CardTitle></CardHeader>
+            <CardContent className="space-y-3">
+              {certs.length > 0 && (
+                <div className="divide-y">
+                  {certs.map((c) => (
+                    <div key={c.id} className="py-2 flex items-center justify-between text-sm">
+                      <span><span className="font-medium">{c.label}</span>{c.issuer ? <span className="text-gray-400"> · {c.issuer}</span> : null}</span>
+                      <button onClick={() => removeCert(c.id)} title="Supprimer"><Trash2 className="w-4 h-4 text-red-400" /></button>
+                    </div>
+                  ))}
+                </div>
+              )}
+              <div className="grid grid-cols-2 gap-2">
+                <Input placeholder="Intitulé (ex: CAP Plomberie)" value={certLabel} onChange={(e) => setCertLabel(e.target.value)} />
+                <Input placeholder="Délivré par (optionnel)" value={certIssuer} onChange={(e) => setCertIssuer(e.target.value)} />
+              </div>
+              <Button size="sm" variant="outline" onClick={addCert}><Plus className="w-4 h-4 mr-1" /> Ajouter</Button>
             </CardContent>
           </Card>
 
