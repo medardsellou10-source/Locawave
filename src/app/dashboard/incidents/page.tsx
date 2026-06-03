@@ -11,10 +11,12 @@ import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
 import { AlertTriangle } from "lucide-react"
 import { toast } from "sonner"
+import { IncidentAssign, type ProviderOption } from "@/components/app/IncidentAssign"
 
 type Incident = {
   id: string; category: string; urgency: string; description: string | null
   status: string; charge_to: string | null; created_at: string; media_urls: string[] | null
+  property_id: string | null
   properties: { name: string } | null
   leases: { tenants: { first_name: string; last_name: string } | null } | null
 }
@@ -39,22 +41,42 @@ export default function IncidentsPage() {
   const { org } = useOrganization()
   const supabase = createClient()
   const [incidents, setIncidents] = useState<Incident[]>([])
+  const [providers, setProviders] = useState<ProviderOption[]>([])
+  const [ownerId, setOwnerId] = useState("")
   const [loading, setLoading] = useState(true)
 
   const fetchIncidents = useCallback(async () => {
     if (!org) return
     const { data } = await supabase
       .from("incidents")
-      .select("id, category, urgency, description, status, charge_to, created_at, media_urls, properties(name), leases(tenants(first_name, last_name))")
+      .select("id, category, urgency, description, status, charge_to, created_at, media_urls, property_id, properties(name), leases(tenants(first_name, last_name))")
       .eq("org_id", org.id)
       .order("created_at", { ascending: false })
     setIncidents((data as Incident[]) ?? [])
     setLoading(false)
   }, [org])
 
+  const fetchProviders = useCallback(async () => {
+    const { data: { user } } = await supabase.auth.getUser()
+    if (user) setOwnerId(user.id)
+    const [{ data: provs }, { data: trusted }] = await Promise.all([
+      supabase.from("provider_profiles").select("id, trades, profiles!id(full_name)").eq("is_verified", true),
+      user ? supabase.from("trusted_providers").select("provider_id").eq("owner_id", user.id) : Promise.resolve({ data: [] as { provider_id: string }[] }),
+    ])
+    const trustedSet = new Set((trusted ?? []).map((t) => t.provider_id))
+    setProviders((provs ?? []).map((p) => ({
+      id: p.id,
+      // @ts-expect-error relation
+      name: p.profiles?.full_name ?? "Prestataire",
+      trades: p.trades ?? [],
+      trusted: trustedSet.has(p.id),
+    })))
+  }, [])
+
   useEffect(() => {
     if (!org) return
     fetchIncidents()
+    fetchProviders()
     const channel = supabase
       .channel(`incidents-org-${org.id}`)
       .on("postgres_changes", { event: "*", schema: "public", table: "incidents", filter: `org_id=eq.${org.id}` },
@@ -122,7 +144,14 @@ export default function IncidentsPage() {
                         <option value="tenant">Locataire</option>
                       </select>
                     </label>
-                    <span className="text-xs text-gray-400 flex items-center">Assigner un prestataire — Phase 7 (bientôt)</span>
+                  </div>
+                  <div className="pt-2">
+                    {org && (
+                      <IncidentAssign
+                        incidentId={i.id} orgId={org.id} propertyId={i.property_id}
+                        ownerId={ownerId} providers={providers} onChanged={fetchIncidents}
+                      />
+                    )}
                   </div>
                 </CardContent>
               </Card>

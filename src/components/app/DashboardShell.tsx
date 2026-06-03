@@ -13,6 +13,7 @@ import {
   Wallet,
   ShieldCheck,
   AlertTriangle,
+  Wrench,
   Settings,
   LogOut,
   Menu,
@@ -181,6 +182,21 @@ function SidebarContent({ pathname, onNavigate }: { pathname: string; onNavigate
           >
             <ShieldCheck className="h-5 w-5 shrink-0" />
             Validation KYC
+          </Link>
+        )}
+        {isAdmin && (
+          <Link
+            href="/dashboard/admin/providers"
+            onClick={onNavigate}
+            className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
+              pathname.startsWith("/dashboard/admin/providers")
+                ? "border-l-3 bg-white/10 text-orange-400"
+                : "text-white/70 hover:bg-white/5 hover:text-white/90"
+            }`}
+            style={pathname.startsWith("/dashboard/admin/providers") ? { borderLeftColor: "#f97316" } : undefined}
+          >
+            <Wrench className="h-5 w-5 shrink-0" />
+            Prestataires (admin)
           </Link>
         )}
       </nav>

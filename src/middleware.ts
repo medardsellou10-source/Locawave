@@ -38,8 +38,8 @@ export async function middleware(request: NextRequest) {
 
   const path = request.nextUrl.pathname
 
-  // Routes protégées : /dashboard/** et /locataire/** nécessitent une session
-  if (!session && (path.startsWith("/dashboard") || path.startsWith("/locataire"))) {
+  // Routes protégées : /dashboard/**, /locataire/**, /prestataire/** nécessitent une session
+  if (!session && (path.startsWith("/dashboard") || path.startsWith("/locataire") || path.startsWith("/prestataire"))) {
     return NextResponse.redirect(new URL("/login", request.url))
   }
 
@@ -52,22 +52,30 @@ export async function middleware(request: NextRequest) {
       .single()
     const role = profile?.role
     const isTenant = role === "tenant"
+    const isProvider = role === "provider"
+    const home = isTenant ? "/locataire" : isProvider ? "/prestataire" : "/dashboard"
 
-    // Aiguillage par rôle
-    if (isTenant && path.startsWith("/dashboard")) {
+    // Aiguillage par rôle : chacun reste dans son espace
+    if (isTenant && (path.startsWith("/dashboard") || path.startsWith("/prestataire"))) {
       return NextResponse.redirect(new URL("/locataire", request.url))
     }
+    if (isProvider && (path.startsWith("/dashboard") || path.startsWith("/locataire"))) {
+      return NextResponse.redirect(new URL("/prestataire", request.url))
+    }
     if (!isTenant && path.startsWith("/locataire")) {
-      return NextResponse.redirect(new URL("/dashboard", request.url))
+      return NextResponse.redirect(new URL(home, request.url))
+    }
+    if (!isProvider && path.startsWith("/prestataire")) {
+      return NextResponse.redirect(new URL(home, request.url))
     }
 
     // Connecté sur /login ou /register → vers son espace selon le rôle
     if (path === "/login" || path === "/register") {
-      return NextResponse.redirect(new URL(isTenant ? "/locataire" : "/dashboard", request.url))
+      return NextResponse.redirect(new URL(home, request.url))
     }
 
-    // Vérification plan expiré — uniquement pour les comptes B2B (non locataires)
-    if (!isTenant && path.startsWith("/dashboard") && path !== "/dashboard/billing") {
+    // Vérification plan expiré — uniquement pour les comptes B2B (owner/admin)
+    if (!isTenant && !isProvider && path.startsWith("/dashboard") && path !== "/dashboard/billing") {
       const { data: user } = await supabase
         .from("users")
         .select("org_id, organizations(plan, plan_expires_at)")
@@ -87,5 +95,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard", "/dashboard/:path*", "/locataire", "/locataire/:path*", "/login", "/register"],
+  matcher: ["/dashboard", "/dashboard/:path*", "/locataire", "/locataire/:path*", "/prestataire", "/prestataire/:path*", "/login", "/register"],
 }

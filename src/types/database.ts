@@ -93,6 +93,44 @@ export type Database = {
           },
         ]
       }
+      certifications: {
+        Row: {
+          created_at: string | null
+          id: string
+          issuer: string | null
+          label: string
+          proof_url: string | null
+          provider_id: string
+          verified_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          issuer?: string | null
+          label: string
+          proof_url?: string | null
+          provider_id: string
+          verified_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          issuer?: string | null
+          label?: string
+          proof_url?: string | null
+          provider_id?: string
+          verified_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "certifications_provider_id_fkey"
+            columns: ["provider_id"]
+            isOneToOne: false
+            referencedRelation: "provider_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       deposits: {
         Row: {
           amount_fcfa: number
@@ -692,6 +730,38 @@ export type Database = {
           },
         ]
       }
+      portfolio_items: {
+        Row: {
+          caption: string | null
+          created_at: string | null
+          id: string
+          media_url: string
+          provider_id: string
+        }
+        Insert: {
+          caption?: string | null
+          created_at?: string | null
+          id?: string
+          media_url: string
+          provider_id: string
+        }
+        Update: {
+          caption?: string | null
+          created_at?: string | null
+          id?: string
+          media_url?: string
+          provider_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "portfolio_items_provider_id_fkey"
+            columns: ["provider_id"]
+            isOneToOne: false
+            referencedRelation: "provider_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -777,6 +847,103 @@ export type Database = {
             columns: ["org_id"]
             isOneToOne: false
             referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      provider_profiles: {
+        Row: {
+          bio: string | null
+          city: string | null
+          created_at: string | null
+          geo: unknown
+          id: string
+          is_verified: boolean | null
+          jobs_done: number | null
+          languages: string[] | null
+          quartier: string | null
+          response_rate: number | null
+          trades: string[] | null
+          trust_score: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          bio?: string | null
+          city?: string | null
+          created_at?: string | null
+          geo?: unknown
+          id: string
+          is_verified?: boolean | null
+          jobs_done?: number | null
+          languages?: string[] | null
+          quartier?: string | null
+          response_rate?: number | null
+          trades?: string[] | null
+          trust_score?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          bio?: string | null
+          city?: string | null
+          created_at?: string | null
+          geo?: unknown
+          id?: string
+          is_verified?: boolean | null
+          jobs_done?: number | null
+          languages?: string[] | null
+          quartier?: string | null
+          response_rate?: number | null
+          trades?: string[] | null
+          trust_score?: number | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "provider_profiles_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      provider_services: {
+        Row: {
+          base_price: number | null
+          created_at: string | null
+          description: string | null
+          id: string
+          price_unit: string | null
+          provider_id: string
+          title: string
+          trade: string
+        }
+        Insert: {
+          base_price?: number | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          price_unit?: string | null
+          provider_id: string
+          title: string
+          trade: string
+        }
+        Update: {
+          base_price?: number | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          price_unit?: string | null
+          provider_id?: string
+          title?: string
+          trade?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "provider_services_provider_id_fkey"
+            columns: ["provider_id"]
+            isOneToOne: false
+            referencedRelation: "provider_profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -1002,6 +1169,58 @@ export type Database = {
           },
         ]
       }
+      reviews: {
+        Row: {
+          client_id: string | null
+          comment: string | null
+          created_at: string | null
+          id: string
+          provider_id: string
+          rating: number
+          work_order_id: string | null
+        }
+        Insert: {
+          client_id?: string | null
+          comment?: string | null
+          created_at?: string | null
+          id?: string
+          provider_id: string
+          rating: number
+          work_order_id?: string | null
+        }
+        Update: {
+          client_id?: string | null
+          comment?: string | null
+          created_at?: string | null
+          id?: string
+          provider_id?: string
+          rating?: number
+          work_order_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reviews_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reviews_provider_id_fkey"
+            columns: ["provider_id"]
+            isOneToOne: false
+            referencedRelation: "provider_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reviews_work_order_fkey"
+            columns: ["work_order_id"]
+            isOneToOne: false
+            referencedRelation: "work_orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       spatial_ref_sys: {
         Row: {
           auth_name: string | null
@@ -1082,6 +1301,45 @@ export type Database = {
             columns: ["profile_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      trusted_providers: {
+        Row: {
+          created_at: string | null
+          id: string
+          note: string | null
+          owner_id: string
+          provider_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          note?: string | null
+          owner_id: string
+          provider_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          note?: string | null
+          owner_id?: string
+          provider_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "trusted_providers_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "trusted_providers_provider_id_fkey"
+            columns: ["provider_id"]
+            isOneToOne: false
+            referencedRelation: "provider_profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -1174,6 +1432,110 @@ export type Database = {
             columns: ["org_id"]
             isOneToOne: false
             referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      work_orders: {
+        Row: {
+          after_report_id: string | null
+          amount_fcfa: number | null
+          before_report_id: string | null
+          client_id: string
+          created_at: string | null
+          description: string | null
+          escrow_status: string
+          id: string
+          incident_id: string | null
+          org_id: string | null
+          property_id: string | null
+          provider_id: string | null
+          status: string
+          type: string
+          updated_at: string | null
+        }
+        Insert: {
+          after_report_id?: string | null
+          amount_fcfa?: number | null
+          before_report_id?: string | null
+          client_id: string
+          created_at?: string | null
+          description?: string | null
+          escrow_status?: string
+          id?: string
+          incident_id?: string | null
+          org_id?: string | null
+          property_id?: string | null
+          provider_id?: string | null
+          status?: string
+          type?: string
+          updated_at?: string | null
+        }
+        Update: {
+          after_report_id?: string | null
+          amount_fcfa?: number | null
+          before_report_id?: string | null
+          client_id?: string
+          created_at?: string | null
+          description?: string | null
+          escrow_status?: string
+          id?: string
+          incident_id?: string | null
+          org_id?: string | null
+          property_id?: string | null
+          provider_id?: string | null
+          status?: string
+          type?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "work_orders_after_report_id_fkey"
+            columns: ["after_report_id"]
+            isOneToOne: false
+            referencedRelation: "reports"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "work_orders_before_report_id_fkey"
+            columns: ["before_report_id"]
+            isOneToOne: false
+            referencedRelation: "reports"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "work_orders_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "work_orders_incident_id_fkey"
+            columns: ["incident_id"]
+            isOneToOne: false
+            referencedRelation: "incidents"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "work_orders_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "work_orders_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "work_orders_provider_id_fkey"
+            columns: ["provider_id"]
+            isOneToOne: false
+            referencedRelation: "provider_profiles"
             referencedColumns: ["id"]
           },
         ]
