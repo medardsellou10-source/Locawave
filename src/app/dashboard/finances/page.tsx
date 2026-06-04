@@ -13,13 +13,14 @@ import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { Plus, Download, TrendingUp, TrendingDown, Wallet, Trash2 } from "lucide-react"
+import { Plus, Download, TrendingUp, TrendingDown, Wallet, Trash2, Percent } from "lucide-react"
 import { toast } from "sonner"
 
 type PaymentRow = { amount_fcfa: number; paid_at: string; rent_schedules: { leases: { units: { property_id: string } | null } | null } | null }
 type ExpenseRow = { id: string; category: string; amount_fcfa: number; date: string; description: string | null; property_id: string; properties: { name: string } | null }
 type ScheduleRow = { amount_fcfa: number; status: string }
 type PropertyRow = { id: string; name: string }
+type CommissionRow = { source_type: string; base_fcfa: number; amount_fcfa: number; created_at: string }
 
 const MONTHS = ["Jan", "Fév", "Mar", "Avr", "Mai", "Juin", "Juil", "Aoû", "Sep", "Oct", "Nov", "Déc"]
 
@@ -33,6 +34,7 @@ export default function FinancesPage() {
   const [expenses, setExpenses] = useState<ExpenseRow[]>([])
   const [schedules, setSchedules] = useState<ScheduleRow[]>([])
   const [properties, setProperties] = useState<PropertyRow[]>([])
+  const [commissions, setCommissions] = useState<CommissionRow[]>([])
   const [dialogOpen, setDialogOpen] = useState(false)
 
   async function fetchAll() {
@@ -41,7 +43,7 @@ export default function FinancesPage() {
     const start = `${year}-01-01`
     const end = `${year}-12-31`
 
-    const [{ data: pays }, { data: exps }, { data: scheds }, { data: props }] = await Promise.all([
+    const [{ data: pays }, { data: exps }, { data: scheds }, { data: props }, { data: comms }] = await Promise.all([
       supabase.from("payments")
         .select("amount_fcfa, paid_at, rent_schedules(leases(units(property_id)))")
         .eq("org_id", org.id).gte("paid_at", start).lte("paid_at", end + "T23:59:59"),
@@ -51,12 +53,17 @@ export default function FinancesPage() {
       supabase.from("rent_schedules")
         .select("amount_fcfa, status").eq("org_id", org.id).gte("due_date", start).lte("due_date", end),
       supabase.from("properties").select("id, name").eq("org_id", org.id).order("name"),
+      supabase.from("commissions")
+        .select("source_type, base_fcfa, amount_fcfa, created_at")
+        .eq("org_id", org.id).gte("created_at", start).lte("created_at", end + "T23:59:59")
+        .order("created_at", { ascending: false }),
     ])
 
     setPayments((pays as PaymentRow[]) ?? [])
     setExpenses((exps as ExpenseRow[]) ?? [])
     setSchedules((scheds as ScheduleRow[]) ?? [])
     setProperties((props as PropertyRow[]) ?? [])
+    setCommissions((comms as CommissionRow[]) ?? [])
     setLoading(false)
   }
 
@@ -187,6 +194,30 @@ export default function FinancesPage() {
               </div>
             </CardContent>
           </Card>
+
+          {/* Commissions services & chantiers */}
+          {commissions.length > 0 && (
+            <Card className="mb-6">
+              <CardHeader className="pb-2"><CardTitle className="text-base flex items-center gap-2"><Percent className="w-4 h-4 text-[#f97316]" /> Commissions services & chantiers {year}</CardTitle></CardHeader>
+              <CardContent>
+                <div className="flex flex-wrap items-end gap-6">
+                  <div>
+                    <p className="text-xs text-gray-500">Total prélevé (5%)</p>
+                    <p className="text-2xl font-bold text-[#1a2744]">{formatFCFA(commissions.reduce((s, c) => s + c.amount_fcfa, 0))}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-gray-500">Sur un volume de</p>
+                    <p className="text-lg font-semibold text-gray-700">{formatFCFA(commissions.reduce((s, c) => s + c.base_fcfa, 0))}</p>
+                  </div>
+                  <div className="flex gap-2">
+                    <Badge variant="outline">{commissions.filter((c) => c.source_type === "milestone").length} chantier(s)</Badge>
+                    <Badge variant="outline">{commissions.filter((c) => c.source_type === "work_order").length} service(s)</Badge>
+                  </div>
+                </div>
+                <p className="text-[11px] text-gray-400 mt-3">Prélevée à la libération du séquestre. Aucune commission sur les loyers.</p>
+              </CardContent>
+            </Card>
+          )}
 
           {/* Par bien */}
           <Card className="mb-6 overflow-hidden">

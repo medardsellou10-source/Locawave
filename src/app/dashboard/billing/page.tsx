@@ -9,35 +9,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { toast } from "sonner"
-import { CreditCard, Check, Star, Building2, Loader2 } from "lucide-react"
-import type { Database } from "@/types/database"
+import { CreditCard, Check, Star, Building2, Loader2, Percent } from "lucide-react"
+import { PLANS, COMMISSION_LABEL, type PlanId } from "@/lib/plans"
 
-type PlanId = "solo" | "pro" | "agence"
-
-const PLANS: { id: PlanId; name: string; price: number; features: string[]; icon: typeof CreditCard; popular?: boolean }[] = [
-  {
-    id: "solo",
-    name: "Solo",
-    price: 10000,
-    features: ["Jusqu'à 5 biens", "Rappels WhatsApp", "Quittances PDF", "1 utilisateur"],
-    icon: CreditCard,
-  },
-  {
-    id: "pro",
-    name: "Pro",
-    price: 20000,
-    features: ["Jusqu'à 25 biens", "Rappels WhatsApp", "Quittances PDF", "Rapports mensuels", "3 utilisateurs", "Support prioritaire"],
-    icon: Star,
-    popular: true,
-  },
-  {
-    id: "agence",
-    name: "Agence",
-    price: 45000,
-    features: ["Biens illimités", "Tout dans Pro", "Utilisateurs illimités", "API & intégrations", "Support dédié"],
-    icon: Building2,
-  },
-]
+const PLAN_ICONS: Record<PlanId, typeof CreditCard> = { solo: CreditCard, pro: Star, agence: Building2 }
 
 export default function BillingPage() {
   const { org } = useOrganization()
@@ -72,12 +47,10 @@ export default function BillingPage() {
     window.location.reload()
   }
 
-  const fmt = (n: number) => new Intl.NumberFormat("fr-FR").format(n)
-
   return (
     <div>
       <h1 className="text-2xl font-bold text-[#1a2744] mb-2">Facturation</h1>
-      <p className="text-gray-500 mb-6">Gérez votre abonnement Locawave.</p>
+      <p className="text-gray-500 mb-6">Abonnement <strong>par biens gérés</strong> + {COMMISSION_LABEL}.</p>
 
       {/* Current plan */}
       <Card className="mb-8">
@@ -111,20 +84,23 @@ export default function BillingPage() {
       <div className="grid md:grid-cols-3 gap-6">
         {PLANS.map((plan) => {
           const isCurrent = currentPlan === plan.id
+          const popular = plan.id === "pro"
+          const Icon = PLAN_ICONS[plan.id]
           return (
-            <Card key={plan.id} className={`relative ${plan.popular ? "ring-2 ring-[#f97316]" : ""}`}>
-              {plan.popular && (
+            <Card key={plan.id} className={`relative ${popular ? "ring-2 ring-[#f97316]" : ""}`}>
+              {popular && (
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#f97316] text-white text-xs font-bold px-3 py-1 rounded-full">
                   POPULAIRE
                 </div>
               )}
               <CardHeader>
                 <div className="flex items-center gap-2">
-                  <plan.icon className="w-5 h-5 text-[#f97316]" />
+                  <Icon className="w-5 h-5 text-[#f97316]" />
                   <CardTitle>{plan.name}</CardTitle>
                 </div>
+                <p className="text-xs text-gray-500">{plan.description}</p>
                 <div className="flex items-baseline gap-1 mt-2">
-                  <span className="text-3xl font-bold text-[#1a2744]">{fmt(plan.price)}</span>
+                  <span className="text-3xl font-bold text-[#1a2744]">{plan.price}</span>
                   <span className="text-sm text-gray-500">FCFA/mois</span>
                 </div>
               </CardHeader>
@@ -170,6 +146,10 @@ export default function BillingPage() {
           <div className="flex gap-4">
             <div className="bg-blue-50 rounded-lg px-4 py-2 text-sm font-medium text-blue-700">Wave</div>
             <div className="bg-orange-50 rounded-lg px-4 py-2 text-sm font-medium text-orange-700">Orange Money</div>
+          </div>
+          <div className="mt-4 flex items-start gap-2 rounded-lg bg-slate-50 p-3 text-sm text-gray-600">
+            <Percent className="w-4 h-4 text-[#f97316] mt-0.5 shrink-0" />
+            <span>En plus de l'abonnement, une commission de <strong>5%</strong> s'applique uniquement sur les <strong>transactions de services et de chantiers</strong> réalisées dans l'app (prélevée à la libération du séquestre). Aucune commission sur les loyers.</span>
           </div>
         </CardContent>
       </Card>

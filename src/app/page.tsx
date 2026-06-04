@@ -333,7 +333,7 @@ export default function LandingPage() {
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-[#1a2744] mb-4">Des tarifs simples et transparents</h2>
-            <p className="text-gray-500">Tous les prix sont en FCFA. Aucun frais caché.</p>
+            <p className="text-gray-500">Abonnement <strong>selon vos biens gérés</strong> — pas sur vos loyers. Tout en FCFA, sans frais caché.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 max-w-5xl mx-auto items-center">
             {PLANS.map((plan) => {
@@ -372,6 +372,11 @@ export default function LandingPage() {
               )
             })}
           </div>
+          <p className="text-center text-sm text-gray-500 mt-8 max-w-2xl mx-auto">
+            <span className="font-semibold text-[#1a2744]">+ 5% de commission</span> uniquement sur les transactions de
+            <strong> services & chantiers</strong> réalisées dans l'app (prélevée à la libération du séquestre).
+            <span className="text-gray-400"> Aucune commission sur les loyers.</span>
+          </p>
         </div>
       </section>
 

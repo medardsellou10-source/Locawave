@@ -182,6 +182,47 @@ export type Database = {
           },
         ]
       }
+      commissions: {
+        Row: {
+          amount_fcfa: number
+          base_fcfa: number
+          created_at: string | null
+          id: string
+          org_id: string | null
+          rate: number
+          source_id: string
+          source_type: string
+        }
+        Insert: {
+          amount_fcfa: number
+          base_fcfa: number
+          created_at?: string | null
+          id?: string
+          org_id?: string | null
+          rate: number
+          source_id: string
+          source_type: string
+        }
+        Update: {
+          amount_fcfa?: number
+          base_fcfa?: number
+          created_at?: string | null
+          id?: string
+          org_id?: string | null
+          rate?: number
+          source_id?: string
+          source_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "commissions_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       construction_projects: {
         Row: {
           created_at: string | null
@@ -2607,6 +2648,7 @@ export type Database = {
       geomfromewkt: { Args: { "": string }; Returns: unknown }
       gettransactionid: { Args: never; Returns: unknown }
       is_admin: { Args: never; Returns: boolean }
+      locawave_commission_rate: { Args: never; Returns: number }
       longtransactionsenabled: { Args: never; Returns: boolean }
       populate_geometry_columns:
         | { Args: { tbl_oid: unknown; use_typmod?: boolean }; Returns: number }
