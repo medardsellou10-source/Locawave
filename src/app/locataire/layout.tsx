@@ -3,6 +3,7 @@ import Link from "next/link"
 import { Building2 } from "lucide-react"
 import { createServerClient } from "@/lib/supabase-server"
 import { LogoutButton } from "@/components/app/LogoutButton"
+import { BackButton } from "@/components/app/BackButton"
 
 export const dynamic = "force-dynamic"
 
@@ -38,6 +39,7 @@ export default async function LocataireLayout({
             <span className="text-lg font-bold text-[#1a2744]">Locawave</span>
           </Link>
           <div className="flex items-center gap-3">
+            <BackButton rootPath="/locataire" />
             <span className="text-sm text-gray-500 hidden sm:inline">
               {profile?.full_name ?? "Locataire"}
             </span>

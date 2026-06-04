@@ -48,15 +48,50 @@ export async function createPspTransaction(
   const provider = getPspProvider()
 
   if (provider === "paydunya") {
-    // === À COMPLÉTER avec un compte PayDunya ===
-    // Secrets requis : PAYDUNYA_MASTER_KEY, PAYDUNYA_PRIVATE_KEY, PAYDUNYA_TOKEN, PAYDUNYA_MODE
-    // POST https://app.paydunya.com/api/v1/checkout-invoice/create
-    //   headers: PAYDUNYA-MASTER-KEY, PAYDUNYA-PRIVATE-KEY, PAYDUNYA-TOKEN
-    //   body: { invoice: { total_amount, description }, store: {...},
-    //           actions: { callback_url, return_url, cancel_url },
-    //           custom_data: { reference } }
-    // → renvoie response_text (token) + checkout url.
-    throw new Error("PayDunya non configuré : renseigner les secrets PAYDUNYA_*")
+    // PayDunya — agrège Wave + Orange Money + cartes. Secrets requis :
+    // PAYDUNYA_MASTER_KEY, PAYDUNYA_PRIVATE_KEY, PAYDUNYA_TOKEN, PAYDUNYA_MODE (test|live), PAYDUNYA_STORE_NAME.
+    const master = process.env.PAYDUNYA_MASTER_KEY
+    const priv = process.env.PAYDUNYA_PRIVATE_KEY
+    const token = process.env.PAYDUNYA_TOKEN
+    if (!master || !priv || !token) {
+      throw new Error("PayDunya non configuré : renseigner PAYDUNYA_MASTER_KEY / PAYDUNYA_PRIVATE_KEY / PAYDUNYA_TOKEN")
+    }
+    const mode = (process.env.PAYDUNYA_MODE ?? "test").toLowerCase()
+    const apiBase = mode === "live"
+      ? "https://app.paydunya.com/api/v1"
+      : "https://app.paydunya.com/sandbox-api/v1"
+
+    const res = await fetch(`${apiBase}/checkout-invoice/create`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "PAYDUNYA-MASTER-KEY": master,
+        "PAYDUNYA-PRIVATE-KEY": priv,
+        "PAYDUNYA-TOKEN": token,
+      },
+      body: JSON.stringify({
+        invoice: { total_amount: input.amountFcfa, description: input.description },
+        store: { name: process.env.PAYDUNYA_STORE_NAME ?? "Locawave" },
+        actions: {
+          callback_url: input.callbackUrl,
+          return_url: input.returnUrl,
+          cancel_url: input.cancelUrl,
+        },
+        custom_data: { reference: input.reference },
+      }),
+    })
+    const data = await res.json()
+    if (data?.response_code !== "00" || !data?.token) {
+      throw new Error(`PayDunya: création échouée (${data?.response_text ?? res.status})`)
+    }
+    const checkoutBase = mode === "live"
+      ? "https://paydunya.com/checkout/invoice"
+      : "https://paydunya.com/sandbox-checkout/invoice"
+    return {
+      provider: "paydunya",
+      providerRef: data.token,
+      paymentUrl: `${checkoutBase}/${data.token}`,
+    }
   }
 
   if (provider === "cinetpay") {

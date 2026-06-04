@@ -14,7 +14,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
 import { toast } from "sonner"
-import { Building2, MessageCircle, CreditCard, Shield } from "lucide-react"
+import { Building2, MessageCircle, CreditCard, Shield, Zap, Clock, CheckCircle2 } from "lucide-react"
 import type { Database } from "@/types/database"
 
 type NotificationTemplate = Database["public"]["Tables"]["notification_templates"]["Row"]
@@ -92,6 +92,10 @@ export default function SettingsPage() {
           <TabsTrigger value="templates" className="flex items-center gap-1 text-xs sm:text-sm py-2">
             <MessageCircle className="w-4 h-4 flex-shrink-0" />
             <span className="hidden sm:inline">Messages</span><span className="sm:hidden">WhatsApp</span>
+          </TabsTrigger>
+          <TabsTrigger value="automations" className="flex items-center gap-1 text-xs sm:text-sm py-2">
+            <Zap className="w-4 h-4 flex-shrink-0" />
+            <span>Automatisations</span>
           </TabsTrigger>
           <TabsTrigger value="billing" className="flex items-center gap-1 text-xs sm:text-sm py-2">
             <CreditCard className="w-4 h-4 flex-shrink-0" />
@@ -187,6 +191,54 @@ export default function SettingsPage() {
               </Card>
             ))}
           </div>
+        </TabsContent>
+
+        {/* Automatisations */}
+        <TabsContent value="automations">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2"><Zap className="w-5 h-5 text-[#f97316]" /> Routines automatiques</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <p className="text-sm text-gray-500">
+                Ces tâches s'exécutent automatiquement chaque jour (cron). Les rappels WhatsApp suivent
+                l'état actif/inactif défini dans l'onglet « Messages ».
+              </p>
+              {(() => {
+                const tplActive = (type: string) => templates.find((t) => t.type === type)?.is_active ?? true
+                const ROUTINES: { label: string; when: string; on: boolean; system?: boolean }[] = [
+                  { label: "Rappel loyer J-5", when: "Chaque jour · 08:00", on: tplActive("reminder_j5") },
+                  { label: "Rappel jour J", when: "Chaque jour · 10:00", on: tplActive("reminder_j0") },
+                  { label: "Relance retard (J+3)", when: "Chaque jour · 10:00", on: tplActive("reminder_j3_late") },
+                  { label: "Alerte impayés au propriétaire", when: "Chaque lundi · 09:00", on: tplActive("alert_landlord") },
+                  { label: "Marquage automatique des retards", when: "Chaque jour · 06:30", on: true, system: true },
+                  { label: "Alerte baux expirant", when: "Chaque jour · 08:00", on: true, system: true },
+                  { label: "Rapport mensuel", when: "Le 1er du mois · 07:00", on: true, system: true },
+                  { label: "Réservations récurrentes (services)", when: "Chaque jour · 06:00", on: true, system: true },
+                ]
+                return (
+                  <div className="divide-y rounded-lg border">
+                    {ROUTINES.map((r) => (
+                      <div key={r.label} className="flex items-center justify-between gap-3 px-4 py-3">
+                        <div>
+                          <p className="text-sm font-medium text-[#1a2744]">{r.label}</p>
+                          <p className="text-xs text-gray-400 flex items-center gap-1"><Clock className="w-3 h-3" /> {r.when}{r.system ? " · système" : ""}</p>
+                        </div>
+                        {r.on ? (
+                          <Badge className="bg-green-100 text-green-700 gap-1"><CheckCircle2 className="w-3.5 h-3.5" /> Actif</Badge>
+                        ) : (
+                          <Badge variant="secondary">Inactif</Badge>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )
+              })()}
+              <p className="text-[11px] text-gray-400">
+                Les envois WhatsApp nécessitent que la messagerie soit configurée (Twilio) côté plateforme.
+              </p>
+            </CardContent>
+          </Card>
         </TabsContent>
 
         {/* Facturation */}
