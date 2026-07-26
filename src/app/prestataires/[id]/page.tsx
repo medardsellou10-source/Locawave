@@ -9,6 +9,7 @@ import { createClient } from "@/lib/supabase"
 import { formatFCFA } from "@/lib/formatters"
 import { TrustBadge } from "@/components/app/TrustBadge"
 import { MessageThread } from "@/components/app/MessageThread"
+import { BackButton } from "@/components/app/BackButton"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -58,11 +59,14 @@ export default function ProviderPublicPage() {
     <div className="min-h-screen bg-gray-50">
       <header className="border-b bg-white">
         <div className="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-[#f97316] rounded-lg flex items-center justify-center"><Building2 className="w-5 h-5 text-white" /></div>
-            <span className="text-lg font-bold text-[#1a2744]">Locawave</span>
-          </Link>
-          <Link href="/services" className="text-sm text-[#f97316] hover:underline">← Annuaire</Link>
+          <div className="flex items-center gap-3">
+            <BackButton />
+            <Link href="/" className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-[#f97316] rounded-lg flex items-center justify-center"><Building2 className="w-5 h-5 text-white" /></div>
+              <span className="text-lg font-bold text-[#1a2744]">Locawave</span>
+            </Link>
+          </div>
+          <Link href="/services" className="text-sm text-[#f97316] hover:underline">Annuaire</Link>
         </div>
       </header>
 

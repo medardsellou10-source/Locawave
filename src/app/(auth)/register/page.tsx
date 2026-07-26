@@ -16,11 +16,10 @@ import {
   Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle,
 } from "@/components/ui/card"
 
-type Role = "owner" | "tenant" | "provider"
+type Role = "owner" | "provider"
 
 const ROLES: { value: Role; label: string; desc: string; icon: typeof Building2 }[] = [
   { value: "owner", label: "Propriétaire / Agence", desc: "Gérer mes biens, loyers et locataires", icon: Building2 },
-  { value: "tenant", label: "Locataire", desc: "Payer mon loyer, mes quittances, signaler un incident", icon: Home },
   { value: "provider", label: "Prestataire / Aidant", desc: "Recevoir des missions et proposer mes services", icon: Wrench },
 ]
 
@@ -35,6 +34,7 @@ export default function RegisterPage() {
   const supabase = createClient()
 
   const [role, setRole] = useState<Role>("owner")
+  const [tenantNotice, setTenantNotice] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [fullName, setFullName] = useState("")
   const [email, setEmail] = useState("")
@@ -47,7 +47,8 @@ export default function RegisterPage() {
   useEffect(() => {
     if (typeof window === "undefined") return
     const r = new URLSearchParams(window.location.search).get("role")
-    if (r === "tenant" || r === "provider" || r === "owner") setRole(r)
+    if (r === "provider" || r === "owner") setRole(r)
+    else if (r === "tenant") setTenantNotice(true) // le locataire n'entre que par invitation
   }, [])
 
   function validate() {
@@ -108,8 +109,20 @@ export default function RegisterPage() {
       </CardHeader>
 
       <CardContent>
+        {tenantNotice && (
+          <div className="mb-4 flex items-start gap-2 rounded-lg border border-blue-200 bg-blue-50 p-3 text-sm text-blue-800">
+            <Home className="mt-0.5 h-4 w-4 shrink-0" />
+            <span>
+              <strong>Vous êtes locataire ?</strong> Votre accès est créé par votre propriétaire :
+              il vous envoie un lien d'invitation (WhatsApp/email). Une fois reçu, connectez-vous
+              via ce lien.{" "}
+              <Link href="/login" className="font-medium underline">Se connecter</Link>
+            </span>
+          </div>
+        )}
+
         {/* Choix du rôle */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-5">
           {ROLES.map((r) => {
             const active = role === r.value
             return (

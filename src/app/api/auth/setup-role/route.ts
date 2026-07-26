@@ -11,9 +11,11 @@ export const dynamic = "force-dynamic"
  */
 export async function POST(request: NextRequest) {
   const { user_id, full_name, email, role } = await request.json().catch(() => ({}))
-  const allowed = ["tenant", "provider", "seeker"]
+  // Le locataire n'est JAMAIS créé en libre-service : il n'entre que par invitation
+  // du propriétaire (api/tenants/invite). Seuls prestataire/chercheur s'auto-inscrivent.
+  const allowed = ["provider", "seeker"]
   if (!user_id || !full_name || !role || !allowed.includes(role)) {
-    return NextResponse.json({ error: "Paramètres invalides" }, { status: 400 })
+    return NextResponse.json({ error: "Rôle non autorisé en inscription libre" }, { status: 400 })
   }
 
   const admin = createAdminClient()

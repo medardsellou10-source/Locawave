@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { BackButton } from "@/components/app/BackButton"
 import { Building2, Loader2, HeartPulse, GraduationCap, CheckCircle2, Award } from "lucide-react"
 import { toast } from "sonner"
 
@@ -91,10 +92,13 @@ export default function AvantagesPage() {
     <div className="min-h-screen bg-gray-50">
       <header className="border-b bg-white">
         <div className="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-[#f97316] rounded-lg flex items-center justify-center"><Building2 className="w-5 h-5 text-white" /></div>
-            <span className="text-lg font-bold text-[#1a2744]">Locawave</span>
-          </Link>
+          <div className="flex items-center gap-3">
+            <BackButton />
+            <Link href="/" className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-[#f97316] rounded-lg flex items-center justify-center"><Building2 className="w-5 h-5 text-white" /></div>
+              <span className="text-lg font-bold text-[#1a2744]">Locawave</span>
+            </Link>
+          </div>
           <span className="text-sm text-gray-500">Avantages</span>
         </div>
       </header>

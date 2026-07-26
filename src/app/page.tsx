@@ -79,6 +79,13 @@ const FAQ = [
   { q: "Y a-t-il un engagement ?", a: "Aucun engagement. L'essai gratuit de 14 jours ne nécessite pas de carte bancaire, et vous pouvez annuler à tout moment." },
 ]
 
+const SHOWCASE = [
+  { src: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80", label: "Villa contemporaine · Dakar" },
+  { src: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80", label: "Résidence de standing" },
+  { src: "https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=800&q=80", label: "Maison moderne R+1" },
+  { src: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80", label: "Appartement haut de gamme" },
+]
+
 export default function LandingPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
@@ -169,6 +176,32 @@ export default function LandingPage() {
             ].map((b) => (
               <div key={b.label} className="flex items-center gap-2 bg-white rounded-xl px-4 py-2.5 shadow-sm border border-gray-100">
                 {b.node}<span className="font-bold text-gray-700 text-sm">{b.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── Vitrine logements de standing (photos réelles) ─── */}
+      <section className="py-20 bg-white">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 bg-orange-50 text-[#f97316] rounded-full px-3 py-1 text-xs font-semibold mb-4">
+              <Building2 className="w-4 h-4" /> Des biens de qualité
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold text-[#1a2744] mb-4">Des logements de standing, gérés en toute confiance</h2>
+            <p className="text-gray-500 max-w-2xl mx-auto">Du studio à la villa haut de gamme — trouvez, louez et suivez vos biens comme un pro.</p>
+          </div>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            {SHOWCASE.map((h) => (
+              <div key={h.label} className="group relative overflow-hidden rounded-2xl shadow-sm ring-1 ring-black/5">
+                <img src={h.src} alt={h.label} loading="lazy"
+                  className="h-56 w-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-black/0" />
+                <div className="absolute bottom-0 left-0 right-0 p-4">
+                  <p className="text-sm font-semibold text-white drop-shadow">{h.label}</p>
+                </div>
+                <div className="absolute right-3 top-3 rounded-full bg-white/90 px-2 py-0.5 text-[11px] font-bold text-green-700 opacity-0 transition-opacity group-hover:opacity-100">✓ Vérifié</div>
               </div>
             ))}
           </div>
@@ -282,7 +315,7 @@ export default function LandingPage() {
                     <li key={pt} className="flex items-start gap-2 text-sm text-gray-600"><Check className="w-4 h-4 mt-0.5 shrink-0 text-green-500" /><span>{pt}</span></li>
                   ))}
                 </ul>
-                <Link href={`/register?role=${p.role}`} className={`text-center py-2.5 rounded-xl font-semibold text-white bg-gradient-to-r ${p.color} hover:opacity-95 transition-opacity`}>{p.cta}</Link>
+                <Link href={p.role === "tenant" ? "/annonces" : `/register?role=${p.role}`} className={`text-center py-2.5 rounded-xl font-semibold text-white bg-gradient-to-r ${p.color} hover:opacity-95 transition-opacity`}>{p.cta}</Link>
               </div>
             ))}
           </div>

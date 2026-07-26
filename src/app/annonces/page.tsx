@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { EmptyState } from "@/components/app/EmptyState"
+import { BackButton } from "@/components/app/BackButton"
 import { Building2, MapPin, Search, Loader2, CheckCircle2, Home } from "lucide-react"
 import { toast } from "sonner"
 
@@ -71,10 +72,13 @@ export default function AnnoncesPublicPage() {
     <div className="min-h-screen bg-gray-50">
       <header className="border-b bg-white">
         <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-[#f97316] rounded-lg flex items-center justify-center"><Building2 className="w-5 h-5 text-white" /></div>
-            <span className="text-lg font-bold text-[#1a2744]">Locawave</span>
-          </Link>
+          <div className="flex items-center gap-3">
+            <BackButton />
+            <Link href="/" className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-[#f97316] rounded-lg flex items-center justify-center"><Building2 className="w-5 h-5 text-white" /></div>
+              <span className="text-lg font-bold text-[#1a2744]">Locawave</span>
+            </Link>
+          </div>
           <Link href="/login" className="text-sm text-[#f97316] hover:underline">Se connecter</Link>
         </div>
       </header>

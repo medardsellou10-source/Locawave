@@ -154,22 +154,24 @@ export default function PrestatairePage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-start justify-between gap-3 flex-wrap">
-        <div>
-          <h1 className="text-2xl font-bold text-[#1a2744] flex items-center gap-2"><Wrench className="w-6 h-6 text-[#f97316]" /> Espace prestataire</h1>
-          {profile && (
-            <div className="mt-1 flex items-center gap-2 flex-wrap">
-              <Badge className={`gap-1 ${profile.is_verified ? "bg-green-100 text-green-700" : "bg-orange-100 text-orange-700"}`}>
-                {profile.is_verified ? <><CheckCircle2 className="w-3.5 h-3.5" /> Profil vérifié</> : <><Clock className="w-3.5 h-3.5" /> En attente de vérification</>}
-              </Badge>
-              <TrustBadge score={profile.trust_score} jobs={profile.jobs_done} />
-            </div>
-          )}
-        </div>
-        <div className="flex gap-2 flex-wrap">
-          {profile?.is_verified && <Link href={`/prestataires/${profile.id}`} target="_blank"><Button variant="outline" size="sm"><ExternalLink className="w-4 h-4 mr-1" /> Ma fiche publique</Button></Link>}
-          <Link href="/avantages"><Button variant="outline" size="sm"><HeartPulse className="w-4 h-4 mr-1" /> Avantages</Button></Link>
-          <Link href="/litiges"><Button variant="outline" size="sm"><Scale className="w-4 h-4 mr-1" /> Litiges</Button></Link>
+      <div className="rounded-2xl bg-gradient-to-br from-[#1a2744] to-[#1e3a5f] p-6 text-white shadow-sm">
+        <div className="flex items-start justify-between gap-3 flex-wrap">
+          <div>
+            <h1 className="text-2xl font-bold flex items-center gap-2"><Wrench className="w-6 h-6 text-[#f97316]" /> Espace prestataire</h1>
+            {profile ? (
+              <div className="mt-2 flex items-center gap-2 flex-wrap">
+                <Badge className={`gap-1 ${profile.is_verified ? "bg-green-100 text-green-700" : "bg-orange-100 text-orange-700"}`}>
+                  {profile.is_verified ? <><CheckCircle2 className="w-3.5 h-3.5" /> Profil vérifié</> : <><Clock className="w-3.5 h-3.5" /> En attente de vérification</>}
+                </Badge>
+                <TrustBadge score={profile.trust_score} jobs={profile.jobs_done} />
+              </div>
+            ) : <p className="text-sm text-gray-300 mt-1">Créez votre profil pour recevoir des missions et chantiers.</p>}
+          </div>
+          <div className="flex gap-2 flex-wrap">
+            {profile?.is_verified && <Link href={`/prestataires/${profile.id}`} target="_blank"><Button size="sm" className="bg-white/10 hover:bg-white/20 text-white border-0"><ExternalLink className="w-4 h-4 mr-1" /> Ma fiche</Button></Link>}
+            <Link href="/avantages"><Button size="sm" className="bg-white/10 hover:bg-white/20 text-white border-0"><HeartPulse className="w-4 h-4 mr-1" /> Avantages</Button></Link>
+            <Link href="/litiges"><Button size="sm" className="bg-white/10 hover:bg-white/20 text-white border-0"><Scale className="w-4 h-4 mr-1" /> Litiges</Button></Link>
+          </div>
         </div>
       </div>
 
