@@ -115,7 +115,15 @@ export default function PaymentsPage() {
   return (
     <div>
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-6">
-        <h1 className="text-2xl font-bold text-[#1a2744]">Paiements</h1>
+        <div className="flex items-start gap-3">
+          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-orange-50 text-[#f97316]">
+            <CreditCard className="h-5 w-5" />
+          </span>
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight text-[#1a2744]">Paiements</h1>
+            <p className="text-sm text-gray-500">Encaissements, liens de paiement et quittances.</p>
+          </div>
+        </div>
         <div className="flex gap-2">
           <Input
             type="month"

@@ -104,8 +104,16 @@ export default function ReportsPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-[#1a2744]">Rapports</h1>
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
+        <div className="flex items-start gap-3">
+          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-orange-50 text-[#f97316]">
+            <BarChart3 className="h-5 w-5" />
+          </span>
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight text-[#1a2744]">Rapports</h1>
+            <p className="text-sm text-gray-500">Performance de votre parc et exports pour votre comptabilité.</p>
+          </div>
+        </div>
         <Button variant="outline" onClick={exportCSV}>
           <Download className="w-4 h-4 mr-1" /> Exporter CSV
         </Button>

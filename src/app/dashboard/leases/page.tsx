@@ -62,8 +62,16 @@ export default function LeasesPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-[#1a2744]">Baux</h1>
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
+        <div className="flex items-start gap-3">
+          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-orange-50 text-[#f97316]">
+            <FileText className="h-5 w-5" />
+          </span>
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight text-[#1a2744]">Baux</h1>
+            <p className="text-sm text-gray-500">Contrats en cours, échéances et cautions sous séquestre.</p>
+          </div>
+        </div>
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogTrigger>
             <Button className="bg-[#f97316] hover:bg-[#ea580c] text-white">
