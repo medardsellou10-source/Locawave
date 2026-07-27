@@ -20,6 +20,18 @@ import { toast } from "sonner"
 import type { Database } from "@/types/database"
 
 type Tenant = Database["public"]["Tables"]["tenants"]["Row"]
+type Punctuality = { score: number | null; total: number; late: number; label: string }
+
+const scoreColor = (s: number) =>
+  s >= 90 ? "text-emerald-600" : s >= 70 ? "text-blue-600" : s >= 50 ? "text-amber-600" : "text-red-600"
+const scoreBar = (s: number) =>
+  s >= 90 ? "bg-emerald-500" : s >= 70 ? "bg-blue-500" : s >= 50 ? "bg-amber-500" : "bg-red-500"
+const scoreBadge = (s: number) =>
+  s >= 90 ? "bg-emerald-100 text-emerald-700"
+    : s >= 70 ? "bg-blue-100 text-blue-700"
+    : s >= 50 ? "bg-amber-100 text-amber-700"
+    : "bg-red-100 text-red-700"
+
 type LeaseWithDetails = {
   id: string
   start_date: string
@@ -41,6 +53,7 @@ export default function TenantDetailPage() {
   const [editDialogOpen, setEditDialogOpen] = useState(false)
   const [inviting, setInviting] = useState(false)
   const [inviteLink, setInviteLink] = useState<string | null>(null)
+  const [punctuality, setPunctuality] = useState<Punctuality | null>(null)
 
   async function fetchData() {
     if (!org || !params.id) return
@@ -57,8 +70,11 @@ export default function TenantDetailPage() {
       .eq("tenant_id", params.id as string)
       .order("start_date", { ascending: false })
 
+    const { data: pct } = await supabase.rpc("tenant_punctuality", { p_tenant: params.id as string })
+
     setTenant(t)
     setLeases((l as LeaseWithDetails[]) ?? [])
+    setPunctuality((pct as Punctuality) ?? null)
     setLoading(false)
   }
 
@@ -224,6 +240,42 @@ export default function TenantDetailPage() {
           )}
         </CardContent>
       </Card>
+
+      {punctuality && (
+        <Card>
+          <CardHeader><CardTitle className="text-lg">Ponctualité de paiement</CardTitle></CardHeader>
+          <CardContent>
+            {punctuality.score === null ? (
+              <p className="text-sm text-gray-500">
+                Historique insuffisant — le score apparaîtra après les premières échéances.
+              </p>
+            ) : (
+              <div className="space-y-3">
+                <div className="flex items-baseline justify-between gap-3">
+                  <div className="flex items-baseline gap-2">
+                    <span className={`text-3xl font-bold ${scoreColor(punctuality.score)}`}>
+                      {punctuality.score}
+                    </span>
+                    <span className="text-sm text-gray-400">/ 100</span>
+                  </div>
+                  <Badge className={scoreBadge(punctuality.score)}>{punctuality.label}</Badge>
+                </div>
+                <div className="h-2 w-full overflow-hidden rounded-full bg-gray-100">
+                  <div
+                    className={`h-full rounded-full transition-all ${scoreBar(punctuality.score)}`}
+                    style={{ width: `${punctuality.score}%` }}
+                  />
+                </div>
+                <p className="text-xs text-gray-500">
+                  {punctuality.total} échéance(s) échue(s) · {punctuality.late} réglée(s) en retard.
+                  {punctuality.score >= 90 &&
+                    " Ce locataire n'est pas relancé au premier jour de retard."}
+                </p>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      )}
 
       <Card>
         <CardHeader><CardTitle className="text-lg">Historique des baux</CardTitle></CardHeader>

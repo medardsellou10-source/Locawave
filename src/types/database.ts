@@ -2799,7 +2799,12 @@ export type Database = {
         Args: { p_provider: string }
         Returns: undefined
       }
+      run_chantier_alerts: { Args: never; Returns: number }
+      run_escalating_reminders: { Args: never; Returns: number }
+      run_lease_expiry_alerts: { Args: never; Returns: number }
       run_rent_reminders: { Args: never; Returns: number }
+      run_tenant_monthly_digest: { Args: never; Returns: number }
+      run_weekly_digest: { Args: never; Returns: number }
       search_listings: {
         Args: {
           p_city?: string
@@ -3432,6 +3437,7 @@ export type Database = {
       tenant_lease_ids: { Args: never; Returns: string[] }
       tenant_payment_ids: { Args: never; Returns: string[] }
       tenant_property_ids: { Args: never; Returns: string[] }
+      tenant_punctuality: { Args: { p_tenant: string }; Returns: Json }
       tenant_schedule_ids: { Args: never; Returns: string[] }
       tenant_unit_ids: { Args: never; Returns: string[] }
       trigger_rent_reminders: { Args: never; Returns: number }

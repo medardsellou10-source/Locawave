@@ -4,6 +4,7 @@ import { Wrench } from "lucide-react"
 import { createServerClient } from "@/lib/supabase-server"
 import { LogoutButton } from "@/components/app/LogoutButton"
 import { BackButton } from "@/components/app/BackButton"
+import { NotificationBell } from "@/components/app/NotificationBell"
 
 export const dynamic = "force-dynamic"
 
@@ -27,6 +28,7 @@ export default async function PrestataireLayout({ children }: { children: React.
             <span className="text-lg font-bold text-[#1a2744]">Locawave Pro</span>
           </Link>
           <div className="flex items-center gap-3">
+            <NotificationBell />
             <BackButton rootPath="/prestataire" />
             <span className="text-sm text-gray-500 hidden sm:inline">{profile?.full_name ?? "Prestataire"}</span>
             <LogoutButton />

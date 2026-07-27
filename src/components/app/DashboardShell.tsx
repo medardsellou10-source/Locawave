@@ -28,6 +28,7 @@ import { createClient } from "@/lib/supabase"
 
 import { Button } from "@/components/ui/button"
 import { BackButton } from "@/components/app/BackButton"
+import { NotificationBell } from "@/components/app/NotificationBell"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
@@ -344,7 +345,10 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
             <h1 className="text-lg font-semibold text-gray-900">{pageTitle}</h1>
           </div>
 
-          <BackButton rootPath="/dashboard" />
+          <div className="flex items-center gap-2">
+            <NotificationBell />
+            <BackButton rootPath="/dashboard" />
+          </div>
         </header>
 
         {/* Content area */}

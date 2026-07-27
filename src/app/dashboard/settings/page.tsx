@@ -30,15 +30,18 @@ type Health = {
 const JOB_LABELS: Record<string, string> = {
   lw_rent_reminders: "Rappels de loyer (application)",
   lw_mark_overdue: "Marquage automatique des retards",
-  lw_lease_expiry: "Alerte baux arrivant à échéance",
-  lw_alert_landlord: "Alerte impayés au propriétaire",
+  lw_escalating_reminders: "Relances progressives (J+3, J+7, J+15)",
+  lw_lease_expiry_alerts: "Alerte fin de bail (90, 60, 30 jours)",
+  lw_weekly_digest: "Votre rapport hebdomadaire",
+  lw_chantier_alerts: "Alertes chantier (budget, silence)",
+  lw_tenant_monthly_digest: "Résumé mensuel aux locataires",
   lw_monthly_report: "Rapport mensuel",
   lw_annual_report: "Rapport annuel",
-  lw_reminder_j5: "Rappel WhatsApp — avant échéance",
-  lw_reminder_j0: "Rappel WhatsApp — jour J",
-  lw_reminder_j3_late: "Relance WhatsApp — retard",
   generate_due_bookings_daily: "Réservations récurrentes (services)",
 }
+
+/** Ces tâches passent par une passerelle externe : sans secret Vault, elles n'agissent pas. */
+const JOBS_NEEDING_VAULT = new Set(["lw_monthly_report", "lw_annual_report"])
 
 /** Traduit une expression cron simple en phrase lisible. */
 function cronToText(c: string): string {
@@ -367,9 +370,18 @@ export default function SettingsPage() {
                             {j.last_run ? ` · dernière exécution ${new Date(j.last_run).toLocaleDateString("fr-FR")}` : " · jamais exécutée"}
                           </p>
                         </div>
-                        <Badge className={j.last_status === "succeeded" ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-600"}>
-                          {j.last_status === "succeeded" ? "OK" : j.last_status ?? "En attente"}
-                        </Badge>
+                        {/* Une tâche qui passe par la passerelle externe peut « réussir » côté
+                            planificateur tout en échouant à l'envoi : on ne l'annonce pas OK
+                            tant que le secret n'est pas renseigné. */}
+                        {JOBS_NEEDING_VAULT.has(j.job) && !health?.vault_configured ? (
+                          <Badge className="bg-amber-100 text-amber-700 gap-1 shrink-0">
+                            <AlertTriangle className="w-3.5 h-3.5" /> À configurer
+                          </Badge>
+                        ) : (
+                          <Badge className={j.last_status === "succeeded" ? "bg-green-100 text-green-700 shrink-0" : "bg-gray-100 text-gray-600 shrink-0"}>
+                            {j.last_status === "succeeded" ? "OK" : j.last_status ?? "En attente"}
+                          </Badge>
+                        )}
                       </div>
                     ))}
                   </div>
