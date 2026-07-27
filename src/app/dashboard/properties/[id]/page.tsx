@@ -36,6 +36,15 @@ const unitTypeLabels: Record<string, string> = {
   studio: "Studio", f1: "F1", f2: "F2", f3: "F3", f4: "F4", commerce: "Commerce",
 }
 
+/** Visuel de couverture selon le type de bien (photos libres de droits). */
+const PROPERTY_COVER: Record<string, string> = {
+  villa: "https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=1200&q=70",
+  appartement: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=70",
+  bureau: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=70",
+  local: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1200&q=70",
+  default: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=70",
+}
+
 export default function PropertyDetailPage() {
   const params = useParams()
   const router = useRouter()
@@ -119,38 +128,60 @@ export default function PropertyDetailPage() {
         <span className="text-[#1a2744] font-medium">{property.name}</span>
       </div>
 
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <h1 className="text-2xl font-bold text-[#1a2744]">{property.name}</h1>
-          <Badge variant="secondary">{typeLabels[property.type] ?? property.type}</Badge>
-        </div>
-        <div className="flex gap-2">
-          <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
-            <DialogTrigger>
-              <Button variant="outline" size="sm"><Edit className="w-4 h-4 mr-1" /> Modifier</Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader><DialogTitle>Modifier le bien</DialogTitle></DialogHeader>
-              <PropertyForm property={property} onSuccess={() => { setEditDialogOpen(false); fetchData() }} />
-            </DialogContent>
-          </Dialog>
-          <Button variant="destructive" size="sm" onClick={deleteProperty}>
-            <Trash2 className="w-4 h-4 mr-1" /> Supprimer
-          </Button>
+      {/* Bannière premium du bien */}
+      <div className="relative overflow-hidden rounded-2xl text-white shadow-sm">
+        <img
+          src={PROPERTY_COVER[property.type] ?? PROPERTY_COVER.default}
+          alt="" aria-hidden="true"
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#1a2744]/95 via-[#1a2744]/85 to-[#1e3a5f]/70" />
+        <div className="relative p-6">
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <div className="flex items-center gap-3 flex-wrap">
+                <h1 className="text-2xl font-bold">{property.name}</h1>
+                <Badge className="bg-white/15 text-white border-0">{typeLabels[property.type] ?? property.type}</Badge>
+              </div>
+              {(property.address || property.neighborhood) && (
+                <p className="mt-1 flex items-center gap-1.5 text-sm text-gray-200">
+                  <MapPin className="w-4 h-4" />
+                  {[property.address, property.neighborhood, property.city].filter(Boolean).join(", ")}
+                </p>
+              )}
+              {property.notes && <p className="mt-2 max-w-xl text-sm text-gray-300">{property.notes}</p>}
+            </div>
+            <div className="flex gap-2">
+              <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
+                <DialogTrigger>
+                  <Button size="sm" className="bg-white/10 hover:bg-white/20 text-white border-0"><Edit className="w-4 h-4 mr-1" /> Modifier</Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader><DialogTitle>Modifier le bien</DialogTitle></DialogHeader>
+                  <PropertyForm property={property} onSuccess={() => { setEditDialogOpen(false); fetchData() }} />
+                </DialogContent>
+              </Dialog>
+              <Button variant="destructive" size="sm" onClick={deleteProperty}>
+                <Trash2 className="w-4 h-4 mr-1" /> Supprimer
+              </Button>
+            </div>
+          </div>
+
+          {/* Statistiques du bien */}
+          <div className="mt-5 grid grid-cols-3 gap-3 max-w-md">
+            {[
+              { label: "Unités", value: String(units.length) },
+              { label: "Louées", value: String(units.filter((u) => u.status === "rented").length) },
+              { label: "Vacantes", value: String(units.filter((u) => u.status === "vacant").length) },
+            ].map((s) => (
+              <div key={s.label} className="rounded-xl bg-white/10 px-3 py-2 backdrop-blur-sm">
+                <p className="text-[11px] uppercase tracking-wide text-gray-300">{s.label}</p>
+                <p className="text-xl font-bold">{s.value}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
-
-      <Card>
-        <CardContent className="pt-6">
-          {(property.address || property.neighborhood) && (
-            <div className="flex items-center text-gray-600 mb-2">
-              <MapPin className="w-4 h-4 mr-2" />
-              {[property.address, property.neighborhood, property.city].filter(Boolean).join(", ")}
-            </div>
-          )}
-          {property.notes && <p className="text-gray-500 text-sm mt-2">{property.notes}</p>}
-        </CardContent>
-      </Card>
 
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-semibold text-[#1a2744]">Unités ({units.length})</h2>

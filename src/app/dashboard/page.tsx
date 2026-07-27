@@ -17,7 +17,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { StatCard } from "@/components/app/StatCard"
 import { EmptyState } from "@/components/app/EmptyState"
-import { ArrowRight, Wallet, Clock, AlertTriangle, TrendingUp, CreditCard, CalendarClock } from "lucide-react"
+import { ArrowRight, Wallet, Clock, AlertTriangle, TrendingUp, CreditCard, CalendarClock, Building2, Megaphone } from "lucide-react"
 
 type KPIData = {
   collected: number
@@ -150,13 +150,27 @@ export default function DashboardPage() {
         </div>
       )}
 
-      {/* Welcome */}
+      {/* Welcome — bannière premium */}
       {!userLoading && appUser && (
-        <div>
-          <h2 className="text-2xl font-bold text-[#1a2744]">
-            Bienvenue{appUser.full_name ? `, ${appUser.full_name.split(" ")[0]}` : ""}
-          </h2>
-          <p className="text-sm text-gray-500">Voici un aperçu de votre activité locative.</p>
+        <div className="relative overflow-hidden rounded-2xl text-white shadow-sm">
+          <img
+            src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1400&q=70"
+            alt="" aria-hidden="true"
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-br from-[#1a2744]/95 via-[#1a2744]/85 to-[#1e3a5f]/70" />
+          <div className="relative flex flex-wrap items-center justify-between gap-3 p-6">
+            <div>
+              <h2 className="text-2xl font-bold">
+                Bienvenue{appUser.full_name ? `, ${appUser.full_name.split(" ")[0]}` : ""}
+              </h2>
+              <p className="text-sm text-gray-200">Voici un aperçu de votre activité locative.</p>
+            </div>
+            <div className="flex gap-2 flex-wrap">
+              <Link href="/dashboard/properties"><Button size="sm" className="bg-white/10 hover:bg-white/20 text-white border-0"><Building2 className="w-4 h-4 mr-1" /> Mes biens</Button></Link>
+              <Link href="/dashboard/annonces"><Button size="sm" className="bg-[#f97316] hover:bg-[#ea580c] text-white"><Megaphone className="w-4 h-4 mr-1" /> Publier une annonce</Button></Link>
+            </div>
+          </div>
         </div>
       )}
 

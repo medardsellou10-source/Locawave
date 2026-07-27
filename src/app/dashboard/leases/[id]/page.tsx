@@ -118,14 +118,35 @@ export default function LeaseDetailPage() {
         </span>
       </div>
 
-      <div>
-        <h1 className="text-2xl font-bold text-[#1a2744]">
-          {lease.units?.properties?.name ?? ""} — {lease.units?.unit_number ?? ""}
-        </h1>
-        <p className="text-gray-500 text-sm">
-          {lease.tenants ? `${lease.tenants.first_name} ${lease.tenants.last_name}` : ""} ·
-          Loyer {formatFCFA(lease.rent_fcfa)} · {formatDateFR(lease.start_date)} → {formatDateFR(lease.end_date)}
-        </p>
+      {/* Bannière premium du bail */}
+      <div className="relative overflow-hidden rounded-2xl text-white shadow-sm">
+        <img
+          src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=70"
+          alt="" aria-hidden="true"
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#1a2744]/95 via-[#1a2744]/85 to-[#1e3a5f]/70" />
+        <div className="relative p-6">
+          <h1 className="text-2xl font-bold">
+            {lease.units?.properties?.name ?? ""} — {lease.units?.unit_number ?? ""}
+          </h1>
+          <p className="text-sm text-gray-200">
+            {lease.tenants ? `${lease.tenants.first_name} ${lease.tenants.last_name}` : ""} ·
+            {" "}{formatDateFR(lease.start_date)} → {formatDateFR(lease.end_date)}
+          </p>
+          <div className="mt-5 grid grid-cols-2 sm:grid-cols-3 gap-3 max-w-lg">
+            {[
+              { label: "Loyer mensuel", value: formatFCFA(lease.rent_fcfa) },
+              { label: "Caution", value: formatFCFA(lease.deposit_fcfa ?? 0) },
+              { label: "Statut", value: lease.status === "active" ? "Actif" : lease.status },
+            ].map((s) => (
+              <div key={s.label} className="rounded-xl bg-white/10 px-3 py-2 backdrop-blur-sm">
+                <p className="text-[11px] uppercase tracking-wide text-gray-300">{s.label}</p>
+                <p className="text-lg font-bold">{s.value}</p>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
 
       {/* Caution / séquestre */}

@@ -86,16 +86,23 @@ export default function DashboardProvidersPage() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {providers.map((p) => (
-            <Card key={p.id} className="hover:border-[#f97316]/50">
+            <Card key={p.id} className="border-slate-200/70 transition-all hover:-translate-y-1 hover:border-[#f97316]/50 hover:shadow-md">
               <CardContent className="py-4">
-                <div className="flex items-center justify-between">
-                  <button className="font-semibold text-[#1a2744] hover:underline text-left" onClick={() => openProvider(p)}>{p.display_name ?? "Prestataire"}</button>
-                  <Badge className="bg-green-100 text-green-700 gap-1"><CheckCircle2 className="w-3 h-3" /> Vérifié</Badge>
-                </div>
-                <p className="text-sm text-gray-500 mt-1">{(p.trades ?? []).join(", ")}</p>
-                <div className="flex items-center gap-3 mt-2 text-xs text-gray-500">
-                  <span className="flex items-center gap-1"><Star className="w-3.5 h-3.5 text-amber-500" /> {Number(p.trust_score ?? 0).toFixed(1)}</span>
-                  {p.quartier && <span className="flex items-center gap-1"><MapPin className="w-3.5 h-3.5" /> {p.quartier}</span>}
+                <div className="flex items-start gap-3">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#f97316] to-[#ea580c] text-lg font-bold text-white shadow-sm">
+                    {(p.display_name ?? "P").charAt(0).toUpperCase()}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center justify-between gap-2">
+                      <button className="truncate font-semibold text-[#1a2744] hover:underline text-left" onClick={() => openProvider(p)}>{p.display_name ?? "Prestataire"}</button>
+                      <Badge className="shrink-0 bg-green-100 text-green-700 gap-1"><CheckCircle2 className="w-3 h-3" /> Vérifié</Badge>
+                    </div>
+                    <p className="text-sm text-gray-500 mt-0.5 truncate">{(p.trades ?? []).join(", ")}</p>
+                    <div className="flex items-center gap-3 mt-2 text-xs text-gray-500">
+                      <span className="flex items-center gap-1"><Star className="w-3.5 h-3.5 text-amber-500" /> {Number(p.trust_score ?? 0).toFixed(1)}</span>
+                      {p.quartier && <span className="flex items-center gap-1"><MapPin className="w-3.5 h-3.5" /> {p.quartier}</span>}
+                    </div>
+                  </div>
                 </div>
                 <Button size="sm" variant={trusted.has(p.id) ? "outline" : "default"}
                   className={`mt-3 ${trusted.has(p.id) ? "" : "bg-[#1a2744] hover:bg-[#0f1a2e] text-white"}`} onClick={() => toggleTrust(p)}>
