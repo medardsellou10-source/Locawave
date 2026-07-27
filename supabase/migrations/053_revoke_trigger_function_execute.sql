@@ -1,0 +1,11 @@
+-- 053 — Révocation d'EXECUTE sur la fonction trigger de soumission de phase.
+--
+-- Postgres refuse déjà l'appel direct d'une fonction trigger
+-- (« trigger functions can only be called as triggers »), donc il n'y avait pas
+-- d'exposition réelle. Mais le linter Supabase la signalait comme appelable via
+-- /rest/v1/rpc : on révoque pour lever toute ambiguïté.
+--
+-- Le privilège EXECUTE est vérifié à la création du trigger, pas à son
+-- déclenchement. Vérifié après application : une phase passée à « submitted »
+-- génère toujours la notification « Phase à valider — … ».
+REVOKE ALL ON FUNCTION public.notify_milestone_submitted() FROM PUBLIC, anon, authenticated;
