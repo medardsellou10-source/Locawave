@@ -55,13 +55,21 @@ export default async function LocatairePage() {
 
   return (
     <div className="space-y-6">
-      <div className="rounded-2xl bg-gradient-to-br from-[#1a2744] to-[#1e3a5f] p-6 text-white shadow-sm">
+      <div className="relative overflow-hidden rounded-2xl p-6 text-white shadow-sm">
+        <img
+          src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=70"
+          alt="" aria-hidden="true"
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#1a2744]/95 via-[#1a2744]/85 to-[#1e3a5f]/75" />
+        <div className="relative">
         <h1 className="text-2xl font-bold">Bonjour {tenant?.first_name ?? ""} 👋</h1>
-        <p className="text-sm text-gray-300">Votre espace locataire — loyers, quittances, incidents et services.</p>
+        <p className="text-sm text-gray-200">Votre espace locataire — loyers, quittances, incidents et services.</p>
         <div className="mt-4 flex gap-2 flex-wrap">
           <Link href="/avantages"><Button size="sm" className="bg-white/10 hover:bg-white/20 text-white border-0"><HeartPulse className="w-4 h-4 mr-1" /> Avantages</Button></Link>
           <Link href="/litiges"><Button size="sm" className="bg-white/10 hover:bg-white/20 text-white border-0"><Scale className="w-4 h-4 mr-1" /> Litiges</Button></Link>
           <Link href="/services"><Button size="sm" className="bg-[#f97316] hover:bg-[#ea580c] text-white"><Sparkles className="w-4 h-4 mr-1" /> Trouver un service</Button></Link>
+        </div>
         </div>
       </div>
 

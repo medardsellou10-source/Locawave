@@ -154,8 +154,14 @@ export default function PrestatairePage() {
 
   return (
     <div className="space-y-6">
-      <div className="rounded-2xl bg-gradient-to-br from-[#1a2744] to-[#1e3a5f] p-6 text-white shadow-sm">
-        <div className="flex items-start justify-between gap-3 flex-wrap">
+      <div className="relative overflow-hidden rounded-2xl p-6 text-white shadow-sm">
+        <img
+          src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1200&q=70"
+          alt="" aria-hidden="true"
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#1a2744]/95 via-[#1a2744]/85 to-[#1e3a5f]/75" />
+        <div className="relative flex items-start justify-between gap-3 flex-wrap">
           <div>
             <h1 className="text-2xl font-bold flex items-center gap-2"><Wrench className="w-6 h-6 text-[#f97316]" /> Espace prestataire</h1>
             {profile ? (

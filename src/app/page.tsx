@@ -8,6 +8,7 @@ import {
   MessageCircle, HeartPulse, ShieldCheck, Camera, MapPin,
 } from "lucide-react"
 import { Hero3DHouses } from "@/components/app/Hero3DHouses"
+import { Reveal } from "@/components/app/Reveal"
 
 const PILLARS = [
   { icon: Search, title: "Trouver", desc: "Annonces vérifiées, recherche par carte et proximité, visites (dont vidéo pour la diaspora).", color: "bg-blue-100 text-blue-600" },
@@ -193,8 +194,8 @@ export default function LandingPage() {
             <p className="text-gray-500 max-w-2xl mx-auto">Du studio à la villa haut de gamme — trouvez, louez et suivez vos biens comme un pro.</p>
           </div>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            {SHOWCASE.map((h) => (
-              <div key={h.label} className="group relative overflow-hidden rounded-2xl shadow-sm ring-1 ring-black/5">
+            {SHOWCASE.map((h, i) => (
+              <Reveal key={h.label} delay={i * 90} className="group relative overflow-hidden rounded-2xl shadow-sm ring-1 ring-black/5">
                 <img src={h.src} alt={h.label} loading="lazy"
                   className="h-56 w-full object-cover transition-transform duration-700 group-hover:scale-110" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-black/0" />
@@ -202,7 +203,7 @@ export default function LandingPage() {
                   <p className="text-sm font-semibold text-white drop-shadow">{h.label}</p>
                 </div>
                 <div className="absolute right-3 top-3 rounded-full bg-white/90 px-2 py-0.5 text-[11px] font-bold text-green-700 opacity-0 transition-opacity group-hover:opacity-100">✓ Vérifié</div>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -217,12 +218,12 @@ export default function LandingPage() {
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-5">
             {PILLARS.map((p, i) => (
-              <div key={p.title} className="relative rounded-2xl border border-gray-100 bg-white p-6 shadow-sm hover:shadow-md transition-shadow">
+              <Reveal key={p.title} delay={i * 80} className="relative rounded-2xl border border-gray-100 bg-white p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all">
                 <span className="absolute -top-3 left-6 text-[11px] font-bold text-white bg-[#1a2744] rounded-full px-2 py-0.5">{String(i + 1).padStart(2, "0")}</span>
                 <div className={`w-12 h-12 rounded-xl ${p.color} flex items-center justify-center mb-4 mt-1`}><p.icon className="w-6 h-6" /></div>
                 <h3 className="text-lg font-bold text-[#1a2744] mb-1">{p.title}</h3>
                 <p className="text-sm text-gray-500 leading-relaxed">{p.desc}</p>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -236,12 +237,12 @@ export default function LandingPage() {
             <p className="text-gray-500 max-w-2xl mx-auto">Des outils pensés pour le Sénégal et la diaspora — simples, mobiles et sécurisés.</p>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
-            {FEATURES.map((item) => (
-              <div key={item.title} className="bg-white rounded-2xl p-7 shadow-sm hover:shadow-md transition-shadow">
+            {FEATURES.map((item, i) => (
+              <Reveal key={item.title} delay={(i % 3) * 90} className="bg-white rounded-2xl p-7 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all">
                 <div className={`w-12 h-12 rounded-xl ${item.color} flex items-center justify-center mb-4`}><item.icon className="w-6 h-6" /></div>
                 <h3 className="text-lg font-semibold text-[#1a2744] mb-2">{item.title}</h3>
                 <p className="text-gray-500 text-sm leading-relaxed">{item.desc}</p>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -306,8 +307,8 @@ export default function LandingPage() {
             <p className="text-gray-500 max-w-2xl mx-auto">Chacun son espace, ses outils, sa tranquillité.</p>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
-            {PERSONAS.map((p) => (
-              <div key={p.role} className="flex flex-col rounded-2xl bg-white p-7 shadow-sm hover:shadow-md transition-shadow border border-gray-100">
+            {PERSONAS.map((p, i) => (
+              <Reveal key={p.role} delay={i * 110} className="flex flex-col rounded-2xl bg-white p-7 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all border border-gray-100">
                 <div className="text-3xl mb-3">{p.emoji}</div>
                 <h3 className="text-lg font-bold text-[#1a2744] mb-3">{p.title}</h3>
                 <ul className="space-y-2 mb-6 flex-1">
@@ -316,7 +317,7 @@ export default function LandingPage() {
                   ))}
                 </ul>
                 <Link href={p.role === "tenant" ? "/annonces" : `/register?role=${p.role}`} className={`text-center py-2.5 rounded-xl font-semibold text-white bg-gradient-to-r ${p.color} hover:opacity-95 transition-opacity`}>{p.cta}</Link>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>
