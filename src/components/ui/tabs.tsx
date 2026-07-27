@@ -15,7 +15,9 @@ function Tabs({
       data-slot="tabs"
       data-orientation={orientation}
       className={cn(
-        "group/tabs flex gap-2 data-horizontal:flex-col",
+        // L'attribut réel est data-orientation="horizontal" : le sélecteur doit le viser,
+        // sinon la racine reste en flex-row et le contenu s'affiche à côté des onglets.
+        "group/tabs flex gap-2 data-[orientation=horizontal]:flex-col",
         className
       )}
       {...props}
