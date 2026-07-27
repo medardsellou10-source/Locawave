@@ -74,9 +74,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr" className={cn("font-sans", geistSans.variable)}>
+    <html lang="fr" className={cn("font-sans", geistSans.variable)} suppressHydrationWarning>
+      {/* suppressHydrationWarning : certaines extensions de navigateur (gestionnaires de
+          mots de passe, etc.) injectent des attributs dans <body> avant l'hydratation,
+          ce qui déclenchait des erreurs React #418/#423 côté client. */}
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        suppressHydrationWarning
       >
         {children}
         <Toaster richColors position="top-center" />
