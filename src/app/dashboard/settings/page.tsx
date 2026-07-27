@@ -14,7 +14,45 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
 import { toast } from "sonner"
-import { Building2, MessageCircle, CreditCard, Shield, Zap, Clock, CheckCircle2 } from "lucide-react"
+import { Building2, MessageCircle, CreditCard, Shield, Zap, Clock, CheckCircle2, AlertTriangle, PlayCircle } from "lucide-react"
+
+type AutomationSettings = {
+  reminder_before_days: number
+  reminder_on_due: boolean
+  reminder_late_days: number
+}
+type Health = {
+  vault_configured: boolean
+  last_success: string | null
+  jobs: { job: string; schedule: string; active: boolean; last_run: string | null; last_status: string | null }[]
+}
+
+const JOB_LABELS: Record<string, string> = {
+  lw_rent_reminders: "Rappels de loyer (application)",
+  lw_mark_overdue: "Marquage automatique des retards",
+  lw_lease_expiry: "Alerte baux arrivant à échéance",
+  lw_alert_landlord: "Alerte impayés au propriétaire",
+  lw_monthly_report: "Rapport mensuel",
+  lw_annual_report: "Rapport annuel",
+  lw_reminder_j5: "Rappel WhatsApp — avant échéance",
+  lw_reminder_j0: "Rappel WhatsApp — jour J",
+  lw_reminder_j3_late: "Relance WhatsApp — retard",
+  generate_due_bookings_daily: "Réservations récurrentes (services)",
+}
+
+/** Traduit une expression cron simple en phrase lisible. */
+function cronToText(c: string): string {
+  const p = c.trim().split(/\s+/)
+  if (p.length !== 5) return c
+  const [min, hour, dom, , dow] = p
+  const t = `${hour.padStart(2, "0")}:${min.padStart(2, "0")}`
+  if (dom !== "*") return `Le ${dom} du mois · ${t}`
+  if (dow !== "*") {
+    const days = ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"]
+    return `Chaque ${days[Number(dow)] ?? dow} · ${t}`
+  }
+  return `Chaque jour · ${t}`
+}
 import type { Database } from "@/types/database"
 
 type NotificationTemplate = Database["public"]["Tables"]["notification_templates"]["Row"]
@@ -29,6 +67,31 @@ export default function SettingsPage() {
   const [address, setAddress] = useState("")
   const [templates, setTemplates] = useState<NotificationTemplate[]>([])
   const [saving, setSaving] = useState(false)
+  const [autoS, setAutoS] = useState<AutomationSettings>({ reminder_before_days: 5, reminder_on_due: true, reminder_late_days: 3 })
+  const [health, setHealth] = useState<Health | null>(null)
+  const [savingAuto, setSavingAuto] = useState(false)
+  const [testing, setTesting] = useState(false)
+
+  async function saveAutomation() {
+    if (!org) return
+    setSavingAuto(true)
+    const { error } = await supabase.from("org_automation_settings")
+      .upsert({ org_id: org.id, ...autoS }, { onConflict: "org_id" })
+    setSavingAuto(false)
+    if (error) { toast.error("Erreur lors de l'enregistrement"); return }
+    toast.success("Réglages enregistrés")
+  }
+
+  async function testReminders() {
+    setTesting(true)
+    const { data, error } = await supabase.rpc("trigger_rent_reminders")
+    setTesting(false)
+    if (error) { toast.error("Erreur lors du test"); return }
+    const n = Number(data ?? 0)
+    toast.success(n > 0
+      ? `${n} rappel(s) généré(s) — visibles dans vos notifications`
+      : "Aucune échéance ne correspond à vos réglages aujourd'hui")
+  }
 
   useEffect(() => {
     if (!org) return
@@ -43,6 +106,17 @@ export default function SettingsPage() {
       .eq("org_id", org.id)
       .order("type")
       .then(({ data }) => setTemplates(data ?? []))
+
+    supabase
+      .from("org_automation_settings")
+      .select("reminder_before_days, reminder_on_due, reminder_late_days")
+      .eq("org_id", org.id)
+      .maybeSingle()
+      .then(({ data }) => { if (data) setAutoS(data as AutomationSettings) })
+
+    supabase.rpc("automation_health").then(({ data }) => {
+      if (data) setHealth(data as unknown as Health)
+    })
   }, [org])
 
   async function saveOrg() {
@@ -195,50 +269,114 @@ export default function SettingsPage() {
 
         {/* Automatisations */}
         <TabsContent value="automations">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2"><Zap className="w-5 h-5 text-[#f97316]" /> Routines automatiques</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <p className="text-sm text-gray-500">
-                Ces tâches s'exécutent automatiquement chaque jour (cron). Les rappels WhatsApp suivent
-                l'état actif/inactif défini dans l'onglet « Messages ».
-              </p>
-              {(() => {
-                const tplActive = (type: string) => templates.find((t) => t.type === type)?.is_active ?? true
-                const ROUTINES: { label: string; when: string; on: boolean; system?: boolean }[] = [
-                  { label: "Rappel loyer J-5", when: "Chaque jour · 08:00", on: tplActive("reminder_j5") },
-                  { label: "Rappel jour J", when: "Chaque jour · 10:00", on: tplActive("reminder_j0") },
-                  { label: "Relance retard (J+3)", when: "Chaque jour · 10:00", on: tplActive("reminder_j3_late") },
-                  { label: "Alerte impayés au propriétaire", when: "Chaque lundi · 09:00", on: tplActive("alert_landlord") },
-                  { label: "Marquage automatique des retards", when: "Chaque jour · 06:30", on: true, system: true },
-                  { label: "Alerte baux expirant", when: "Chaque jour · 08:00", on: true, system: true },
-                  { label: "Rapport mensuel", when: "Le 1er du mois · 07:00", on: true, system: true },
-                  { label: "Réservations récurrentes (services)", when: "Chaque jour · 06:00", on: true, system: true },
-                ]
-                return (
+          <div className="space-y-4">
+            {/* Réglages du propriétaire */}
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="flex items-center gap-2"><Zap className="w-5 h-5 text-[#f97316]" /> Mes rappels de loyer</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <p className="text-sm text-gray-500">
+                  Choisissez quand vos locataires sont relancés. Les rappels apparaissent dans
+                  l'application (vous et votre locataire) — sans dépendre d'un service externe.
+                </p>
+
+                <div className="grid gap-4 sm:grid-cols-3">
+                  <div>
+                    <Label>Premier rappel</Label>
+                    <div className="flex items-center gap-2">
+                      <Input type="number" min={1} max={15} value={autoS.reminder_before_days}
+                        onChange={(e) => setAutoS({ ...autoS, reminder_before_days: Number(e.target.value) })} className="w-20" />
+                      <span className="text-sm text-gray-500">jours avant l'échéance</span>
+                    </div>
+                  </div>
+                  <div>
+                    <Label>Relance de retard</Label>
+                    <div className="flex items-center gap-2">
+                      <Input type="number" min={1} max={30} value={autoS.reminder_late_days}
+                        onChange={(e) => setAutoS({ ...autoS, reminder_late_days: Number(e.target.value) })} className="w-20" />
+                      <span className="text-sm text-gray-500">jours après l'échéance</span>
+                    </div>
+                  </div>
+                  <div>
+                    <Label>Le jour de l'échéance</Label>
+                    <button type="button" onClick={() => setAutoS({ ...autoS, reminder_on_due: !autoS.reminder_on_due })}
+                      className={`mt-1 flex h-10 w-full items-center justify-between rounded-md border px-3 text-sm transition-colors ${autoS.reminder_on_due ? "border-green-300 bg-green-50 text-green-700" : "border-gray-200 bg-gray-50 text-gray-500"}`}>
+                      {autoS.reminder_on_due ? "Rappel activé" : "Pas de rappel"}
+                      <span className={`h-4 w-8 rounded-full transition-colors ${autoS.reminder_on_due ? "bg-green-500" : "bg-gray-300"}`}>
+                        <span className={`block h-4 w-4 rounded-full bg-white shadow transition-transform ${autoS.reminder_on_due ? "translate-x-4" : ""}`} />
+                      </span>
+                    </button>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-2">
+                  <Button onClick={saveAutomation} disabled={savingAuto} className="bg-[#f97316] hover:bg-[#ea580c] text-white">
+                    {savingAuto ? "Enregistrement…" : "Enregistrer mes réglages"}
+                  </Button>
+                  <Button variant="outline" onClick={testReminders} disabled={testing}>
+                    <PlayCircle className="w-4 h-4 mr-1" /> {testing ? "Exécution…" : "Tester maintenant"}
+                  </Button>
+                  <span className="text-xs text-gray-400">
+                    « Tester » applique vos réglages immédiatement sur les échéances concernées.
+                  </span>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* État réel du système */}
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-base">État du système</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <div className="rounded-lg border p-3">
+                  <div className="flex items-center justify-between gap-3">
+                    <div>
+                      <p className="text-sm font-medium text-[#1a2744]">Rappels dans l'application</p>
+                      <p className="text-xs text-gray-500">Calculés chaque jour à 07:00, directement par la plateforme.</p>
+                    </div>
+                    <Badge className="bg-green-100 text-green-700 gap-1"><CheckCircle2 className="w-3.5 h-3.5" /> Opérationnel</Badge>
+                  </div>
+                </div>
+
+                <div className="rounded-lg border p-3">
+                  <div className="flex items-center justify-between gap-3">
+                    <div>
+                      <p className="text-sm font-medium text-[#1a2744]">Envoi WhatsApp</p>
+                      <p className="text-xs text-gray-500">
+                        {health?.vault_configured
+                          ? "Passerelle configurée : les messages partent vers les locataires."
+                          : "Non configuré — les rappels restent visibles dans l'application uniquement."}
+                      </p>
+                    </div>
+                    {health?.vault_configured
+                      ? <Badge className="bg-green-100 text-green-700 gap-1"><CheckCircle2 className="w-3.5 h-3.5" /> Actif</Badge>
+                      : <Badge className="bg-amber-100 text-amber-700 gap-1"><AlertTriangle className="w-3.5 h-3.5" /> À configurer</Badge>}
+                  </div>
+                </div>
+
+                {(health?.jobs ?? []).length > 0 && (
                   <div className="divide-y rounded-lg border">
-                    {ROUTINES.map((r) => (
-                      <div key={r.label} className="flex items-center justify-between gap-3 px-4 py-3">
+                    {(health!.jobs).map((j) => (
+                      <div key={j.job} className="flex items-center justify-between gap-3 px-3 py-2.5">
                         <div>
-                          <p className="text-sm font-medium text-[#1a2744]">{r.label}</p>
-                          <p className="text-xs text-gray-400 flex items-center gap-1"><Clock className="w-3 h-3" /> {r.when}{r.system ? " · système" : ""}</p>
+                          <p className="text-sm text-[#1a2744]">{JOB_LABELS[j.job] ?? j.job}</p>
+                          <p className="text-xs text-gray-400 flex items-center gap-1">
+                            <Clock className="w-3 h-3" /> {cronToText(j.schedule)}
+                            {j.last_run ? ` · dernière exécution ${new Date(j.last_run).toLocaleDateString("fr-FR")}` : " · jamais exécutée"}
+                          </p>
                         </div>
-                        {r.on ? (
-                          <Badge className="bg-green-100 text-green-700 gap-1"><CheckCircle2 className="w-3.5 h-3.5" /> Actif</Badge>
-                        ) : (
-                          <Badge variant="secondary">Inactif</Badge>
-                        )}
+                        <Badge className={j.last_status === "succeeded" ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-600"}>
+                          {j.last_status === "succeeded" ? "OK" : j.last_status ?? "En attente"}
+                        </Badge>
                       </div>
                     ))}
                   </div>
-                )
-              })()}
-              <p className="text-[11px] text-gray-400">
-                Les envois WhatsApp nécessitent que la messagerie soit configurée (Twilio) côté plateforme.
-              </p>
-            </CardContent>
-          </Card>
+                )}
+              </CardContent>
+            </Card>
+          </div>
         </TabsContent>
 
         {/* Facturation */}

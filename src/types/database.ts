@@ -1106,6 +1106,107 @@ export type Database = {
           },
         ]
       }
+      notifications: {
+        Row: {
+          body: string | null
+          channel: string
+          created_at: string | null
+          dedupe_key: string | null
+          delivery_status: string
+          id: string
+          kind: string
+          link: string | null
+          org_id: string | null
+          profile_id: string | null
+          read_at: string | null
+          title: string
+        }
+        Insert: {
+          body?: string | null
+          channel?: string
+          created_at?: string | null
+          dedupe_key?: string | null
+          delivery_status?: string
+          id?: string
+          kind?: string
+          link?: string | null
+          org_id?: string | null
+          profile_id?: string | null
+          read_at?: string | null
+          title: string
+        }
+        Update: {
+          body?: string | null
+          channel?: string
+          created_at?: string | null
+          dedupe_key?: string | null
+          delivery_status?: string
+          id?: string
+          kind?: string
+          link?: string | null
+          org_id?: string | null
+          profile_id?: string | null
+          read_at?: string | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notifications_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "notifications_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      org_automation_settings: {
+        Row: {
+          alert_landlord: boolean
+          channel_inapp: boolean
+          channel_whatsapp: boolean
+          org_id: string
+          reminder_before_days: number
+          reminder_late_days: number
+          reminder_on_due: boolean
+          updated_at: string | null
+        }
+        Insert: {
+          alert_landlord?: boolean
+          channel_inapp?: boolean
+          channel_whatsapp?: boolean
+          org_id: string
+          reminder_before_days?: number
+          reminder_late_days?: number
+          reminder_on_due?: boolean
+          updated_at?: string | null
+        }
+        Update: {
+          alert_landlord?: boolean
+          channel_inapp?: boolean
+          channel_whatsapp?: boolean
+          org_id?: string
+          reminder_before_days?: number
+          reminder_late_days?: number
+          reminder_on_due?: boolean
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "org_automation_settings_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: true
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       organizations: {
         Row: {
           address: string | null
@@ -2514,6 +2615,7 @@ export type Database = {
             }
             Returns: string
           }
+      automation_health: { Args: never; Returns: Json }
       disablelongtransactions: { Args: never; Returns: string }
       dropgeometrycolumn:
         | {
@@ -2650,6 +2752,9 @@ export type Database = {
       is_admin: { Args: never; Returns: boolean }
       locawave_commission_rate: { Args: never; Returns: number }
       longtransactionsenabled: { Args: never; Returns: boolean }
+      lw_edge_command: { Args: { fn: string }; Returns: string }
+      lw_fcfa: { Args: { n: number }; Returns: string }
+      mark_overdue_schedules: { Args: never; Returns: number }
       populate_geometry_columns:
         | { Args: { tbl_oid: unknown; use_typmod?: boolean }; Returns: number }
         | { Args: { use_typmod?: boolean }; Returns: string }
@@ -2694,6 +2799,7 @@ export type Database = {
         Args: { p_provider: string }
         Returns: undefined
       }
+      run_rent_reminders: { Args: never; Returns: number }
       search_listings: {
         Args: {
           p_city?: string
@@ -3328,6 +3434,7 @@ export type Database = {
       tenant_property_ids: { Args: never; Returns: string[] }
       tenant_schedule_ids: { Args: never; Returns: string[] }
       tenant_unit_ids: { Args: never; Returns: string[] }
+      trigger_rent_reminders: { Args: never; Returns: number }
       unlockrows: { Args: { "": string }; Returns: number }
       updategeometrysrid: {
         Args: {
