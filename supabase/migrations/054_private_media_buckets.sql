@@ -13,12 +13,20 @@
 -- lisible : storagePath() en réextrait le chemin, donc aucune migration de
 -- données n'est nécessaire.
 --
--- ATTENTION : un objet déjà servi publiquement peut rester quelques minutes
--- dans le cache CDN après cette migration (vérifié : l'URL nue renvoyait encore
--- 200 depuis le cache, alors qu'un appel avec paramètre anti-cache renvoyait
--- déjà 400). Surtout, tout fichier ayant été public doit être considéré comme
--- potentiellement déjà copié : passer le bucket en privé protège l'avenir, pas
--- le passé.
+-- ATTENTION — deux limites mesurées, pas supposées :
+--
+-- 1. Cache CDN. Les objets publics sont servis avec « Cache-Control: public,
+--    max-age=3600 ». Après cette migration, l'URL publique exacte d'un objet
+--    déjà servi continue de renvoyer 200 depuis le cache Cloudflare
+--    (CF-Cache-Status: HIT) pendant JUSQU'À UNE HEURE, alors que l'origine
+--    refuse déjà (400 dès qu'on ajoute un paramètre qui contourne le cache).
+--    Pour une fuite réelle, il faut donc aussi déplacer ou supprimer l'objet :
+--    fermer le bucket ne suffit pas dans l'heure qui suit.
+--
+-- 2. Le passé n'est pas protégé. Tout fichier ayant été public a pu être copié
+--    pendant qu'il l'était. Cette migration protège l'avenir. En cas de fuite
+--    sur des données clients réelles, la bonne réaction reste de prévenir les
+--    personnes concernées, pas seulement de fermer l'accès.
 
 UPDATE storage.buckets SET public = false WHERE id IN ('chantier', 'reports');
 
