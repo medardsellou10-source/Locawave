@@ -1,13 +1,16 @@
 # Locawave — Campagne de lancement
 
-> Document généré par une orchestration de 12 agents marketing.
-> **9 agents ont abouti, 3 ont échoué sur une limite de session** — les parties
-> manquantes sont listées explicitement à la fin plutôt que comblées au jugé.
+> Document généré par une orchestration de 12 agents marketing — recherche,
+> stratégie, création, plan média, et une critique adversariale chargée de
+> démolir l'ensemble avant que tu n'y mettes ton argent.
 
 **Règle appliquée à tous les chiffres de ce document :** chaque donnée de marché est
 soit sourcée (nom + année), soit marquée comme estimation, soit déclarée non
 vérifiable. Aucun chiffre n'a été inventé pour faire joli. Vérifie le badge avant
 de reprendre une donnée dans un business plan ou face à un investisseur.
+
+**Avant de dépenser le premier franc, lis la section 5.** La critique adversariale
+y liste ce qui cloche dans ce dispositif — c'est la partie la plus utile du document.
 
 ---
 
@@ -16,8 +19,9 @@ de reprendre une donnée dans un business plan ou face à un investisseur.
 1. [Ce que dit la recherche](#1--ce-que-dit-la-recherche)
 2. [Stratégie de campagne](#2--stratégie-de-campagne)
 3. [Les créations, canal par canal](#3--les-créations-canal-par-canal)
-4. [Comment utiliser les prompts](#4--comment-utiliser-les-prompts)
-5. [Ce qui manque encore](#5--ce-qui-manque-encore)
+4. [Plan média et calendrier de lancement](#4--plan-média-et-calendrier-de-lancement)
+5. [La critique adversariale](#5--la-critique-adversariale)
+6. [Comment utiliser les prompts](#6--comment-utiliser-les-prompts)
 
 ---
 
@@ -286,7 +290,7 @@ Chaque promesse est adossée à une fonctionnalité réellement livrée — c'es
 
 ## 3 — Les créations, canal par canal
 
-**32 créations** prêtes à l'emploi. Pour chacune : le texte se copie-colle tel quel
+**37 créations** prêtes à l'emploi. Pour chacune : le texte se copie-colle tel quel
 dans le gestionnaire de publicités, et le prompt d'image se copie-colle tel quel dans
 NanoBanana Pro. Les prompts d'images sont **en anglais** (le modèle y est plus précis)
 mais tout texte à incruster dans le visuel est **en français**, entre guillemets.
@@ -327,6 +331,11 @@ mais tout texte à incruster dans le visuel est **en français**, entre guilleme
 | `TT-06` | TikTok | un homme devant la maison qu'il a fait construire à 5 000 km, qui dit ce que la marque ne  | Ousmane Diallo et la diaspora sénégalaise d'I |
 | `TT-07` | TikTok | « 3 erreurs que font les propriétaires au Sénégal », dont une erreur juridique vraie et gr | Bailleurs résidents au Sénégal et petits prop |
 | `TT-08` | TikTok | la maison qui se construit, mais rythmée par les validations : ce n'est pas le temps qui a | Diaspora Europe et USA en cours de constructi |
+| `PRE-01` | Recrutement des prestataires (maçons, plombiers, électriciens, chefs de chantier) | l'annuaire vérifié transforme l'ouvrage en preuve publique | Maçon / chef de chantier expérimenté, 35-55 a |
+| `PRE-02` | Recrutement des prestataires (maçons, plombiers, électriciens, chefs de chantier) | Le paiement par phase validée, raconté du côté de l'artisan : ce n'est pas un contrôle imp | Chef de chantier ou maçon qui travaille pour  |
+| `PRE-03` | Recrutement des prestataires (maçons, plombiers, électriciens, chefs de chantier) | La douleur nue du travail non payé, dite avec la phrase que tous ont entendue | Électricien, plombier, carreleur indépendant, |
+| `PRE-04` | Recrutement des prestataires (maçons, plombiers, électriciens, chefs de chantier) | La réputation qui se prouve : seuls les clients qui ont réellement travaillé avec vous peu | Plombier ou carreleur installé, bonne réputat |
+| `PRE-05` | Recrutement des prestataires (maçons, plombiers, électriciens, chefs de chantier) | Le renversement du regard : ce n'est plus l'artisan qui cherche du travail, c'est le propr | Chef de chantier, maçon ou entrepreneur du bâ |
 
 ---
 
@@ -1990,7 +1999,663 @@ PLAN 1 (1,5 s) : très léger push-in de 100 % à 106 %, ciel animé en time-lap
 
 ---
 
-## 4 — Comment utiliser les prompts
+## Recrutement des prestataires (maçons, plombiers, électriciens, chefs de chantier) — Facebook feed 1:1, Facebook Reels et TikTok 9:16
+
+> **Note stratégique.** Ordre de diffusion recommandé : PRE-03 (« Je te paierai à la fin. ») et PRE-05 (« Il est à Bergame. ») en tête de test — ce sont les deux seules créas qui parlent d'argent réellement gagné, donc les deux qui feront lever la main. PRE-01 et PRE-04 servent à la conversion des indécis une fois qu'ils ont déjà croisé la marque : elles vendent le statut, pas le chantier. PRE-02 est la créa de démonstration à réserver au retargeting de ceux qui ont ouvert une conversation WhatsApp sans finaliser.\n\nTrois garde-fous de production. Un : ne jamais laisser entendre que Locawave garantit le paiement ou détient les fonds — la formulation exacte, à ne pas déformer dans les commentaires ni dans les réponses WhatsApp, est que le montant reste bloqué chez Wave ou Orange Money et se débloque à la validation du propriétaire. Deux : ne montrer aucun mauvais payeur, aucun client de dos qui s'enfuit, aucun visage coupable — l'adversaire est la parole non écrite, jamais une personne, sinon la créa se retourne contre nos propres propriétaires. Trois : la commission de 5 % sur les travaux doit être annoncée honnêtement dès la première réponse WhatsApp, pas découverte après l'inscription ; auprès d'un artisan, une surprise tarifaire tue la recommandation, et cette cible ne recrute que par recommandation.\n\nDestination unique : click-to-WhatsApp. Un artisan ne remplit pas un formulaire web, et le KYC obligatoire se collecte bien plus vite en conversation (pièce d'identité photographiée, métier, zone, photos de deux chantiers livrés). Le KPI à suivre n'est ni le clic ni le like mais le nombre de profils réellement vérifiés par semaine, et le délai médian entre premier message et validation KYC. Objectif implicite de la séquence : constituer un annuaire assez fourni pour que la campagne diaspora tienne sa promesse — sans une offre vérifiée en place, PRE-05 devient un mensonge le jour où un propriétaire de Bergame ouvrira l'annuaire et n'y trouvera personne dans sa commune.
+
+### `PRE-01` — La fierté du métier — l'annuaire vérifié transforme l'ouvrage en preuve publique. On ne parle pas de plateforme, on parle de ce qu'il a construit.
+
+**Cible :** Maçon / chef de chantier expérimenté, 35-55 ans, Dakar et régions, réputation construite au bouche-à-oreille, présent sur WhatsApp et Facebook.
+
+**Accroche (les 1,5 première seconde) :** « Votre ouvrage parle. »
+
+**Texte de l'annonce**
+
+```
+Votre ouvrage parle. Mais il ne parle qu'à ceux qui passent devant.
+
+Vous avez monté des murs qui tiennent depuis quinze ans. Vous avez livré des chantiers propres, dans les délais. Et pourtant, chaque nouveau client vous découvre comme si vous débutiez.
+
+L'annuaire Locawave existe pour ça : un profil vérifié, vos chantiers en photos, vos avis clients, votre métier et votre zone d'intervention. Les propriétaires — à Dakar comme en France, en Italie ou en Espagne — cherchent dedans avant d'appeler.
+
+Être vérifié, c'est être choisi.
+
+La vérification d'identité (KYC) est obligatoire pour figurer dans l'annuaire. C'est exigeant, et c'est exactement ce qui fait sa valeur : le client sait qui il appelle.
+
+Inscrivez votre profil. Laissez votre travail parler plus fort.
+```
+
+**Texte à incruster dans le visuel :** `VOTRE OUVRAGE PARLE.`
+
+**Appel à l'action :** Écrivez-nous sur WhatsApp pour créer votre profil vérifié.
+
+**Prompt image — NanoBanana Pro**
+
+```text
+Square 1:1 medium portrait of a proud 47-year-old West African Senegalese master mason with deep dark skin, close-cropped greying beard and calm confident eyes, arms crossed over his chest, wearing a dust-marked navy blue #1a2744 long-sleeve work shirt with rolled-up sleeves and an orange #f97316 hard hat tilted back on his head, standing in the foreground on the packed red sand of a Diamniadio plot in front of a freshly completed R+1 concrete-block house with clean grey rendered walls, new metal roof sheets and empty window frames, a wheelbarrow and neat stacks of hollow blocks softly out of focus behind him, bright dry-season late-morning sunlight raking across the facade and catching the cement dust in the air, shot on a 50mm lens at f/2.8 with shallow depth of field and natural skin texture, warm ochre and dusty grey palette punctuated by the orange #f97316 helmet and navy #1a2744 shirt, clean bold French sans-serif text overlaid across the lower third in white with the words "VOTRE OUVRAGE PARLE." and directly beneath it a small orange #f97316 rounded badge containing the white words "Profil vérifié", photorealistic documentary advertising photography, square 1:1 format.
+```
+
+**Animation image → vidéo**
+
+Slow push-in de 4 secondes vers le visage du maçon (léger, 8 % de zoom), avec un très discret parallax de la maison en arrière-plan qui recule. À la seconde 3, le badge orange « Profil vérifié » apparaît en fondu-échelle rapide (0,3 s). Maintenir 1 seconde. Transition sortante : coupe franche sur noir de 2 images, puis plan suivant.
+
+**Voix off / dialogue**
+
+> Voix off masculine, française teintée de wolof, posée, sans emphase publicitaire : « Ton travail, tout le monde le voit. Mais personne ne sait que c'est toi. Sur Locawave, ton profil est vérifié, tes chantiers sont en photos, tes clients laissent leur avis. Être vérifié, c'est être choisi. »
+
+### `PRE-02` — Le paiement par phase validée, raconté du côté de l'artisan : ce n'est pas un contrôle imposé, c'est une garantie d'être payé phase après phase au lieu d'attendre la fin.
+
+**Cible :** Chef de chantier ou maçon qui travaille pour des propriétaires diaspora, habitué à courir après les tranches de paiement.
+
+**Accroche (les 1,5 première seconde) :** « Phase validée. Phase payée. »
+
+**Texte de l'annonce**
+
+```
+Phase validée. Phase payée.
+
+Sur un chantier Locawave, le travail est découpé en phases : fondations, élévation, toiture, finitions. À la fin de chaque phase, vous soumettez vos photos et vos vidéos depuis votre téléphone. Le propriétaire regarde, valide — et le paiement de cette phase se débloque.
+
+Pas à la fin du chantier. À la fin de la phase.
+
+Locawave ne détient jamais votre argent. Le montant reste bloqué chez Wave ou Orange Money, et il part vers vous dès la validation. Vous ne dépendez plus d'un appel, d'un rappel, d'une promesse.
+
+Vous montrez. Vous êtes payé. Vous passez à la suite.
+```
+
+**Texte à incruster dans le visuel :** `PHASE VALIDÉE. PHASE PAYÉE.`
+
+**Appel à l'action :** Rejoignez l'annuaire des prestataires vérifiés — écrivez-nous sur WhatsApp.
+
+**Prompt image — NanoBanana Pro**
+
+```text
+Vertical 9:16 tight close-up of the strong cement-dusted hands of a 40-year-old West African Senegalese builder holding a smartphone at chest height, his dark skin scratched and calloused, a frayed orange #f97316 wristband on his left wrist and the sleeve of a navy blue #1a2744 work jacket visible at the edge of frame, the bright phone screen filling the centre of the image and clearly displaying a French mobile app interface on a navy #1a2744 background with the white header "Chantier — Villa Ngor" and a vertical list of phases each on its own row: "Fondations — payée" with a small grey check, "Élévation — validée par le propriétaire" with a bright orange #f97316 check, and beneath it an orange #f97316 rounded banner with white text "Paiement débloqué · 1 250 000 FCFA", behind the phone a softly blurred half-built concrete-block wall of a Diamniadio construction site with reinforcement bars against a pale dry-season sky, warm late-afternoon sunlight from the left rimming the fingers, shot on an 85mm macro lens at f/4 with the screen perfectly legible and the background melting away, bold white French sans-serif text across the top of the frame reading "PHASE VALIDÉE. PHASE PAYÉE.", photorealistic advertising photography, vertical 9:16 format.
+```
+
+**Animation image → vidéo**
+
+Plan de 5 secondes. Départ sur un très léger travelling latéral droite-gauche (3 %) pour donner du poids aux mains, puis zoom progressif sur l'écran du téléphone (de 100 % à 135 %) entre la seconde 1 et la seconde 4, cadrant en fin de mouvement uniquement la bannière orange « Paiement débloqué · 1 250 000 FCFA ». Micro-shake de main volontaire pour l'authenticité. Transition sortante : flash blanc de 3 images.
+
+**Voix off / dialogue**
+
+> Voix off masculine calme : « Tu finis l'élévation. Tu prends tes photos. Le propriétaire valide. Et l'argent de cette phase part. Pas à la fin du chantier — à la fin de la phase. »
+
+### `PRE-03` — La douleur nue du travail non payé, dite avec la phrase que tous ont entendue. Aucune accusation, aucun mauvais payeur montré : l'adversaire est la promesse orale.
+
+**Cible :** Électricien, plombier, carreleur indépendant, 28-45 ans, qui a déjà perdu des semaines de travail sur une parole donnée.
+
+**Accroche (les 1,5 première seconde) :** « « Je te paierai à la fin. » »
+
+**Texte de l'annonce**
+
+```
+« Je te paierai à la fin. »
+
+Vous connaissez la phrase. Vous connaissez aussi ce qui vient après : le chantier qui s'arrête, le client qu'on ne joint plus, les journées travaillées qui ne rentrent nulle part.
+
+Ce n'est pas un problème d'honnêteté. C'est un problème d'écrit.
+
+Sur Locawave, rien ne repose sur une parole. Le chantier est découpé en phases, chaque phase a un montant en FCFA fixé à l'avance, et le paiement de cette phase se débloque dès que le propriétaire a validé vos preuves. Les échanges restent dans la messagerie de l'application — donc ils existent encore dans six mois. En cas de désaccord, il y a une médiation, et il y a des dates.
+
+Vous n'aurez plus à faire confiance à une phrase.
+```
+
+**Texte à incruster dans le visuel :** `« Je te paierai à la fin. »`
+
+**Appel à l'action :** Créez votre profil vérifié — écrivez-nous sur WhatsApp.
+
+**Prompt image — NanoBanana Pro**
+
+```text
+Vertical 9:16 wide portrait of a tired 33-year-old West African Senegalese electrician sitting alone on a stack of grey hollow concrete blocks at the end of the day, dark skin, short hair, a navy blue #1a2744 polo shirt marked with plaster, coils of electrical cable and a pair of pliers resting beside him, an orange #f97316 helmet set down on the ground at his feet, looking down at a switched-off phone in his hand, surrounded by an unfinished ground-floor concrete structure in a Dakar suburb with bare block walls, exposed conduit and a bare bulb hanging from a wire, deep golden dry-season dusk light entering low from behind through the empty window openings and silhouetting his shoulders, dust suspended in the air, shot on a 35mm lens at f/2 with a slightly desaturated warm palette of concrete grey and amber and the orange #f97316 helmet as the only strong accent, large white French sans-serif text overlaid across the upper third reading "« Je te paierai à la fin. »", photorealistic cinematic documentary photography, vertical 9:16 format.
+```
+
+**Animation image → vidéo**
+
+Plan lent de 6 secondes : push-in très progressif (5 %) accompagné d'un léger tilt vers le bas de l'électricien vers le casque orange posé au sol. La poussière et la lumière rasante doivent bouger légèrement (animation subtile de particules). Le texte reste fixe et immobile pendant tout le plan, puis disparaît en coupe sèche. Transition sortante : coupe directe sur le plan produit (frise des phases) pour créer le contraste douleur → solution.
+
+**Voix off / dialogue**
+
+> Voix off masculine, grave, sans musique sur les trois premières secondes : « Cette phrase-là, tu l'as déjà entendue. » Pause. « Sur Locawave, chaque phase a un montant écrit à l'avance, et le paiement part quand ton travail est validé. Plus rien ne repose sur une parole. »
+
+### `PRE-04` — La réputation qui se prouve : seuls les clients qui ont réellement travaillé avec vous peuvent vous noter. Le bouche-à-oreille devient un actif qui vous suit.
+
+**Cible :** Plombier ou carreleur installé, bonne réputation locale, qui repart de zéro à chaque nouveau quartier ou nouveau client.
+
+**Accroche (les 1,5 première seconde) :** « 14 avis. 14 vrais clients. »
+
+**Texte de l'annonce**
+
+```
+14 avis. 14 vrais clients.
+
+Sur Locawave, personne ne peut vous noter sans avoir réellement travaillé avec vous. Pas de faux commentaires, pas de concurrent qui abîme votre nom, pas d'inconnu qui donne son opinion sur un chantier qu'il n'a jamais vu.
+
+Chaque avis est rattaché à un chantier réel, avec ses phases, ses photos et ses dates.
+
+Résultat : votre réputation arrête d'être une rumeur et devient une preuve. Elle vous suit d'un quartier à l'autre, d'un propriétaire à l'autre — y compris chez ceux qui vivent à l'étranger et qui ne peuvent juger que sur ce qu'ils voient.
+
+Vous avez déjà la réputation. Prenez la preuve qui va avec.
+```
+
+**Texte à incruster dans le visuel :** `14 AVIS. 14 VRAIS CLIENTS.`
+
+**Appel à l'action :** Faites vérifier votre profil — écrivez-nous sur WhatsApp.
+
+**Prompt image — NanoBanana Pro**
+
+```text
+Square 1:1 medium shot of a smiling 38-year-old West African Senegalese plumber with dark skin and a short beard, crouching beside a newly installed chrome sink and copper pipework in a bright freshly tiled bathroom of a Dakar Point E apartment, wearing an orange #f97316 work polo shirt and navy blue #1a2744 trousers with a pipe wrench and a roll of thread tape on the floor next to him, holding up a smartphone toward the camera at arm's length so the screen is sharp and readable, the screen showing a French app profile card on a white background with a small circular photo of the same man, the name "Moustapha Ndiaye — Plomberie", an orange #f97316 verified badge labelled "Vérifié", a row of five orange stars, the large figure "4,8" and beneath it the grey line "14 avis vérifiés · Dakar", soft clean daylight through a frosted window bouncing off white tiles, shot on a 35mm lens at f/4 with everything crisp, palette of white tile, chrome, orange #f97316 and navy #1a2744, bold navy French sans-serif text overlaid along the bottom edge on a white band reading "14 AVIS. 14 VRAIS CLIENTS.", photorealistic bright commercial photography, square 1:1 format.
+```
+
+**Animation image → vidéo**
+
+Plan de 4 secondes. Amorce par un léger dolly-in diagonal vers le téléphone (de 100 % à 120 %) pendant que le fond reste stable, puis, à la seconde 2,5, animation des cinq étoiles qui se remplissent en orange une par une (0,15 s chacune) et de la note « 4,8 » qui monte en compteur de 0,0 à 4,8. Le bandeau de texte du bas glisse depuis le bord inférieur à la seconde 3. Transition sortante : fondu au blanc de 0,4 s.
+
+**Voix off / dialogue**
+
+> Voix off féminine chaleureuse : « Sur Locawave, seul un client qui a vraiment travaillé avec toi peut te noter. Ta réputation arrête d'être une rumeur : elle devient une preuve. »
+
+### `PRE-05` — Le renversement du regard : ce n'est plus l'artisan qui cherche du travail, c'est le propriétaire installé en Europe qui le cherche, lui, dans l'annuaire. Le budget diaspora est le vrai appât.
+
+**Cible :** Chef de chantier, maçon ou entrepreneur du bâtiment qui vise les chantiers de construction financés depuis l'étranger, panier élevé, paiement en tranches.
+
+**Accroche (les 1,5 première seconde) :** « Il est à Bergame. »
+
+**Texte de l'annonce**
+
+```
+Il est à Bergame. Il construit à Diamniadio. Il cherche quelqu'un.
+
+Des milliers de Sénégalais d'Italie, de France, d'Espagne et des États-Unis font construire au pays. Ils ont l'argent, ils ont le terrain — et ils n'ont personne en qui se repérer. Alors ils cherchent, et ils choisissent sur ce qu'ils peuvent vérifier.
+
+Dans l'annuaire Locawave, ils voient votre identité vérifiée, votre métier, votre zone, vos chantiers déjà livrés en photos et vos avis clients. Ils vous écrivent directement dans l'application.
+
+Et une fois le chantier lancé, tout joue pour vous : chaque phase que vous prouvez en photos est une phase qui se paie, et vos preuves horodatées vous protègent le jour où quelqu'un contestera votre travail.
+
+Ce client-là ne vous rencontrera peut-être jamais. Il peut quand même vous choisir.
+```
+
+**Texte à incruster dans le visuel :** `IL EST À BERGAME. IL VOUS CHOISIT ICI.`
+
+**Appel à l'action :** Inscrivez-vous à l'annuaire des prestataires vérifiés sur WhatsApp.
+
+**Prompt image — NanoBanana Pro**
+
+```text
+Vertical 9:16 split-screen diptych with a thin orange #f97316 dividing line across the middle, the top half showing a 46-year-old West African Senegalese man in a grey fleece and knitted cap sitting on the edge of a bed in a small plain apartment in Bergame Italy at night, cold blue window light and a radiator behind him, leaning forward and scrolling attentively on his phone, the bottom half showing the same phone content matched in scale — a French app directory screen on a navy blue #1a2744 background listing provider cards, the top card highlighted with a photo of a Senegalese mason, the name "Ibrahima Fall — Maçonnerie, Diamniadio", an orange #f97316 badge reading "Vérifié", four small thumbnail photos of finished concrete-block houses and the grey line "9 chantiers livrés · 4,9", the card floating over a warm sunlit background photograph of a real R+2 concrete-block construction site in Diamniadio with a Senegalese foreman in an orange #f97316 helmet standing on the first-floor slab, the two halves deliberately contrasting cold European night against warm Senegalese daylight, shot on a 35mm lens, palette of cold blue-grey above and warm ochre below linked by orange #f97316 and navy #1a2744, bold white French sans-serif text across the very bottom reading "IL EST À BERGAME. IL VOUS CHOISIT ICI.", photorealistic advertising photography, vertical 9:16 format.
+```
+
+**Animation image → vidéo**
+
+Plan de 6 secondes en deux temps. Secondes 0 à 2,5 : seule la moitié haute s'anime, léger push-in sur l'homme de Bergame et défilement lent de la liste sur son écran. Seconde 2,5 : le doigt s'arrête, la carte prestataire s'illumine — déclencher au même instant un balayage vertical de haut en bas qui « réveille » la moitié basse (luminosité qui monte de 70 % à 100 % en 0,5 s). Secondes 3 à 6 : slow push-in sur le chef de chantier au Sénégal pendant que le badge orange « Vérifié » pulse une fois. Transition sortante : fondu enchaîné de 0,5 s vers le carton final avec logo.
+
+**Voix off / dialogue**
+
+> Voix off masculine, rythme lent : « Il vit à Bergame. Il construit à Diamniadio. Il ne connaît personne sur place. » Pause d'une seconde. « Alors il cherche dans l'annuaire, et il choisit ce qu'il peut vérifier. Sois vérifié. Sois choisi. »
+
+---
+
+## 4 — Plan média et calendrier de lancement
+
+### Les phases du lancement
+
+#### Phase 1 — Pré-lancement : construire les actifs avant d'acheter de l'audience
+
+**Période.** Semaines 1 à 3  
+**Budget.** SERRÉ : 60 000 FCFA au total, dont 45 000 FCFA de média (recrutement prestataires, ~2 100 FCFA/jour sur 21 jours) et 15 000 FCFA de production (voix off wolof). CONFORTABLE : 350 000 FCFA, dont 170 000 FCFA de média prestataires (~8 000 FCFA/jour) et 180 000 FCFA de production (voix off française et wolof, montage, déclinaisons de formats).  
+**Canaux.** Facebook Marketplace — prospection sortante manuelle (coût média zéro), Groupes Facebook bailleurs Dakar et diaspora Italie/France/Espagne (lecture et commentaires uniquement, aucun lien), WhatsApp Business — mise en place des 4 réponses types, Meta Ads — une seule campagne active : recrutement prestataires, budget minimal
+
+Ne rien vendre. Trois livrables : (1) le pixel, l'API Conversions et les 5 événements de conversion sont branchés et vérifiés — sans eux tout budget dépensé ensuite est de l'argent aveugle ; (2) l'annuaire prestataires compte au moins 20 profils vérifiés KYC, faute de quoi la campagne diaspora promettra quelque chose qui n'existe pas ; (3) les images NanoBanana Pro du feuilleton HERO et des créas Sénégal sont générées, validées et animées. En parallèle, la prospection Marketplace sortante démarre à coût média zéro et doit produire les 10 à 20 premiers inscrits.
+
+**Créations à diffuser :**
+
+- PRE-03 (« Je te paierai à la fin. ») — tête de test recrutement prestataires
+- PRE-05 (« Il est à Bergame. ») — tête de test recrutement prestataires
+- FBM-04 (annonce Services, recrutement prestataires) — publication Marketplace gratuite
+- FBM-02 (annonce Services, bailleurs, « Le carnet ne relance personne ») — publication Marketplace gratuite
+- FBM-01 et FBM-05 (annonces de VRAIS biens de VRAIS clients, avec accord écrit) — vitrine et démonstration silencieuse
+
+#### Phase 2 — Lancement : ouvrir le feuilleton chantier et tester le marché sénégalais
+
+**Période.** Semaines 4 à 6  
+**Budget.** SERRÉ : 240 000 FCFA sur 3 semaines, répartis en 100 000 FCFA Sénégal (≈ 4 700 FCFA/jour) et 140 000 FCFA diaspora (≈ 6 600 FCFA/jour, soit environ un tiers de la France, un tiers de l'Italie, un tiers de l'Espagne). CONFORTABLE : 950 000 FCFA, soit 350 000 FCFA Sénégal (≈ 16 600 FCFA/jour) et 600 000 FCFA diaspora (≈ 28 500 FCFA/jour).  
+**Canaux.** Meta Ads — campagne Sénégal résident (Facebook fil + Reels), objectif Messages / click-to-WhatsApp, Meta Ads — campagne Diaspora Europe (France, Italie, Espagne), ensembles séparés par pays, TikTok organique (aucun budget), Facebook Page et Reels organiques — publication du feuilleton HERO, un épisode tous les deux jours, Marketplace — prospection sortante maintenue à 15-25 messages/jour
+
+Produire VOTRE référence de coûts. Aucun benchmark public fiable n'existe pour le Sénégal : l'objectif de cette phase n'est pas le volume d'inscriptions mais l'obtention de trois chiffres réels — CPM Sénégal, CPM diaspora, coût par conversation WhatsApp ouverte. Deux campagnes strictement séparées (Sénégal résident / diaspora Europe), 4 à 6 créas en test simultané, un ensemble publicitaire par créa. Première coupe à la semaine 5 : toute créa sous 15 % de rétention à 3 secondes est arrêtée.
+
+**Créations à diffuser :**
+
+- HERO-01 (le flou — trois mois, la même photo) — diaspora, acquisition froide
+- HERO-04 (aucune photo depuis 7 jours) — diaspora, acquisition froide, créa la moins chère à décliner
+- FB-01 (le carnet manuscrit) — Sénégal, acquisition froide
+- FB-02 (quittance manuscrite contre PDF) — Sénégal, acquisition froide
+- FB-05 (« Où en est votre chantier aujourd'hui ? ») — Sénégal, acquisition froide
+- HERO-02 et HERO-03 — publication organique uniquement (feuilleton)
+- TT-01, TT-04, TT-06, TT-08 — TikTok organique pur
+
+#### Phase 3 — Amplification : concentrer sur les gagnants et ouvrir le reciblage
+
+**Période.** Semaines 7 à 10  
+**Budget.** SERRÉ : 330 000 FCFA sur 4 semaines — 120 000 FCFA Sénégal froid, 130 000 FCFA diaspora froid, 80 000 FCFA reciblage. Aucun budget TikTok ni LinkedIn : les minimums de plateforme les rendent inaccessibles à ce niveau. CONFORTABLE : 1 800 000 FCFA — 500 000 FCFA Sénégal froid, 700 000 FCFA diaspora froid, 300 000 FCFA reciblage, 200 000 FCFA TikTok Spark Ads, 100 000 FCFA LinkedIn agences.  
+**Canaux.** Meta Ads — acquisition froide sur les créas gagnantes uniquement, Meta Ads — reciblage (vues 75 %, visiteurs PWA, engagement Page, conversations WhatsApp non converties), Meta Ads — audiences similaires 1 % par pays, UNIQUEMENT si ≥ 100 profils source par pays, TikTok Spark Ads (scénario confortable uniquement — minimum plateforme de 50 USD/jour au niveau campagne), LinkedIn Ads agences (scénario confortable uniquement), YouTube — série longue en wolof, organique
+
+Arrêter d'explorer, commencer à exploiter. 70 % du budget média sur les 2 créas gagnantes, montée par paliers de +30 % tous les 3 jours maximum pour ne pas casser la phase d'apprentissage. Activation du reciblage (créa de conversion HERO-05 servie directement aux vues à 75 % de HERO-01, en sautant la pédagogie). Élargissement géographique diaspora et test USA symbolique. À partir de la semaine 9, si le taux d'activation à 48 h est sous 20 %, arrêter d'optimiser le média : le problème est l'onboarding.
+
+**Créations à diffuser :**
+
+- HERO-05 (le pouce suspendu au-dessus du bouton) — créa de conversion, reciblage diaspora prioritaire
+- HERO-06 (la maison existe) — clôture du feuilleton, format 16:9 pour YouTube et page d'accueil
+- FB-04 (« Le prix ne dépend pas de votre loyer ») — reciblage Sénégal, arme de closing
+- FB-06 (« Votre première quittance, ce soir ») — reciblage Sénégal
+- FBD-03 (le retour au pays) et FBD-06 (la bailleuse à distance, Créteil) — élargissement diaspora
+- FBD-02 (« Demander des photos, ce n'est accuser personne ») — désamorçage de l'objection familiale
+- TT-03, TT-05, TT-07 — TikTok, versions wolof sur le même montage
+- FBM-06 — support de la prospection agences
+- PRE-01, PRE-02, PRE-04 — maintien du flux prestataires
+
+#### Phase 4 — Fidélisation : transformer les premiers clients en canal d'acquisition
+
+**Période.** Semaines 11 à 12  
+**Budget.** SERRÉ : 120 000 FCFA — 70 000 FCFA de reciblage et amplification des témoignages, 50 000 FCFA de récompenses de parrainage. CONFORTABLE : 500 000 FCFA — 250 000 FCFA de reciblage et Spark Ads témoignages, 150 000 FCFA de récompenses de parrainage, 100 000 FCFA de production des témoignages (déplacements, tournage, montage).  
+**Canaux.** Module de parrainage intégré (in-app + WhatsApp), Meta Ads — reciblage et créas de témoignage, TikTok et Reels — Spark Ads sur les témoignages ayant pris en organique, Rapport hebdomadaire propriétaire (fonctionnalité livrée) — meilleur argument de renouvellement, Avis vérifiés sur l'annuaire prestataires
+
+Basculer du média payé vers la preuve sociale. Activation du module de parrainage déjà en production auprès de 100 % de la base, publication des 3 à 5 premiers témoignages clients RÉELS (jamais un script joué présenté comme un client), réinjection de ces témoignages en Spark Ads et en Reels. Réduction de 40 % du budget d'acquisition froide au profit du reciblage et des témoignages. Livrable final : le document de référence interne des coûts médias Locawave, qui remplace définitivement tous les chiffres de blogs utilisés en hypothèse au départ.
+
+**Créations à diffuser :**
+
+- TT-02 (storytime — la caution perdue faute d'écrit) — modèle de structure pour les témoignages réels
+- TT-06 (témoignage face caméra diaspora) — modèle de structure, à retourner avec un vrai client
+- HERO-06 — carte de fin de tous les montages de témoignage
+- FB-04 — argument de conversion des essais non convertis
+- Témoignages clients réels (à produire en semaine 11) — réinjectés en Spark Ads TikTok et Reels
+
+### Répartition du budget
+
+| Poste | Part | Pourquoi |
+|---|---|---|
+| **Meta — acquisition froide diaspora Europe (France, Italie, Espagne)** | 35 % | C'est le poste qui porte le panier élevé : le chantier et la commission de 5 %, seuls capables de rentabiliser un coût d'acquisition européen. Mais c'est aussi le poste le plus cher à l'impression : le CPM facturé est celui du pays de diffusion, estimé 3 300 à 9 800 FCFA les 1 000 impressions [ESTIMATION NON VERIFIEE — dérivé des benchmarks d'agence Junto 2025 et Lebesgue 2026], contre 200 à 1 200 FCFA au Sénégal [ESTIMATION NON VERIFIEE — blog d'agence Flashpub 2026]. Conséquence de production : peu de créas, très travaillées. On ne teste pas 10 visuels ici. |
+| **Meta — acquisition froide Sénégal résident** | 22 % | Facebook est le plus gros réseau ciblable du pays avec 3,60 millions d'utilisateurs touchables par la publicité, dont 66,7 % d'hommes (source : DataReportal, Digital 2026: Senegal) — la démographie naturelle du bailleur de 35 à 60 ans. L'impression y coûte 5 à 15 fois moins cher qu'en Europe [estimation], donc les créas peuvent être nombreuses et jetables. C'est le terrain d'apprentissage : on y achète du signal, pas du volume. |
+| **Meta — reciblage (Sénégal + diaspora)** | 13 % | Poste au meilleur rendement mécanique et pourtant le plus souvent sous-financé. Il sert HERO-05 (le pouce suspendu) aux personnes ayant vu 75 % de HERO-01 : quelqu'un qui a reconnu sa douleur n'a pas besoin de pédagogie. Ne peut fonctionner qu'à partir de la semaine 5, quand les audiences de vues vidéo sont assez fournies. |
+| **TikTok — Spark Ads (scénario confortable uniquement)** | 8 % | Réservé au budget confortable pour une raison arithmétique : TikTok Ads impose 50 USD/jour au niveau campagne et 20 USD/jour au niveau groupe (≈ 30 000 FCFA/jour minimum), incompatible avec un budget serré. S'ajoutent deux risques assumés : aucune donnée d'audience publicitaire TikTok n'est publiée pour le Sénégal (absente de DataReportal 2025 et 2026), et la plateforme a été suspendue par l'État sénégalais le 2 août 2023 avec un rétablissement jamais officiellement daté. Format Spark Ads exclusivement — on n'amplifie que ce qui a déjà performé en organique. |
+| **LinkedIn — offre Agence 45 000 FCFA/mois (scénario confortable uniquement)** | 4 % | LinkedIn Sénégal compte 1,50 million de membres et croît de +15,4 %/an, la plus forte progression du pays (source : DataReportal, Digital 2026: Senegal). C'est le seul endroit où l'offre Agence se vend sans avoir à expliquer ce qu'est un SaaS. Mais le CPC LinkedIn est structurellement élevé et aucun benchmark Sénégal n'existe : en budget serré, on approche les agences à la main via leurs propres annonces Marketplace, à coût zéro. |
+| **Production créative (génération d'images, voix off wolof et française, montage, déclinaisons de formats)** | 10 % | Poste non compressible et systématiquement sous-estimé. Deux montages sont nécessaires, pas un : voix off wolof pour le Sénégal, français pour la diaspora, sur des timelines identiques. NanoBanana Pro dérape sur les longues chaînes de texte : prévoir 3 à 4 générations par prompt et ne garder que les versions où les montants sont écrits avec espace (220 000 FCFA, jamais 220,000) et les accents français exacts. |
+| **Parrainage et récompenses clients** | 5 % | Le module de parrainage est déjà en production. Sur une cible aussi étroite que le bailleur sénégalais — dont personne ne connaît le nombre, aucune donnée publique n'existant sur ce point — le bouche-à-oreille vaut probablement plus que le budget média. Une récompense financée est presque toujours moins chère qu'une impression achetée en Europe. |
+| **Réserve non allouée** | 3 % | Rachat de la créa qui explose de façon inattendue, ou absorption d'une hausse d'enchères saisonnière. Une réserve nulle oblige à couper un gagnant pour financer un test — c'est la pire décision média possible. |
+
+### Calendrier semaine par semaine
+
+**S1**
+
+- Créer le Business Manager Meta, le compte publicitaire, la Page Facebook Locawave et le compte TikTok Business. Vérifier le domaine, installer le pixel Meta sur la PWA et l'événement API Conversions.
+- Définir et brancher 5 événements de conversion serveur : Inscription_essai, Bien_cree, Locataire_ajoute, Quittance_emise, Chantier_phase_creee. Sans ces événements, aucune optimisation ni aucun apprentissage n'est possible — c'est prioritaire sur toute création.
+- Instrumenter les 200 premiers inscrits : champs obligatoires nombre de biens, quartier, pays de résidence, chantier oui/non, canal d'origine. Aucune donnée publique n'existe sur le nombre de bailleurs au Sénégal : cette base sera l'unique source de vérité du plan.
+- Ouvrir le numéro WhatsApp Business, écrire les 4 réponses types (ESSAI, CHANTIER, PRESTATAIRE, AGENCE) et le script de prospection Marketplace en 4 messages.
+- Générer sous NanoBanana Pro les images de PRE-03 et PRE-05 (recrutement prestataires) en priorité — l'annuaire doit exister avant que la campagne diaspora ne le promette.
+
+**S2 — Production créative et amorçage organique**
+
+- Générer et valider les images du feuilleton HERO-01 à HERO-06, plus FB-05 (Sénégal, chantier) et FB-04 (diaspora, alerte 7 jours). Règle de production : 3 à 4 générations par prompt, ne garder que la version où les montants sont écrits avec espace (220 000 FCFA, jamais 220,000) et les accents français sont exacts.
+- Enregistrer les voix off : version française (diaspora) et version wolof (Sénégal) sur exactement les mêmes montages. Faire relire chaque phrase wolof par un locuteur natif.
+- Publier les 2 premières annonces Marketplace de service : FBM-02 (bailleurs, catégorie Services) et FBM-04 (prestataires, catégorie Services).
+- Rejoindre 15 à 20 groupes Facebook : bailleurs et immobilier Dakar, Sénégalais d'Italie/France/Espagne, construire au Sénégal. Ne rien poster cette semaine : lire, commenter utilement, se faire connaître.
+- Lancer la prospection Marketplace sortante : 15 à 25 messages par jour vers les propriétaires ayant publié une annonce de location depuis moins de 48 h.
+
+**S3 — Remplissage de l'annuaire prestataires (premier budget)**
+
+- Activer la campagne Meta Sénégal PRE (objectif Messages / click-to-WhatsApp) avec PRE-03 et PRE-05. Budget faible : 2 000 à 3 000 FCFA/jour en scénario serré, 8 000 FCFA/jour en confortable.
+- Objectif de la semaine : 15 profils prestataires soumis, 8 validés KYC. Sans annuaire garni, la promesse de la campagne diaspora devient un mensonge.
+- Annoncer la commission de 5 % sur les travaux dès la première réponse WhatsApp à un artisan. Une surprise tarifaire tue la recommandation, et cette cible ne recrute que par recommandation.
+- Publier FBM-01 (annonce d'un vrai bien d'un vrai client, avec son accord écrit) et FBM-05. Jamais d'annonce immobilière inventée : cela fait bannir de Marketplace.
+- Relever et noter le CPM réel et le coût par conversation observés au Sénégal. C'est le premier chiffre fiable du dossier — aucun benchmark public n'existe pour le Sénégal.
+
+**S4 — Ouverture du feuilleton chantier (diaspora)**
+
+- Lancer la campagne Diaspora Europe avec HERO-01 (le flou) et HERO-04 (alerte 7 jours) en parallèle, dans deux ensembles publicitaires distincts, objectif Messages WhatsApp.
+- Lancer la campagne Sénégal résident acquisition froide avec FB-01 (Sénégal, carnet), FB-02 (quittance manuscrite vs PDF) et FB-05 (Sénégal, chantier), un ensemble par créa.
+- Ne jamais mélanger diaspora et Sénégal dans un même ensemble publicitaire : ce sont deux marchés d'enchères et deux économies totalement différents.
+- Diffusion en soirée : fenêtre 20 h-21 h UTC. Elle touche Dakar en soirée, Paris/Rome/Madrid au coucher et New York en fin d'après-midi. À valider sur 3 semaines avant de figer.
+- Publier HERO-01 puis HERO-02 en organique sur la Page et TikTok, un épisode tous les deux jours, entre 20 h et 22 h heure de Paris.
+
+**S5 — Densification et premières coupes**
+
+- Première décision de coupe : toute créa sous 15 % de rétention à 3 secondes est arrêtée. Toute créa au-dessus de 25 % voit son budget doublé.
+- Ajouter FB-03 (diaspora, retour au pays) et FB-06 (Sénégal, essai gratuit) dans les ensembles gagnants.
+- Publier HERO-03 puis HERO-04 en organique. HERO-04 est la créa la moins chère à décliner : changer le nombre de jours, la ville, le prénom, et produire 3 variantes.
+- Créer les audiences de reciblage : vues à 75 % de vidéo (180 jours), visiteurs de la PWA, ouvreurs de conversation WhatsApp non convertis.
+- Lancer les 4 premiers scripts TikTok en organique pur : TT-01, TT-04, TT-06, TT-08. Aucun budget TikTok à ce stade.
+
+**S6 — Bascule sur la conversion**
+
+- Activer le retargeting Meta avec HERO-05 (le pouce suspendu) servi directement aux vues à 75 % de HERO-01. Quelqu'un qui a reconnu sa douleur n'a pas besoin de pédagogie, il a besoin de voir le pouce s'arrêter.
+- Activer le retargeting Sénégal avec FB-04 (le prix ne dépend pas du loyer) et FB-06 (essai gratuit).
+- Publier HERO-05 puis HERO-06 en organique, et monter la version longue 60-90 s en 16:9 pour YouTube et la page d'accueil.
+- Premier bilan chiffré à 30 jours de diffusion : coût par conversation WhatsApp Sénégal, coût par conversation diaspora, taux d'activation à 48 h. Ces trois chiffres deviennent la référence interne — ils remplacent définitivement tout benchmark de blog.
+- Contacter 3 à 5 micro-influenceurs sénégalais de la diaspora (Bergame, Milan, Créteil) pour des Spark Ads. Les micro-créateurs surperforment les célébrités sur ce marché.
+
+**S7 — Amplification des gagnants**
+
+- Concentrer 70 % du budget média sur les 2 créas gagnantes identifiées, en montant par paliers de +30 % tous les 3 jours maximum pour ne pas casser la phase d'apprentissage.
+- Créer les audiences similaires (Lookalike) 1 % par pays — uniquement si la base source atteint 100 inscrits par pays. En dessous, Meta produit une audience de bruit : ne pas la lancer.
+- Ouvrir le budget TikTok Spark Ads en boostant uniquement les posts organiques ayant déjà dépassé 25 % de rétention à 3 s. Réservé au scénario confortable : TikTok Ads impose 50 USD/jour minimum au niveau campagne (≈ 30 000 FCFA/jour), incompatible avec le budget serré.
+- Lancer la campagne LinkedIn agences (scénario confortable uniquement) avec FBM-06 en visuel et l'argument 45 000 FCFA/mois pour toute l'agence.
+- Publier la série YouTube longue en wolof : « Suivre un chantier depuis l'étranger », 3 épisodes de 6 à 10 minutes. Coût quasi nul, concurrence quasi nulle sur ce créneau.
+
+**S8 — Élargissement géographique**
+
+- Ajouter les villes secondaires diaspora : Turin, Gênes, Brescia, Séville, Murcie, Lleida, Rouen, Bordeaux. Un ensemble par pays, jamais un ensemble multi-pays.
+- Ajouter le test USA à budget symbolique (New York, Cincinnati/Ohio). L'Amérique du Nord ne représente que 3 % de la diaspora sénégalaise (source : profil migratoire ANSD/OIM) : marché test, pas priorité.
+- Décliner les créas gagnantes en 3 variantes de 3 premières secondes différentes, même corps de vidéo. C'est le levier de performance le moins cher qui existe.
+- Produire les versions 4:5 de FB-01, FB-03 et FB-06 (Sénégal) : c'est le format qui occupe le plus de hauteur dans le fil mobile.
+- Relancer les annonces Marketplace de service (republier plutôt que modifier : la republication remonte dans le fil).
+
+**S9 — Optimisation du tunnel, pas du média**
+
+- Arrêter d'optimiser le haut de tunnel. Si le taux d'activation à 48 h est sous 20 %, le problème n'est plus la publicité : c'est l'onboarding. Prioriser l'accompagnement WhatsApp humain sur les 48 premières heures.
+- Mettre en place la séquence de relance des essais non activés : J+1 WhatsApp humain, J+3 in-app, J+7 dernier message avec la promesse concrète (première quittance ce soir / première série de photos ce soir).
+- Rediffuser TT-03, TT-05 et TT-07 en version wolof sur le même montage, texte incrusté conservé en français.
+- Lancer le test de format : image fixe animée contre vidéo montée sur la même accroche, pour savoir ce qui vaut la peine d'être produit.
+- Recruter les 5 premiers témoignages clients réels pour la phase 4. Ne jamais publier un faux témoignage : un script à la première personne joué par un acteur présenté comme client réel est interdit.
+
+**S10 — Consolidation et arbitrage budgétaire**
+
+- Comparer honnêtement les deux économies : coût par abonné payant Sénégal contre coût par abonné payant diaspora, et revenu commission 5 % par chantier ouvert.
+- Arbitrer : si le coût par lead diaspora dépasse 66 000 FCFA sans chantier ouvert, réduire de moitié et redéployer sur le Sénégal. Un abonné Solo rapporte 120 000 FCFA sur 12 mois — c'est le seul plafond crédible.
+- Ne jamais mettre l'abonnement à 10 000 FCFA en avant sur les créas diaspora : c'est le chantier qui vend, l'abonnement suit.
+- Figer les créneaux horaires sur la base de 3 semaines de données réelles et arrêter de tester les horaires.
+- Préparer le module de parrainage : message pré-écrit, visuel partageable, récompense chiffrée.
+
+**S11 — Bascule sur le parrainage et la preuve sociale**
+
+- Activer la campagne de parrainage auprès de 100 % de la base. Sur une cible aussi étroite, le bouche-à-oreille entre bailleurs et entre familles diaspora vaut probablement plus que le budget média.
+- Publier les 3 premiers témoignages clients réels, tournés sans décor publicitaire, face caméra, en français teinté de wolof. Le registre intime (la peur d'être traité de mbougoul mbook) n'est autorisé QUE dans un témoignage à la première personne, jamais dans une accroche de marque.
+- Réinjecter ces témoignages en Spark Ads TikTok et en Reels — c'est le format le plus rentable car il amplifie un contenu ayant déjà prouvé son engagement organique.
+- Solliciter les avis vérifiés (réservés à ceux qui ont réellement loué ou réservé) sur les prestataires de l'annuaire.
+- Réduire de 40 % le budget d'acquisition froide et le basculer sur le retargeting et les créas de témoignage.
+
+**S12 — Clôture, mesure et référence interne**
+
+- Produire le bilan complet : impressions, rétention 3 s par créa, coût par conversation, taux d'activation 48 h, taux essai→payant J30, coût par abonné payant, chantiers ouverts et commission générée. Séparer strictement Sénégal et diaspora.
+- Écrire le document de référence interne des coûts médias Locawave. Il remplace définitivement tous les chiffres de blogs utilisés en hypothèse au départ.
+- Classer les créations en trois piles : à rediffuser en boucle, à retourner avec un nouveau hook, à abandonner.
+- Documenter la répartition réelle de la base (biens, quartiers, résidence, chantier oui/non). C'est la première donnée fiable jamais produite sur le bailleur sénégalais — elle vaut plus que tout le budget média dépensé.
+- Décider du plan trimestre 2 sur les chiffres relevés, pas sur les hypothèses de départ. Reprendre le feuilleton HERO en boucle sur TikTok en changeant uniquement les 3 premières secondes.
+
+### Paramètres de ciblage à saisir
+
+À reporter tels quels dans le gestionnaire de publicités.
+
+#### Propriétaires bailleurs résidant au Sénégal — cœur de cible locatif · Meta Ads — Facebook fil d'actualité + Facebook Reels (placements manuels, désactiver Audience Network et Messenger)
+
+```
+Objectif : Messages (click-to-WhatsApp), pas Trafic ni Notoriété. Localisations : Sénégal, en ciblage par ville avec rayon — Dakar +25 km, Thiès +15 km, Mbour/Saly +15 km, Diamniadio +10 km. Option « Personnes résidant à cet endroit » (jamais « personnes récemment sur place »). Âge 35-60. Tous genres (l'audience publicitaire Facebook Sénégal est déjà à 66,7 % masculine — source DataReportal, Digital 2026: Senegal — inutile de forcer). Langue : Français. Ciblage détaillé : DÉMARRER SANS AUCUN INTÉRÊT (âge + géo seulement) et laisser l'algorithme travailler. Les catégories d'intérêt Meta sont peu granulaires en Afrique de l'Ouest et une audience trop étroite fait exploser le coût. Si le volume est trop large après 7 jours, restreindre avec : Immobilier, Investissement immobilier, Construction, Propriété locative. Exclusions obligatoires : audience personnalisée « Inscrits Locawave » (liste clients), visiteurs PWA 90 jours, ouvreurs de conversation WhatsApp 30 jours. Placement Marketplace : désactivé en publicité (Marketplace se travaille en organique).
+```
+
+#### Diaspora sénégalaise — Italie · Meta Ads — Facebook Reels + fil + Instagram Reels
+
+```
+Objectif : Messages (click-to-WhatsApp). Localisations en ciblage ville + rayon 25 km : Bergame, Milan, Turin, Brescia, Gênes, Rome. Option « Personnes résidant à cet endroit ». Âge 30-58. Langue : Français ET Wolof (cocher les deux dans Langues). Ciblage détaillé — couche 1 (intérêts d'appartenance) : Sénégal, Dakar, Wolof, Youssou N'Dour, Baye Fall, Touba, Mouridisme, Cheikh Ahmadou Bamba, Lutte sénégalaise, Seneweb, Thiéboudienne. Couche 2 en « restreindre l'audience » (ET DOIT AUSSI correspondre) : Construction de maison, Immobilier, Investissement immobilier, Transfert d'argent. AVERTISSEMENT : les ciblages comportementaux du type « Expatriés — Sénégal » ont été fortement réduits par Meta depuis 2022 ; vérifier leur disponibilité réelle dans le gestionnaire avant de bâtir dessus. Exclusions : inscrits, ouvreurs WhatsApp 30 jours, vues à 95 % de la même vidéo. Ensemble publicitaire SÉPARÉ par pays — jamais un ensemble multi-pays : les enchères italienne, française et espagnole ne se pilotent pas ensemble.
+```
+
+#### Diaspora sénégalaise — France · Meta Ads — Facebook Reels + fil + Instagram Reels
+
+```
+Mêmes réglages que l'Italie, avec les localisations : Île-de-France (Paris, Créteil, Saint-Denis, Montreuil, Mantes-la-Jolie), Lyon et Rhône-Alpes, Marseille, Bordeaux, Rouen, Le Havre — ciblage ville + rayon 25 km. Âge 30-58. La France concentre le plus gros contingent de la diaspora (~310 000 personnes, source au-senegal.com) et, avec l'Italie et l'Espagne, 60 % des transferts vers le Sénégal (source : profils migratoires ANSD/OIM, 2019). C'est donc l'ensemble à financer en premier. Attention budgétaire : le CPM facturé est celui du marché français, pas celui du Sénégal — estimé 5 à 15 € les 1 000 impressions [ESTIMATION NON VERIFIEE, benchmark d'agence Junto 2025], soit 3 300 à 9 800 FCFA. Prévoir 5 à 15 fois moins d'impressions qu'au Sénégal à budget égal.
+```
+
+#### Diaspora sénégalaise — Espagne · Meta Ads — Facebook Reels + fil
+
+```
+Localisations ville + rayon 25 km : Barcelone, Madrid, Séville, Murcie, Lleida, Almería (zones agricoles incluses, la communauté sénégalaise y est documentée). Âge 30-58. Mêmes couches d'intérêts que l'Italie. Volume plus faible (~57 000 personnes, source au-senegal.com) : ne pas allouer plus de 15 % du budget diaspora tant que la France et l'Italie n'ont pas atteint leur plafond de performance.
+```
+
+#### Diaspora sénégalaise — États-Unis (test à budget symbolique) · Meta Ads — Facebook Reels
+
+```
+Localisations : New York (Harlem, Bronx), Cincinnati et Columbus (Ohio), Washington DC. Âge 30-58. Langue : Français ET Anglais. L'Amérique du Nord ne pèse que 3 % de la diaspora sénégalaise (~32 000 personnes) : marché de test, jamais de priorité de phase 1. Plafonner à 5 % du budget diaspora et couper si le coût par conversation dépasse le double de celui de la France.
+```
+
+#### Reciblage — a vu la douleur mais n'a pas écrit · Meta Ads — tous placements
+
+```
+Audiences personnalisées à créer dès la semaine 5 : (1) Vues vidéo à 75 % de HERO-01 ou HERO-04, fenêtre 180 jours ; (2) Visiteurs de la PWA 90 jours ; (3) Personnes ayant engagé avec la Page 365 jours ; (4) Ouvreurs de conversation WhatsApp sans inscription, 30 jours. Créa servie : HERO-05 pour la diaspora (le pouce suspendu), FB-04 et FB-06 pour le Sénégal. Exclure impérativement les inscrits et les abonnés payants. Le reciblage est le poste au meilleur rendement : lui garder au minimum 13 % du budget.
+```
+
+#### Audiences similaires (Lookalike) — à n'activer qu'en phase 3 · Meta Ads
+
+```
+Source : liste des inscrits ayant activé leur essai (bien + locataire créés, ou chantier + phase). Créer une Lookalike 1 % PAR PAYS (Sénégal, France, Italie), jamais une audience multi-pays. RÈGLE DE SÉCURITÉ : ne rien lancer avant d'avoir au moins 100 profils source par pays. En dessous, Meta produit une audience de bruit qui consomme du budget sans signal. Si la base ne l'atteint pas en semaine 7, reporter — ce n'est pas un échec, c'est une contrainte de volume.
+```
+
+#### Prestataires du bâtiment au Sénégal (maçons, plombiers, électriciens, chefs de chantier) · Meta Ads — Facebook fil + Reels
+
+```
+Objectif : Messages (click-to-WhatsApp), le KYC se collecte en conversation, jamais par formulaire. Localisations : Dakar +30 km, Thiès, Mbour/Saly, Diamniadio. Âge 25-55. Genre : tous. Ciblage détaillé : Construction, Maçonnerie, Plomberie, Électricité, Travaux de rénovation, Bricolage, Matériaux de construction. Créas PRE-03 et PRE-05 en tête de test. Budget faible et continu (2 000 à 8 000 FCFA/jour) : l'objectif n'est pas le volume mais un flux régulier de profils vérifiables.
+```
+
+#### Agences immobilières sénégalaises (offre Agence 45 000 FCFA/mois) · LinkedIn Ads (scénario confortable uniquement) + prospection manuelle Marketplace/Messenger (scénario serré)
+
+```
+LinkedIn : localisation Sénégal, secteur « Immobilier », taille d'entreprise 1-10 et 11-50, intitulés « Agent immobilier », « Gérant », « Directeur d'agence », « Négociateur immobilier », « Syndic ». LinkedIn Sénégal compte 1,50 million de membres et croît de +15,4 %/an, la plus forte progression du pays (source : DataReportal, Digital 2026: Senegal). AVERTISSEMENT : le CPC LinkedIn est structurellement élevé et aucun benchmark Sénégal n'existe. Avec un budget serré, ne PAS acheter de LinkedIn — approcher les agences à la main via leurs annonces Marketplace, avec FBM-06 comme support.
+```
+
+#### TikTok — Sénégal et diaspora francophone · TikTok Ads Manager (Spark Ads uniquement)
+
+```
+CONTRAINTE BLOQUANTE : TikTok impose un budget minimum de 50 USD/jour au niveau campagne et 20 USD/jour au niveau groupe d'annonces (soit ≈ 30 000 FCFA/jour minimum). Le budget serré ne permet PAS d'acheter de la publicité TikTok — TikTok y reste 100 % organique. Scénario confortable : localisation Sénégal + France + Italie (campagnes séparées), âge 25-54, intérêts Maison et Jardin / Finance et Investissement / Voyage. Format : Spark Ads exclusivement, en boostant un post organique ayant déjà dépassé 25 % de rétention à 3 secondes. Prévoir un moyen de paiement international : les cartes bancaires sénégalaises échouent fréquemment sur TikTok Ads. RISQUE À ASSUMER : aucune donnée d'audience publicitaire TikTok n'est publiée pour le Sénégal (absente de DataReportal 2025 et 2026), et la plateforme a été suspendue par l'État sénégalais le 2 août 2023 avant un rétablissement jamais officiellement daté. TikTok ne doit jamais être un canal unique.
+```
+
+### Les indicateurs à surveiller
+
+| Indicateur | Cible | Seuil d'alerte |
+|---|---|---|
+| **Taux de rétention à 3 secondes (vidéo)** | ≥ 25 % — c'est le seul indicateur fiable à J+3 sur une créa neuve, et il ne dépend d'aucun benchmark de marché | < 15 % à partir de 5 000 impressions : couper la créa immédiatement, ne jamais augmenter son budget en espérant que ça se corrige |
+| **Coût par conversation WhatsApp réellement ouverte — Sénégal** | AUCUNE CIBLE CRÉDIBLE AVANT J30. Aucun coût par lead ou par message fiable n'existe publiquement pour le Sénégal — c'est le trou noir du dossier. La cible se fixe sur VOS 30 premiers jours de données, pas sur un chiffre de blog. | > 12 000 FCFA par conversation, soit 10 % du revenu 12 mois d'un abonné Solo (120 000 FCFA). Au-delà, le canal ne peut pas être rentable même avec un taux de conversion parfait. |
+| **Coût par conversation WhatsApp réellement ouverte — diaspora Europe** | Repère externe à traiter comme une hypothèse : coût par lead immobilier Meta ≈ 29,50 USD en médiane (source : Superads, juillet 2025-juin 2026), soit ≈ 18 000 FCFA — mais cet échantillon est dominé par les marchés occidentaux et n'est pas représentatif d'une cible diaspora. | > 66 000 FCFA (haut de la fourchette CAC immobilier Junto 2025, 50-100 €) sans chantier ouvert : réduire de moitié et redéployer sur le Sénégal |
+| **Taux d'activation à 48 heures (essai ayant créé au moins un bien + un locataire, ou un chantier + une phase)** | ≥ 40 %. C'est l'indicateur qui pilote tout le reste : un essai non activé ne se convertira pas, quel que soit le budget média investi en amont. | < 20 % : arrêter d'optimiser la publicité, le problème est dans l'onboarding. Basculer le budget sur l'accompagnement humain WhatsApp des 48 premières heures. |
+| **Délai médian entre inscription et première quittance PDF émise (ou première phase de chantier créée)** | < 48 heures | > 7 jours : la promesse « votre première quittance ce soir » n'est pas tenue, ce qui invalide FB-06 et l'ensemble du discours d'essai |
+| **Taux essai → abonné payant à J30** | ≥ 25 % sur la diaspora — c'est le SEUIL DE RENTABILITÉ CALCULÉ (un lead à 30 000 FCFA face à 120 000 FCFA de revenu Solo sur 12 mois), pas une performance observée. ≥ 15 % suffit au Sénégal où le coût d'acquisition est bien plus bas. | < 10 % : le produit ou l'onboarding ne tient pas la promesse de la publicité. Suspendre toute montée en budget. |
+| **Profils prestataires vérifiés KYC par semaine** | 10 par semaine à partir de la semaine 3, soit ~100 profils à la semaine 12 | < 3 par semaine : la campagne diaspora devient un mensonge le jour où un propriétaire de Bergame ouvrira l'annuaire et n'y trouvera personne dans sa commune. Suspendre PRE-05 tant que l'annuaire n'est pas garni. |
+| **Revenu commission 5 % par chantier ouvert (diaspora)** | À mesurer. C'est le seul indicateur capable de justifier un coût d'acquisition européen élevé — l'abonnement à 10 000 FCFA ne le peut pas. | Aucun chantier ouvert après 6 semaines de diffusion diaspora : le récit fonctionne mais ne convertit pas. Revoir l'étape 3 du tunnel, pas les créas. |
+| **Part d'abonnés ayant parrainé au moins une personne à J90** | ≥ 20 %. Sur une cible aussi étroite, le parrainage doit devenir le premier canal d'acquisition au Sénégal. | < 5 % : le module de parrainage n'est pas visible ou la récompense n'est pas assez lisible. Problème produit, pas problème média. |
+| **Complétude de l'instrumentation des 200 premiers inscrits (biens, quartier, pays de résidence, chantier oui/non, canal d'origine)** | 100 % des inscrits documentés | < 80 % : vous perdez la seule source de vérité qui existera jamais sur ce marché. Aucune donnée publique n'existe sur le nombre de bailleurs au Sénégal, le taux de gestion par agence ou le parc locatif de Dakar. |
+
+### Plan de test A/B
+
+1. ORDRE DE TEST — règle générale : on teste une seule variable à la fois, du plus grossier au plus fin. Angle, puis accroche, puis format, puis audience, puis placement, puis horaire. Tester l'audience avant d'avoir trouvé l'angle gagnant est le gaspillage le plus courant et le plus coûteux.
+2. TEST 1 (semaines 4-5) — L'ANGLE, sur la diaspora. HERO-01 (reconnaissance de la douleur : trois mois, la même photo) contre HERO-04 (curiosité produit : écran noir, alerte 7 jours). Un ensemble publicitaire par créa, budget identique, même audience France+Italie. Critère de décision : rétention à 3 secondes après 5 000 impressions par créa. Le gagnant reçoit le double de budget, le perdant est arrêté si sous 15 %. Si les deux dépassent 25 %, on garde les deux — c'est un bon problème.
+3. TEST 2 (semaines 4-5) — L'ANGLE, sur le Sénégal. FB-01 (le carnet manuscrit, angle identité) contre FB-02 (quittance manuscrite vs PDF, angle preuve) contre FB-05 (le chantier, angle argent). Critère : coût par conversation WhatsApp ouverte, pas coût par clic. Décision à 20 conversations minimum par créa — en dessous, la différence observée est du bruit statistique, pas un résultat.
+4. TEST 3 (semaine 6) — L'ACCROCHE, sur la créa gagnante uniquement. Décliner la créa gagnante en 3 variantes ne changeant QUE les 3 premières secondes et le texte incrusté : « Trois mois. La même photo. » contre « Ce n'est pas de la méfiance. » contre « Vous ne payez pas la toiture avant de voir la toiture. » Corps de vidéo identique. Critère : rétention à 3 secondes. C'est le levier de performance le moins cher qui existe — un nouveau hook coûte une génération d'image, pas un tournage.
+5. TEST 4 (semaine 7) — LA DESTINATION. Click-to-WhatsApp contre page d'inscription PWA, sur la même créa et la même audience. Critère : nombre d'essais réellement ACTIVÉS à 48 h (bien + locataire créés, ou chantier + phase), pas nombre de clics. Hypothèse forte à vérifier plutôt qu'à croire : WhatsApp est décrit comme l'outil quotidien de cette audience avant l'email, mais cela reste une source non chiffrée — mesurez-le.
+6. TEST 5 (semaine 8) — LE FORMAT DE PRODUCTION. Image fixe légèrement animée (push-in seul) contre vidéo montée multi-plans, sur la même accroche gagnante. Critère : coût par conversation. Enjeu réel : savoir si le temps de montage vaut son coût. Si l'écart est inférieur à 20 %, arrêter de produire des montages complexes et multiplier les images animées.
+7. TEST 6 (semaine 8) — LE CIBLAGE, sur la créa gagnante figée. Ciblage large (âge + géo seulement, Advantage+) contre ciblage par intérêts d'appartenance (Sénégal, Touba, Youssou N'Dour, Wolof). Critère : coût par conversation à volume égal. Sur les petits marchés, le ciblage large gagne souvent — mais c'est une hypothèse à vérifier, pas une règle. Ne pas lancer ce test avant que le TEST 3 n'ait figé l'accroche.
+8. TEST 7 (semaine 9) — LE PAYS, en diaspora. France contre Italie contre Espagne, même créa, même budget par ensemble. Critère : coût par conversation ET taux d'ouverture de chantier. Attention : ce sont trois marchés d'enchères distincts, la comparaison ne sert pas à désigner un vainqueur mais à répartir le budget proportionnellement au rendement observé.
+9. TEST 8 (semaine 9) — L'HORAIRE. Fenêtre 20 h-21 h UTC (Dakar en soirée, Europe au coucher, New York en fin d'après-midi) contre diffusion continue 24 h. Critère : coût par conversation sur 7 jours pleins. Les créneaux 12 h-15 h et 19 h-21 h qui circulent sont des recommandations génériques d'outils, sans aucune donnée sénégalaise derrière — à traiter comme une hypothèse, pas comme un fait. Mesurer 3 semaines avant de figer.
+10. TEST 9 (semaine 10) — LA PROMESSE D'ENTRÉE, sur le Sénégal. « Essai gratuit » contre « Je vous prépare gratuitement le bail écrit et l'état des lieux d'entrée de ce logement ». Critère : taux d'activation à 48 h. Hypothèse : un livrable daté et concret bat une offre d'essai abstraite auprès d'un propriétaire qui vient de publier une annonce.
+11. TEST 10 (semaine 11) — LE TÉMOIGNAGE. Créa de marque gagnante contre témoignage client réel filmé sans décor publicitaire, même audience. Critère : coût par abonné payant, pas par conversation. Le naturel vend davantage que la production sur ce format — mais si l'écart n'est pas mesuré, il ne sert à rien de le croire.
+12. RÈGLES DE DÉCISION NON NÉGOCIABLES — (1) jamais deux variables modifiées dans le même test ; (2) jamais de décision avant 5 000 impressions par créa pour la rétention, ni avant 20 conversations par créa pour le coût ; (3) jamais de montée de budget supérieure à +30 % tous les 3 jours, sous peine de relancer la phase d'apprentissage Meta et de perdre l'historique ; (4) une créa arrêtée n'est jamais relancée telle quelle — elle revient avec un nouveau hook ou pas du tout ; (5) on n'optimise jamais sur les likes, les partages ou la portée.
+
+### Ce que tu peux faire sans budget
+
+- PROSPECTION MARKETPLACE SORTANTE — le moteur numéro un, coût zéro en média. Filtrer Facebook Marketplace sur Immobilier · Location, rayon Dakar puis Thiès, Mbour, Saly, tri par plus récent. Ne traiter que les annonces de moins de 48 heures : au-delà, le propriétaire est déjà noyé et démotivé. 15 à 25 messages personnalisés par jour maximum, depuis un vrai profil personnel renseigné. Un propriétaire qui vient de publier déclare simultanément qu'il possède un bien, que ce bien est vacant, qu'il cherche activement une solution et qu'il vient d'exposer son numéro à des centaines d'inconnus. C'est le prospect le plus qualifié du marché, et il ne coûte pas un franc.
+- L'OFFRE D'ENTRÉE QUI CONVERTIT : ne pas proposer un essai gratuit, proposer un livrable. « Je vous prépare gratuitement le bail écrit et l'état des lieux d'entrée pour ce logement-là. » C'est daté, concret, et ça correspond exactement à ce qu'il est en train de faire. Ça crée le premier acte dans l'application, seul indicateur qui prédit l'abonnement.
+- COMMENTAIRES UTILES PLUTÔT QUE LIENS — dans les groupes Facebook de bailleurs et sous les annonces, répondre par un conseil juridique vrai et gratuit : « pensez à l'état des lieux d'entrée contradictoire avec photos, sans lui vous ne pourrez rien retenir sur la caution ». Cette approche génère plus de messages entrants qu'un lien, et elle est vraie : c'est du droit sénégalais applicable, pas un argument marketing.
+- ANNONCES MARKETPLACE EN CATÉGORIE SERVICES (FBM-02, FBM-03, FBM-04, FBM-06) — gratuites, hébergées par Facebook, elles donnent une page propre que le prospect consulte sans quitter l'application et sans avoir l'impression de cliquer sur une publicité. Republier tous les 7 jours plutôt que modifier : la republication remonte dans le fil.
+- ANNONCES DE VRAIS BIENS (FBM-01, FBM-05) — publier de VRAIES annonces de VRAIS clients, avec leur accord écrit. Jamais une annonce inventée : cela fait bannir de Marketplace et détruit le seul actif qui compte ici. Ces annonces travaillent deux fois — elles trouvent un locataire pour le client (donc prouvent la valeur de l'abonnement) et servent de démonstration silencieuse aux autres propriétaires qui parcourent Grand Yoff ou les Almadies.
+- GROUPES FACEBOOK DIASPORA — rejoindre 15 à 20 groupes : Sénégalais d'Italie, de France, d'Espagne, groupes « construire au Sénégal », groupes de ressortissants par région d'origine (Thiès, Louga, Matam). Règle absolue : lire et commenter pendant deux semaines avant de publier quoi que ce soit. Un lien posté par un compte inconnu est supprimé et le compte signalé.
+- WHATSAPP EST LE CANAL DE CONVERSION, PAS FACEBOOK — WhatsApp est décrit comme d'usage quasi universel dans la diaspora sénégalaise d'Italie et d'Espagne, avant l'email. Toutes les publicités pointent vers un click-to-WhatsApp, jamais vers un formulaire web. Créer aussi un statut WhatsApp Business hebdomadaire montrant une phase validée réelle (avec accord du client).
+- PARRAINAGE — le module existe déjà en production. L'activer auprès de 100 % de la base en semaine 11, avec un message pré-écrit et un visuel partageable. Sur une cible aussi étroite que le bailleur sénégalais, le bouche-à-oreille entre propriétaires et entre familles diaspora vaut probablement plus que le budget média. Suivre le coût d'acquisition d'un inscrit parrainé face à un inscrit payant : c'est l'arbitrage le plus important du trimestre 2.
+- YOUTUBE — canal oublié à ouvrir. YouTube touche 5,42 millions de Sénégalais (source : DataReportal, Digital 2026: Senegal), autant que l'ensemble des réseaux sociaux, et l'immobilier locatif sénégalais y est quasi absent. Produire une série longue en wolof « Comment suivre un chantier depuis l'étranger », 6 à 10 minutes par épisode. Coût quasi nul, positionne Locawave comme autorité et non comme annonceur.
+- TIKTOK 100 % ORGANIQUE EN BUDGET SERRÉ — publier les 8 scripts TT en organique, un tous les deux jours. Ne booster (Spark Ads) que ce qui a déjà pris. Format UGC : caméra à la main, lumière naturelle, visage visible, une seule idée par vidéo. Les créas « studio » sous-performent systématiquement sur ce format.
+- MICRO-INFLUENCEURS PLUTÔT QUE CÉLÉBRITÉS — cibler 3 à 5 créateurs sénégalais installés à Bergame, Milan ou Créteil, avec 5 000 à 50 000 abonnés, qui parlent déjà de la vie de la diaspora. Les micro-créateurs et TikTokeurs de quartier surperforment les célébrités sur ce marché. Rémunération possible en abonnement Pro offert plutôt qu'en cash sur le budget serré.
+- PARTENARIATS À COÛT ZÉRO — approcher les associations de ressortissants sénégalais en Italie, en France et en Espagne (dahiras, associations de village, coopératives de transfert), les agents de transfert d'argent de quartier, et les notaires/géomètres de Dakar et Diamniadio. Ces relais parlent déjà à la cible sur le sujet exact de l'argent envoyé au pays.
+- PRESTATAIRES COMME CANAL — chaque prestataire vérifié inscrit à l'annuaire est un prescripteur gratuit auprès de ses propres clients propriétaires. Leur donner un message pré-écrit et un visuel « Profil vérifié Locawave » à publier sur leur statut WhatsApp.
+- AVIS VÉRIFIÉS — réservés à ceux qui ont réellement loué ou réservé. Ils ne coûtent rien, ils sont impossibles à falsifier, et ils constituent l'actif défensif de l'annuaire face aux agences de suivi de chantier concurrentes qui vendent de la prestation humaine sans traçabilité.
+
+---
+
+## 5 — La critique adversariale
+
+Un agent a été chargé de **démolir** ce dispositif avant que tu n'y mettes ton
+argent. Ce qui suit n'est pas un compliment déguisé : lis-le avant de lancer.
+
+### Les faiblesses relevées
+
+#### Formulation du séquestre : « l'argent reste bloqué chez Wave ou Orange Money tant que vous n'avez pas validé », répétée à l'identique dans ~25 créations (HERO-05, FB-05, FBM-03, TT-01, TT-04, PRE-02…)
+
+**Le problème.** C'est faux dans le produit livré. Dans src/app/dashboard/chantiers/[id]/page.tsx, « financer » exécute simplement .update({ escrow_status: 'held' }) et « valider » exécute .update({ escrow_status: 'released' }) : c'est une colonne texte, aucun argent ne bouge nulle part. src/lib/psp.ts a pour provider par défaut 'simulation', CinetPay lève « non configuré », et l'intégration PayDunya est un checkout-invoice classique sans aucune API de séquestre. Ni Wave ni Orange Money n'offrent de hold tiers. C'est la promesse centrale de toute la campagne et c'est la seule qui soit juridiquement dangereuse : elle porte sur de l'argent.
+
+**La correction.** Interdire la diffusion de cette phrase tant qu'un circuit de blocage réel n'est pas contractualisé et testé. La remplacer par la mécanique honnête et déjà vraie : « Vous ne réglez une phase qu'après avoir vu et validé ses preuves. Locawave ne détient jamais les fonds. » Supprimer toute mention de blocage chez l'opérateur. En parallèle, faire relire la formulation retenue par un juriste UEMOA avant le premier franc dépensé.
+
+#### « Les rappels partent tout seuls sur WhatsApp, le 3, le 7 et le 15 » (FB-01 SN, FB-03 SN, FB-06 DIA, FBM-02, TT-05, TT-07, HERO-06)
+
+**Le problème.** La migration 051_retire_dead_http_jobs.sql documente que les crons appelant les Edge Functions WhatsApp renvoyaient 100 % de 401 sur 10 jours et ont été désactivés. Ils sont remplacés par run_escalating_reminders() (049) qui insère des notifications avec channel = 'inapp'. Les relances J+3/J+7/J+15 sont donc des notifications dans l'application, pas des messages WhatsApp — et côté locataire elles ne partent que s'il a un profile_id, donc s'il a accepté l'invitation et créé un compte. La promesse « votre locataire reçoit tout sur WhatsApp, là où il est déjà » est aujourd'hui fausse.
+
+**La correction.** Deux options, pas trois. (a) Rebrancher l'envoi WhatsApp (templates approuvés + secret Vault) et le vérifier sur 5 locataires réels AVANT la semaine 4. (b) Reformuler partout : « relances automatiques dans l'application, et envoi WhatsApp en un clic ». Ne jamais diffuser (a) en promesse sans (a) en production.
+
+#### TT-05, PLAN 5 : prompt d'image générant un fil WhatsApp avec trois relances automatiques et une pastille orange « envoyé automatiquement »
+
+**Le problème.** C'est la fabrication d'une capture d'écran d'une fonctionnalité qui n'existe pas dans cet état. Une fausse preuve produit dans une publicité est une pratique commerciale trompeuse, et Meta la traite comme du contenu manipulé. Le même problème se pose pour toutes les captures IA de l'interface (frise de phases, bouton « Valider et débloquer le paiement », bandeau « Les fonds restent bloqués chez Wave »).
+
+**La correction.** Règle unique : aucune interface générée par IA dans une créa. On prend une capture réelle du dashboard, on la nettoie, on l'incruste au montage. Si l'écran réel n'est pas présentable, c'est un signal produit — on corrige l'écran, pas la publicité.
+
+#### « Photos et vidéos horodatées, prises sur place » (HERO-02, FBM-03, TT-01, PRE-02, tout le pilier 1)
+
+**Le problème.** Dans 044_construction_projects.sql, milestone_updates.taken_at est DEFAULT NOW() : c'est la date de dépôt, pas la date de prise de vue. Aucune lecture EXIF, aucune contrainte de capture in-app, aucun contrôle GPS. Un prestataire peut re-téléverser une photo de mars et le système l'horodatera à aujourd'hui — c'est exactement la fraude (« la même photo, sous le même angle, à trois mois d'écart ») que la campagne prétend éliminer. La créa promet une preuve technique que le produit ne produit pas.
+
+**La correction.** Court terme : reformuler en « chaque dépôt est daté et rattaché à une phase » (vrai) au lieu de « photos horodatées prises sur place » (faux). Moyen terme, avant la campagne diaspora : lire l'EXIF et afficher deux dates distinctes, « prise de vue » et « dépôt », et signaler visuellement tout écart supérieur à 48 h. C'est cette fonction-là, et elle seule, qui rend la promesse défendable.
+
+#### Bucket de stockage 'chantier' créé public = true avec la policy chantier_storage_select_all (FOR SELECT USING bucket_id='chantier', sans restriction)
+
+**Le problème.** Toutes les photos de chantier de tous les clients sont lisibles publiquement par quiconque possède ou devine l'URL. Une campagne dont la proposition centrale est la traçabilité et la confiance ne peut pas être lancée au-dessus d'une fuite de données. Le premier journaliste ou concurrent qui le remarque tue le positionnement en une publication.
+
+**La correction.** Passer le bucket en privé et servir des URLs signées à durée limitée. C'est une migration d'une heure. À faire avant la première impression achetée, pas après.
+
+#### FB-01 (Sénégal) écrit à la première personne avec un persona nommé et un visage photoréaliste généré ; idem TT-02 (« J'ai perdu, madame »), TT-06 (« Je n'osais pas demander »), HERO-01
+
+**Le problème.** Ce sont des témoignages fabriqués joués par des humains de synthèse. La note stratégique le signale pour FB-01 puis livre quand même le texte, et ne le signale pas du tout pour TT-02, TT-06 et HERO-01, qui sont pourtant construits exactement pareil. Triple risque : pratique trompeuse, politiques Meta et TikTok sur les médias synthétiques réalistes, et surtout crédibilité — la communauté sénégalaise de Bergame ou de Créteil est petite, quelqu'un cherchera qui est cet homme et ne le trouvera pas.
+
+**La correction.** Aucune créa à la première personne avec un visage généré. Trois voies propres : réécrire à la deuxième personne (« Vous avez perdu, faute d'un papier »), filmer un vrai client, ou ne montrer que des mains, des écrans et des lieux. Pour tout ce qui reste photoréaliste et synthétique, activer le label « contenu généré par IA » sur TikTok et Meta — le dispositif ne le mentionne nulle part.
+
+#### Pilier « Le prix ne dépend pas de votre loyer » (FB-04 SN, FBM-02, FB-06 DIA) opposé à « une agence prend un pourcentage »
+
+**Le problème.** Locawave prend 5 % sur les travaux, donc un pourcentage, sur des paniers de plusieurs millions — 72 500 FCFA rien que sur la phase d'élévation affichée à 1 450 000 FCFA dans FBD-02. Le prospect qui voit les deux annonces de la même marque lit un double discours. Pire : la cible Ndèye Fatou est une agence à qui l'on vend 45 000 FCFA/mois, pendant qu'ailleurs on explique que les agences coûtent cher.
+
+**La correction.** Assumer la commission dans la créa chantier, en clair et dès la première ligne : « 5 % sur les travaux. 0 % sur votre loyer. » Et retirer la comparaison à l'agence du discours grand public : comparer au carnet et au temps perdu, pas à un partenaire commercial qu'on démarche par ailleurs.
+
+#### Économie de la campagne diaspora : lead à 18 000-66 000 FCFA, rattrapé par la commission de 5 % sur les chantiers
+
+**Le problème.** La commission n'est pas encaissable en l'état. 046_commissions.sql l'écrit noir sur blanc : « la commission est une ligne enregistrée (à prélever via PSP), affichée dans Finances », et elle ne se déclenche qu'au passage de escrow_status à 'released', c'est-à-dire à un clic manuel du propriétaire, sans flux monétaire. On achèterait donc des leads européens coûteux contre un revenu qui n'a aujourd'hui aucun circuit de perception.
+
+**La correction.** Geler intégralement la campagne diaspora payante tant que le circuit d'encaissement de la commission n'a pas été exécuté de bout en bout sur au moins 3 chantiers réels. Jusque-là, la diaspora se travaille en organique (groupes, YouTube wolof, parrainage), à coût média nul.
+
+#### Récit d'ouverture du feuilleton : HERO-01 « trois photos du même mur », TT-01 « on lui réclame l'argent de la toiture », FB-03 « elle n'est pas là où vous la croyiez »
+
+**Le problème.** Le garde-fou « l'antagoniste est le flou » vit dans la note stratégique, pas dans la créa. À l'écran, un homme seul en Europe, des photos identiques, une demande d'argent : tout Sénégalais lit le sous-texte « ton frère te vole ». Le renversement salvateur (HERO-03, FBD-02) n'arrive qu'au troisième épisode, alors que 100 % de l'audience froide ne verra que le premier. On paie pour diffuser l'accusation et on garde le démenti pour les rares qui restent.
+
+**La correction.** Inverser l'ordre du feuilleton. Ouvrir par HERO-03, du point de vue du chef de chantier : c'est lui qui veut que son travail soit vu et payé sans discussion. La preuve devient une demande venue du terrain, pas une surveillance venue de l'étranger. Le même produit, un récit qui ne peut pas se retourner contre la famille.
+
+#### Score de ponctualité du locataire, affiché à 96/100 sur une fiche nominative dans FB-03 SN, TT-07, FB-06 DIA — et envoyé au locataire lui-même dans son résumé mensuel (050_chantier_alerts_and_tenant_digest.sql : « Votre score de ponctualité : 94/100 »)
+
+**Le problème.** Deux problèmes. Culturellement, le scoring individuel visible est un import direct du credit scoring occidental plaqué sur une relation de voisinage et de famille étendue : le jour où un locataire découvre qu'il est noté 62/100, la relation est abîmée, et il en parlera. Publicitairement, exhiber une fiche nominative de notation dans une annonce grand public dit au futur locataire qu'il sera fiché — et c'est lui qu'on doit convaincre d'accepter l'invitation.
+
+**La correction.** Côté produit : retirer le score du résumé envoyé au locataire (migration 050) et le remplacer par un fait neutre (« 11 mois payés à l'heure »). Côté créa : sortir le score de toutes les publicités grand public et ne le garder que dans les démonstrations produit destinées au propriétaire, formulé en historique, jamais en note.
+
+#### « Le propriétaire a été vérifié — pièce d'identité et titre de propriété contrôlés avant publication » (FBM-01, FBM-05)
+
+**Le problème.** Claim juridique fort et intenable. Le produit dispose d'une table kyc_documents relue manuellement par un admin ; rien n'atteste d'un contrôle cadastral. Au Sénégal, une large part du parc est détenue sous bail, permis d'occuper ou acte notarié non transcrit, et non sous titre foncier. Promettre le contrôle du titre expose à un litige dès le premier locataire lésé.
+
+**La correction.** Reformuler strictement : « identité du propriétaire vérifiée, document de propriété fourni et conservé dans le dossier ». Ni plus, ni autre chose.
+
+#### Marketplace érigé en « moteur numéro un » avec 15 à 25 messages privés par jour depuis un profil personnel
+
+**Le problème.** Le DM à froid en volume est le chemin le plus court vers la restriction Messenger, et le plan en a conscience tout en le plaçant au centre. Par ailleurs, au Sénégal l'immobilier locatif se joue davantage dans les groupes Facebook dédiés et sur Expat-Dakar que sur Marketplace, qui reste dominé par l'occasion et l'électronique. On mise le moteur principal sur le canal le plus fragile.
+
+**La correction.** Plafonner à 10 messages par jour et par profil, sur deux profils réels distincts. Rééquilibrer explicitement vers les groupes Facebook immobiliers de Dakar et Expat-Dakar, avec la même mécanique (commentaire utile de droit locatif d'abord, message ensuite).
+
+#### Volume de production : 42 créations, 8 scripts TikTok, 6 épisodes de feuilleton, voix off en deux langues, versions 4:5 et 16:9, sur 12 semaines, par une personne qui génère aussi les images et fait le montage
+
+**Le problème.** Ce n'est pas réalisable. Le résultat prévisible est un dispositif à moitié produit, diffusé sans test, avec des créas générées à la va-vite dont les montants en FCFA et les accents français sortiront faux — la note de production admet elle-même qu'il faut 3 à 4 générations par prompt. Le calendrier s'effondre en semaine 3.
+
+**La correction.** Geler 36 créations. En produire 6 maîtresses, une par intention : HERO-03 (ouverture diaspora, angle prestataire), HERO-05 (conversion), FB-02 SN (avant/après quittance), FBM-02 (annonce service bailleurs), PRE-03 (recrutement prestataires), TT-04 (démo écran, réutilisable partout). Les décliner en 3 hooks chacune. C'est le levier de performance le moins cher et le seul tenable.
+
+#### Nomenclature : deux jeux distincts de créations portent les identifiants FB-01 à FB-06 (campagne Sénégal et campagne diaspora)
+
+**Le problème.** La règle la plus répétée du plan est de ne jamais mélanger Sénégal et diaspora dans un même ensemble publicitaire. Nommer les deux jeux à l'identique garantit la confusion dans le gestionnaire de publicités, dans les rapports et dans le plan de test. C'est une erreur d'exécution qui coûtera un budget mal attribué et des conclusions fausses.
+
+**La correction.** Renommer immédiatement en SN-01…SN-06 et DIA-01…DIA-06, et reporter le renommage dans le plan média, le plan de test et le calendrier.
+
+#### Annonces Marketplace de service affichées à « Prix : 0 FCFA (essai gratuit) » (FBM-03) et « Prix : 0 FCFA » (FBM-04)
+
+**Le problème.** Marketplace n'est pas fait pour l'abonnement récurrent, et un prix à zéro attire massivement des curieux non qualifiés qui consomment le temps humain de réponse — la ressource la plus rare du dispositif. Cela dégrade aussi le taux de réponse mesuré, donc le pilotage.
+
+**La correction.** Afficher le prix mensuel réel dans le prix et dans le titre (10 000 FCFA pour les bailleurs, gratuit uniquement pour l'inscription prestataire), et qualifier dès la première réponse type par une question filtrante (nombre de biens, quartier, chantier oui/non).
+
+#### Rapports automatiques : « rapport hebdomadaire au propriétaire, résumé mensuel au locataire » présentés comme livrés (pilier 3, FB-01, FBM-06, tunnel étape 4)
+
+**Le problème.** 051_retire_dead_http_jobs.sql indique que lw_monthly_report et lw_annual_report sont conservés mais « restent inopérants tant que le secret Vault n'est pas renseigné ». Le résumé mensuel au locataire, argument explicite de la réponse à l'objection d'Aminata Sow, n'est donc pas envoyé aujourd'hui.
+
+**La correction.** Renseigner le secret Vault et vérifier un envoi réel avant la semaine 4, ou retirer le résumé mensuel de tous les argumentaires. Le rapport hebdomadaire, lui, est natif et peut rester au discours.
+
+#### Fenêtre de diffusion unique « 20 h-21 h UTC » pour toutes les audiences
+
+**Le problème.** Le plan la justifie en disant qu'elle touche Dakar en soirée, l'Europe au coucher et New York en fin d'après-midi. En pratique, une heure par jour sur une audience minuscule (bailleurs sénégalais d'une ville européenne) étrangle la sortie de phase d'apprentissage de Meta : l'algorithme n'a pas assez d'occasions de diffusion pour optimiser. On sabote l'apprentissage pour économiser un budget déjà faible.
+
+**La correction.** Diffuser en continu pendant les 30 premiers jours pour laisser l'apprentissage se faire, relever ensuite la répartition horaire réelle des conversations ouvertes, et ne restreindre les créneaux qu'après cette mesure.
+
+### Les risques
+
+| Risque | Gravité | Comment le désamorcer |
+|---|---|---|
+| Publicité trompeuse sur le séquestre : « l'argent reste bloqué chez Wave ou Orange Money » alors qu'aucun blocage n'existe (escrow_status est une colonne texte basculée à la main, PSP en mode simulation). Le premier client qui envoie 1 200 000 FCFA en croyant l'argent protégé et se fait rembourser dans le vide déclenche un litige que la publicité elle-même documente. | **Critique — bloquant absolu, aucune diffusion possible en l'état** | Chercher-remplacer la formulation dans les 25 créas concernées avant toute diffusion. Message de repli défendable : « Vous ne réglez une phase qu'après avoir validé ses preuves. Locawave ne détient jamais les fonds. » Faire valider par un juriste UEMOA. Ne rétablir la formulation d'origine que si un vrai mécanisme de blocage est contractualisé avec un PSP agréé et testé en production. |
+| Fuite de données pendant la campagne : le bucket 'chantier' est public avec une policy SELECT sans restriction. Photos de chantiers, de maisons et de parcelles de tous les clients accessibles par URL, alors que la campagne vend la traçabilité et la protection. | **Critique** | Bucket privé + URLs signées à durée limitée. Une migration, une heure de travail, à faire avant la première impression achetée. |
+| Suspension du compte publicitaire Meta ou TikTok : cumul de faux témoignages joués par des humains de synthèse (FB-01 SN, TT-02, TT-06, HERO-01), de captures d'interface fabriquées (TT-05 PLAN 5), de contenu financier promettant une sécurisation de fonds, et d'absence totale de label « contenu généré par IA ». | **Élevée — la perte du compte publicitaire arrête le plan entier, et la réouverture prend des semaines** | Passer les créas à la deuxième personne ou les tourner avec de vrais clients. Interdire toute UI générée. Activer le label IA sur les deux plateformes. Créer un second Business Manager de secours dès la semaine 1, avec un moyen de paiement distinct. |
+| Blocage du canal WhatsApp : envoi de messages freeform hors fenêtre de 24 h via Twilio sans templates approuvés, absence d'opt-in documenté, et prospection sortante à 15-25 DM/jour depuis un profil personnel. Or WhatsApp est à la fois le canal de conversion et le canal de délivrance produit. | **Élevée** | Faire approuver 4 templates utilitaires avant la semaine 1 (rappel de loyer, quittance émise, invitation locataire, phase soumise). Documenter l'opt-in à l'ajout du locataire. Plafonner les DM à 10/jour sur deux profils. Prévoir le repli SMS pour les relances critiques. |
+| CAC diaspora non récupérable : on achèterait des leads à 18 000-66 000 FCFA sur la promesse d'une commission de 5 % qui, dans le code, n'est qu'une ligne enregistrée dans la table commissions « à prélever via PSP », déclenchée par un clic manuel sans flux monétaire. | **Élevée — c'est le poste de 35 % du budget média** | Geler la campagne diaspora payante. Exécuter le circuit de perception de la commission sur 3 chantiers réels d'abord. En attendant, travailler la diaspora en organique : groupes Facebook, série YouTube en wolof, parrainage, associations de ressortissants. |
+| Backlash culturel : le récit d'ouverture (photos identiques, demande d'argent, homme seul en Europe) est lu par l'audience comme une accusation contre la famille restée au pays. Le garde-fou existe dans la note stratégique, pas dans la créa vue par l'audience froide. Un commentaire viral du type « cette application dit que nos frères sont des voleurs » est un scénario réaliste et durable. | **Élevée — le dommage de marque est irréversible sur une communauté de cette taille** | Ouvrir le feuilleton par le point de vue du prestataire (HERO-03), qui réclame lui-même que son travail soit vu et payé. Faire pré-lire les 6 créas maîtresses par 5 personnes de la cible (2 en Europe, 3 au Sénégal, dont un chef de chantier) avant diffusion. Écrire les réponses types de modération à l'avance. |
+| Annuaire prestataires vide au moment où la campagne diaspora promet des artisans vérifiés dans la commune du prospect. Le KYC est manuel, l'objectif de 10 vérifications/semaine repose sur du temps admin non budgété. | **Élevée** | Le plan le prévoit déjà en phase 1 : le tenir strictement. Ne pas diffuser PRE-05 ni aucune créa diaspora mentionnant l'annuaire tant que 20 profils vérifiés ne sont pas en ligne, répartis sur au moins 3 zones. |
+| Utilisation des marques Wave et Orange Money, nommées dans plus de 25 créas, sans accord d'usage — et associées à une affirmation de blocage de fonds que ces opérateurs ne proposent pas. Un opérateur peut exiger le retrait, publiquement. | **Moyenne à élevée** | Obtenir un accord écrit d'usage de marque, ou basculer sur une formulation générique (« votre opérateur de mobile money »). Ne jamais faire dire à un opérateur ce qu'il ne fait pas. |
+| Sur-promesse d'onboarding : « votre première quittance ce soir » alors que l'utilisateur doit créer une organisation, un bien, une unité, un locataire, un bail et une échéance avant d'y arriver. Le KPI d'activation à 48 h vise 40 % sans que le nombre d'étapes ait été mesuré. | **Moyenne — mais elle détermine tout le reste du tunnel** | Chronométrer le parcours réel sur 5 utilisateurs non entraînés avant l'achat média. Si le délai dépasse 15 minutes, corriger le produit avant la publicité. Prévoir un mode de démarrage minimal : un bien, un locataire, un montant, une quittance. |
+| Saturation humaine : au-delà de 30 conversations WhatsApp ouvertes par semaine, le délai de réponse s'effondre, le taux de conversion chute et les prospects racontent publiquement qu'on ne répond pas. La qualité de réponse est le vrai produit à ce stade. | **Moyenne** | Fixer un plafond de conversations ouvertes par semaine et baisser les budgets quand il est atteint, plutôt que de laisser filer. Écrire les 4 réponses types et les 3 relances avant l'ouverture des campagnes. |
+| Dépendance TikTok : minimum de dépense de 50 USD/jour au niveau campagne, aucune donnée d'audience publicitaire publiée pour le Sénégal, et un antécédent de suspension nationale de la plateforme. | **Faible à moyenne** | Le plan a raison de le garder 100 % organique en budget serré. Le maintenir ainsi, et ne jamais faire de TikTok un canal unique pour un segment. |
+
+### Ce qui manque encore au dispositif
+
+- PAGE D'ATTERRISSAGE : il n'existe aucune LP par campagne. Le seul point d'arrivée hors WhatsApp est src/app/page.tsx, une home SaaS générique avec grille tarifaire. Aucune LP chantier diaspora, aucune LP « comment marche le déblocage par phase », aucune FAQ séquestre, aucun élément de réassurance juridique. Le plan achète du trafic européen à 18 000-66 000 FCFA le lead vers une page qui ne parle pas de chantier.
+- PREUVE SOCIALE : zéro témoignage, zéro chiffre de traction, zéro logo, zéro avis affiché au moment où l'on demande à un homme de Bergame de faire transiter 20 millions FCFA par un outil inconnu. Les témoignages n'arrivent qu'en semaine 11 : c'est 8 semaines de média payé sans aucune preuve tierce.
+- CONFORMITÉ WHATSAPP : 100 % du tunnel pointe vers click-to-WhatsApp, mais le dispositif ne prévoit ni compte WABA vérifié, ni templates utilitaires approuvés, ni politique d'opt-in, ni mention de collecte. supabase/functions/send-whatsapp/index.ts envoie un Body freeform : hors fenêtre de 24 h, Meta le refuse.
+- CAPACITÉ HUMAINE : 15-25 messages Marketplace/jour + accompagnement WhatsApp humain 48 h + revue KYC manuelle (kyc_documents est validé à la main par un admin) + prospection agences = 1 à 2 ETP. Le scénario « serré » à 60 000 FCFA de budget total en phase 1 n'en tient aucun compte. C'est le poste le plus cher du plan et il est à zéro.
+- LE LOCATAIRE N'EXISTE PAS DANS LE DISPOSITIF : il reçoit les relances, il est noté (score de ponctualité), il est invité de force — et aucune créa, aucune notice, aucun argument ne lui est destiné. C'est pourtant lui qui peut faire échouer l'usage en refusant l'invitation.
+- MOMENTS CLÉS CALENDAIRES ABSENTS : le calendrier 12 semaines est neutre. Il ignore Ramadan/Korité et Tabaski (pics de transferts diaspora ET de tension de trésorerie), la rentrée scolaire d'octobre (pic de retards de loyer), le Magal de Touba, et les retours au pays de juillet-août et décembre — qui sont exactement le déclencheur émotionnel de FBD-03.
+- SUIVI DE PIPELINE : le plan mesure des coûts média mais aucun CRM, aucun tag de conversation, aucune traçabilité lead → essai → payant. Sans cela, les KPI « coût par abonné payant » sont incalculables et tout le plan de test devient décoratif.
+- PUSH NOTIFICATIONS : la créa signature de toute la campagne (HERO-04, FB-05, TT-08, TT-04) montre une notification sur écran verrouillé. Le code ne contient aucune implémentation Web Push (seul src/components/app/PWARegister.tsx existe). L'alerte « aucune photo depuis 7 jours » est une notification in-app, visible uniquement si l'utilisateur ouvre l'application.
+- CAPTURES D'ÉCRAN RÉELLES : aucune créa ne montre l'interface réelle. Toutes les UI sont reconstituées par IA. Rupture de promesse garantie à la première ouverture de l'app par l'inscrit.
+- PLAN DE MODÉRATION ET DE CRISE : rien n'est prévu pour le premier commentaire « c'est une arnaque », ni pour le premier litige chantier réel exposé publiquement sous une annonce.
+- CADRE JURIDIQUE : aucune revue juridique UEMOA/BCEAO d'un discours public sur du blocage de fonds, ni accord d'usage des marques Wave et Orange Money, citées nommément dans plus de 25 créas.
+- MESURE DE LA FRICTION D'ONBOARDING : le KPI vise 40 % d'activation à 48 h sans jamais compter le nombre d'écrans entre l'inscription et la première quittance (org → bien → unité → locataire → bail → échéance → paiement → quittance). Le nombre d'étapes n'est ni mesuré ni budgété en réduction.
+
+### À corriger tout de suite, c'est rapide
+
+- Chercher-remplacer la phrase de séquestre dans les 25 créas concernées : « Vous ne réglez une phase qu'après avoir validé ses preuves. Locawave ne détient jamais les fonds. » Une heure de travail, elle retire le seul risque juridique critique du dispositif.
+- Passer le bucket de stockage 'chantier' en privé avec URLs signées. Une migration, avant la première impression achetée.
+- Retirer le score de ponctualité du résumé mensuel envoyé au locataire (migration 050) et de toutes les créas grand public. Le remplacer côté propriétaire par un fait neutre : « 11 mois payés à l'heure ».
+- Renommer les identifiants en SN-01…SN-06 et DIA-01…DIA-06 dans les créas, le plan média et le plan de test, pour rendre impossible le mélange des deux économies dans le gestionnaire.
+- Faire approuver 4 templates WhatsApp Business (rappel de loyer, quittance émise, invitation locataire, phase soumise) dès la semaine 1 : sans eux, aucune relance ne partira hors fenêtre de 24 h.
+- Remplacer « photos horodatées prises sur place » par « chaque dépôt est daté et rattaché à une phase » partout. Gratuit, et cela transforme une promesse fausse en promesse tenue.
+- Prendre 8 vraies captures d'écran de l'application (dashboard, frise de phases, quittance PDF, notification, fiche locataire, annuaire) et interdire toute UI générée par IA dans les créas.
+- Inverser l'ordre du feuilleton : ouvrir par HERO-03 (le point de vue du chef de chantier). Aucun coût de production, cela désamorce le risque culturel dès l'audience froide.
+- Réécrire FB-01 SN, TT-02 et TT-06 à la deuxième personne en attendant de vrais témoignages filmés, et activer le label « contenu généré par IA » sur Meta et TikTok.
+- Geler 36 créations et n'en produire que 6 maîtresses, déclinées en 3 hooks chacune. Le calendrier redevient tenable par une personne seule.
+- Construire deux pages d'atterrissage avant le premier franc de média : une chantier (frise de phases, mécanique de validation, FAQ séquestre) et une locative (quittance, relances, tableau de bord).
+- Corriger « titre de propriété contrôlé » en « identité vérifiée et document de propriété fourni » dans FBM-01 et FBM-05.
+- Diffuser en continu pendant les 30 premiers jours au lieu de la fenêtre unique 20 h-21 h UTC, puis mesurer la répartition horaire réelle des conversations avant de restreindre.
+- Chronométrer sur 5 utilisateurs non entraînés le parcours inscription → première quittance. Si c'est au-dessus de 15 minutes, corriger le produit avant d'acheter du média.
+- Renseigner le secret Vault des rapports mensuels, ou retirer le résumé mensuel au locataire de tous les argumentaires — c'est un argument central de la réponse à l'objection d'Aminata Sow.
+
+---
+
+## 6 — Comment utiliser les prompts
 
 ### Chaîne de production
 
@@ -2019,19 +2684,3 @@ PLAN 1 (1,5 s) : très léger push-in de 100 % à 106 %, ciel animé en time-lap
   pays touche à la confiance familiale. Accuser implicitement le frère ou le cousin resté
   au pays est un terrain miné qui peut retourner l'audience contre la marque. L'angle
   juste est « la preuve rassure tout le monde, y compris celui qui gère sur place ».
-
----
-
-## 5 — Ce qui manque encore
-
-Trois agents ont échoué sur une limite de session. Ces parties **ne sont pas dans ce
-document** et je ne les ai pas remplacées par du contenu approximatif :
-
-| Partie manquante | Ce qu'elle devait contenir |
-|---|---|
-| **Créations « recrutement prestataires »** | 5 créations visant maçons, plombiers, électriciens et chefs de chantier — l'offre de la place de marché, à recruter avant la demande |
-| **Plan média** | Budgets en FCFA (2 scénarios), calendrier sur 12 semaines, paramètres de ciblage à saisir dans Meta Ads et TikTok Ads, plan de test A/B, leviers organiques |
-| **Critique adversariale** | Un directeur marketing sceptique cherchant les promesses non tenues, les faux pas culturels et les risques de conformité publicitaire Meta/TikTok |
-
-Ces trois blocs peuvent être relancés depuis le cache du workflow : les 9 agents déjà
-aboutis ne seront pas re-exécutés, seuls les 3 manquants tourneront.
