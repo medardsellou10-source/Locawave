@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react"
 import { createClient } from "@/lib/supabase"
+import { signRecordsMedia } from "@/lib/storage"
 import { IncidentForm } from "@/components/app/IncidentForm"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -36,7 +37,7 @@ export function TenantIncidents({
       .select("id, category, urgency, description, status, created_at, media_urls")
       .eq("lease_id", leaseId)
       .order("created_at", { ascending: false })
-    setIncidents((data as Incident[]) ?? [])
+    setIncidents(await signRecordsMedia(supabase, "reports", (data as Incident[]) ?? []))
   }, [leaseId])
 
   useEffect(() => {

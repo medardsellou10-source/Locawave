@@ -12,12 +12,14 @@ type Props = {
   maxMb?: number
   label?: string
   multiple?: boolean
-  onUploaded: (urls: string[]) => void | Promise<void>
+  onUploaded: (paths: string[]) => void | Promise<void>
 }
 
 /**
- * Upload réutilisable de fichiers (photos/vidéos) vers un bucket Storage public.
- * Renvoie les URLs publiques via onUploaded. Utilisé par le suivi de chantier et le portfolio.
+ * Upload réutilisable de fichiers (photos/vidéos) vers un bucket Storage privé.
+ * Renvoie les CHEMINS dans le bucket via onUploaded — pas des URLs : les buckets
+ * sont privés, l'affichage passe par signMedia() dans @/lib/storage.
+ * Utilisé par le suivi de chantier et le portfolio.
  */
 export function MediaUploader({
   bucket = "chantier",
@@ -38,7 +40,7 @@ export function MediaUploader({
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) { setBusy(false); toast.error("Non authentifié"); return }
 
-    const urls: string[] = []
+    const paths: string[] = []
     for (const file of Array.from(files)) {
       if (file.size > maxMb * 1024 * 1024) {
         toast.error(`${file.name} dépasse ${maxMb} Mo`); continue
@@ -47,14 +49,13 @@ export function MediaUploader({
       const path = `${user.id}/${Date.now()}-${Math.floor(Number(String(file.size).slice(-4)) || 0)}.${ext}`
       const { error } = await supabase.storage.from(bucket).upload(path, file, { upsert: false })
       if (error) { toast.error(`Échec envoi ${file.name}`); continue }
-      const { data } = supabase.storage.from(bucket).getPublicUrl(path)
-      if (data?.publicUrl) urls.push(data.publicUrl)
+      paths.push(path)
     }
     setBusy(false)
     if (fileRef.current) fileRef.current.value = ""
-    if (urls.length === 0) { toast.error("Aucun fichier envoyé"); return }
-    await onUploaded(urls)
-    toast.success(`${urls.length} fichier(s) envoyé(s)`)
+    if (paths.length === 0) { toast.error("Aucun fichier envoyé"); return }
+    await onUploaded(paths)
+    toast.success(`${paths.length} fichier(s) envoyé(s)`)
   }
 
   return (

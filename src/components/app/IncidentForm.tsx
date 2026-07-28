@@ -43,9 +43,8 @@ export function IncidentForm({
       const ext = file.name.split(".").pop() ?? "jpg"
       const path = `incidents/${leaseId}/${Date.now()}.${ext}`
       const { error: upErr } = await supabase.storage.from("reports").upload(path, file)
-      if (!upErr) {
-        mediaUrls = [supabase.storage.from("reports").getPublicUrl(path).data.publicUrl]
-      }
+      // Bucket privé : on stocke le chemin, l'affichage signe via signMedia().
+      if (!upErr) mediaUrls = [path]
     }
 
     const { data: incident, error } = await supabase.from("incidents").insert({

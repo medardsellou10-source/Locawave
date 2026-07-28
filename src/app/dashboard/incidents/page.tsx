@@ -4,6 +4,7 @@ export const dynamic = "force-dynamic"
 
 import { useEffect, useState, useCallback } from "react"
 import { createClient } from "@/lib/supabase"
+import { signRecordsMedia } from "@/lib/storage"
 import { useOrganization } from "@/hooks/useOrganization"
 import { formatDateFR } from "@/lib/formatters"
 import { Card, CardContent } from "@/components/ui/card"
@@ -52,7 +53,7 @@ export default function IncidentsPage() {
       .select("id, category, urgency, description, status, charge_to, created_at, media_urls, property_id, properties(name), leases(tenants(first_name, last_name))")
       .eq("org_id", org.id)
       .order("created_at", { ascending: false })
-    setIncidents((data as Incident[]) ?? [])
+    setIncidents(await signRecordsMedia(supabase, "reports", (data as Incident[]) ?? []))
     setLoading(false)
   }, [org])
 

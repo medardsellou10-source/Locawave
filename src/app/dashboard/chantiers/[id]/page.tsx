@@ -6,6 +6,7 @@ import { useEffect, useState, useCallback } from "react"
 import { useParams } from "next/navigation"
 import Link from "next/link"
 import { createClient } from "@/lib/supabase"
+import { signRecordsMedia } from "@/lib/storage"
 import { formatFCFA, formatDateFR } from "@/lib/formatters"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -48,7 +49,9 @@ export default function ChantierDetailOwnerPage() {
     const { data: up } = await supabase.from("milestone_updates")
       .select("id, milestone_id, kind, media_urls, note, taken_at, created_at")
       .eq("project_id", projectId).order("taken_at", { ascending: false })
-    setUpdates((up as Update[]) ?? [])
+    // Bucket privé : media_urls contient des chemins (ou d'anciennes URLs
+    // publiques), on les signe pour l'affichage.
+    setUpdates(await signRecordsMedia(supabase, "chantier", (up as Update[]) ?? []))
     setLoading(false)
   }, [projectId])
 
