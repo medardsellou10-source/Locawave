@@ -1,14 +1,16 @@
 // Edge Function: psp-webhook
 // Reçoit les notifications du PSP (GeniusPay / PayDunya / CinetPay / simulation),
 // vérifie la signature, et — de façon IDEMPOTENTE — encaisse l'échéance : crée le
-// paiement, passe l'échéance à 'paid', génère la quittance et notifie par WhatsApp.
+// paiement, passe l'échéance à 'paid' et génère la quittance.
 //
-// GeniusPay a son propre schéma de signature (timestamp + corps, secret whsec_...)
-// et est détecté/vérifié séparément via verifyGeniusPay() avant d'être normalisé
-// vers la forme PspEvent partagée par le reste de la fonction.
+// GeniusPay a son propre schéma de signature, confirmé expérimentalement contre
+// l'API réelle : HMAC-SHA256 HEXADÉCIMAL sur `timestamp + "." + corps_BRUT`,
+// avec le secret COMPLET (préfixe whsec_ inclus). La doc du fournisseur illustre
+// la vérification sur un corps ré-encodé (json_encode côté PHP) : les deux
+// coïncident tant que GeniusPay émet du JSON compact, ce qui est le cas.
 //
-// Sécurité : aucune donnée bancaire n'est stockée ; la signature HMAC est
-// obligatoire (refus si secret absent). Une même référence PSP n'encaisse qu'une fois.
+// Sécurité : aucune donnée bancaire n'est stockée ; la signature est obligatoire
+// (refus si secret absent). Une même référence PSP n'encaisse qu'une seule fois.
 
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts"
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2"
@@ -16,31 +18,23 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2"
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!
 const SERVICE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
 const WEBHOOK_SECRET = Deno.env.get("PSP_WEBHOOK_SECRET") ?? ""
-// GeniusPay a son propre secret de webhook (whsec_...) et son propre schéma de
-// signature — distinct du schéma générique ci-dessus. Voir normalizeGeniusPay().
 const GENIUSPAY_WEBHOOK_SECRET = Deno.env.get("GENIUSPAY_WEBHOOK_SECRET") ?? ""
 
 interface PspEvent {
   reference: string // = rent_schedules.payment_link_ref
   providerRef: string // référence côté PSP (idempotence)
   amount: number
-  status: string // 'paid' | 'completed' | 'failed' | 'cancelled' | 'refunded'
+  status: string
   provider?: string
 }
 
-async function hmacHex(rawBody: string, secret: string): Promise<string> {
+async function hmacHex(data: string, secret: string): Promise<string> {
   const enc = new TextEncoder()
   const key = await crypto.subtle.importKey(
-    "raw",
-    enc.encode(secret),
-    { name: "HMAC", hash: "SHA-256" },
-    false,
-    ["sign"]
+    "raw", enc.encode(secret), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]
   )
-  const sig = await crypto.subtle.sign("HMAC", key, enc.encode(rawBody))
-  return Array.from(new Uint8Array(sig))
-    .map((b) => b.toString(16).padStart(2, "0"))
-    .join("")
+  const sig = await crypto.subtle.sign("HMAC", key, enc.encode(data))
+  return Array.from(new Uint8Array(sig)).map((b) => b.toString(16).padStart(2, "0")).join("")
 }
 
 function safeEqual(a: string, b: string): boolean {
@@ -50,32 +44,50 @@ function safeEqual(a: string, b: string): boolean {
   return diff === 0
 }
 
-// Statuts GeniusPay -> statuts internes attendus par la suite de la fonction.
-// Doc : pending | processing | completed | failed | cancelled | refunded | expired.
-function normalizeGeniusPayStatus(status: string): string {
-  return status === "completed" ? "completed" : status
+/** Vrai si la signature GeniusPay du corps brut est valide. */
+async function geniusPaySignatureValide(req: Request, rawBody: string): Promise<boolean> {
+  if (!GENIUSPAY_WEBHOOK_SECRET) return false
+  const signature = (req.headers.get("x-webhook-signature") ?? "").toLowerCase()
+  const timestamp = req.headers.get("x-webhook-timestamp") ?? ""
+  if (!signature || !timestamp) return false
+  const expected = await hmacHex(`${timestamp}.${rawBody}`, GENIUSPAY_WEBHOOK_SECRET)
+  return safeEqual(signature, expected)
 }
 
 /**
- * Vérifie et normalise un webhook GeniusPay vers la forme PspEvent partagée.
- * Schéma propre à ce fournisseur (différent du schéma générique ci-dessus) :
- *   - en-têtes X-Webhook-Signature / X-Webhook-Timestamp / X-Webhook-Event
- *   - signature = HMAC-SHA256(timestamp + "." + corps_json, whsec_secret)
- *   - fenêtre anti-rejeu de 5 minutes sur le timestamp
- * Renvoie `null` si la signature ou le timestamp sont invalides.
+ * Vérifie un webhook GeniusPay et le normalise vers PspEvent.
+ * Renvoie `null` si la signature ou la charge utile sont inexploitables ; le motif
+ * exact est journalisé (jamais le secret) pour rendre les refus diagnosticables.
  */
 async function verifyGeniusPay(req: Request, rawBody: string): Promise<PspEvent | null> {
-  if (!GENIUSPAY_WEBHOOK_SECRET) return null
+  if (!GENIUSPAY_WEBHOOK_SECRET) {
+    console.error("geniuspay: GENIUSPAY_WEBHOOK_SECRET absent de l'environnement")
+    return null
+  }
 
-  const signature = req.headers.get("x-webhook-signature") ?? ""
+  const signature = (req.headers.get("x-webhook-signature") ?? "").toLowerCase()
   const timestamp = req.headers.get("x-webhook-timestamp") ?? ""
-  if (!signature || !timestamp) return null
+  if (!signature || !timestamp) {
+    console.error("geniuspay: en-tête de signature ou de timestamp manquant")
+    return null
+  }
 
-  const expected = await hmacHex(`${timestamp}.${rawBody}`, GENIUSPAY_WEBHOOK_SECRET)
-  if (!safeEqual(signature.toLowerCase(), expected)) return null
+  if (!(await geniusPaySignatureValide(req, rawBody))) {
+    // On journalise les 8 premiers caractères de chaque signature : suffisant pour
+    // diagnostiquer un mauvais secret, insuffisant pour le reconstituer.
+    const expected = await hmacHex(`${timestamp}.${rawBody}`, GENIUSPAY_WEBHOOK_SECRET)
+    console.error(
+      `geniuspay: signature invalide (reçue ${signature.slice(0, 8)}…, ` +
+      `attendue ${expected.slice(0, 8)}…, corps ${rawBody.length} octets)`
+    )
+    return null
+  }
 
   const skewSeconds = Math.abs(Math.floor(Date.now() / 1000) - Number(timestamp))
-  if (!Number.isFinite(skewSeconds) || skewSeconds > 300) return null
+  if (!Number.isFinite(skewSeconds) || skewSeconds > 300) {
+    console.error(`geniuspay: timestamp hors fenêtre anti-rejeu (écart ${skewSeconds}s)`)
+    return null
+  }
 
   let payload: {
     event?: string
@@ -90,17 +102,25 @@ async function verifyGeniusPay(req: Request, rawBody: string): Promise<PspEvent 
   try {
     payload = JSON.parse(rawBody)
   } catch {
+    console.error("geniuspay: corps JSON illisible")
     return null
   }
+
   const d = payload.data
   const ourRef = d?.metadata?.locawave_reference
-  if (!d || !ourRef || !d.status || !d.reference) return null
+  if (!d || !ourRef || !d.status || !d.reference) {
+    console.error(
+      `geniuspay: charge utile incomplète (event=${payload.event ?? "?"}, ` +
+      `référence interne=${ourRef ?? "absente"}, statut=${d?.status ?? "absent"})`
+    )
+    return null
+  }
 
   return {
     reference: ourRef,
     providerRef: d.reference,
     amount: d.amount ?? 0,
-    status: normalizeGeniusPayStatus(d.status),
+    status: d.status,
     provider: d.provider ?? "geniuspay",
   }
 }
@@ -116,19 +136,30 @@ serve(async (req: Request) => {
   let event: PspEvent
 
   if (isGeniusPay) {
-    // GeniusPay a un schéma de signature distinct (timestamp + corps) : on ne
-    // peut pas le vérifier avec le HMAC générique ci-dessous.
+    // `webhook.test` est l'évènement de vérification d'intégration du tableau de
+    // bord GeniusPay : sa signature est valide mais il ne porte aucune
+    // transaction. On répond 200 pour que le test s'affiche vert, sans encaisser.
+    let estTest = false
+    try { estTest = JSON.parse(rawBody)?.event === "webhook.test" } catch { /* corps non-JSON */ }
+    if (estTest) {
+      if (await geniusPaySignatureValide(req, rawBody)) {
+        console.log("geniuspay: webhook.test reçu, signature valide")
+        return new Response(JSON.stringify({ ok: true, test: true }), {
+          headers: { "Content-Type": "application/json" },
+        })
+      }
+      return new Response(JSON.stringify({ error: "Signature GeniusPay invalide" }), { status: 401 })
+    }
+
     const normalized = await verifyGeniusPay(req, rawBody)
     if (!normalized) {
       return new Response(JSON.stringify({ error: "Signature GeniusPay invalide" }), { status: 401 })
     }
     event = normalized
   } else {
-    // Secret obligatoire : sans lui, on ne peut pas vérifier l'authenticité → refus.
     if (!WEBHOOK_SECRET) {
       return new Response(JSON.stringify({ error: "Webhook non configuré" }), { status: 500 })
     }
-    // Vérification de signature (HMAC-SHA256 du corps brut)
     const provided =
       req.headers.get("x-psp-signature") ??
       req.headers.get("x-paydunya-signature") ??
@@ -147,10 +178,10 @@ serve(async (req: Request) => {
 
   const supabase = createClient(SUPABASE_URL, SERVICE_KEY)
 
-  // On ne traite que les paiements aboutis ; les autres sont journalisés.
+  // Statuts GeniusPay : pending | processing | completed | failed | cancelled |
+  // refunded | expired. Seul un paiement abouti encaisse.
   const succeeded = event.status === "paid" || event.status === "completed"
 
-  // 2) Retrouver l'échéance par notre référence
   const { data: schedule } = await supabase
     .from("rent_schedules")
     .select("id, org_id, amount_fcfa")
@@ -158,10 +189,10 @@ serve(async (req: Request) => {
     .maybeSingle()
 
   if (!schedule) {
+    console.error(`échéance inconnue pour la référence interne ${event.reference}`)
     return new Response(JSON.stringify({ error: "Échéance inconnue" }), { status: 404 })
   }
 
-  // Journaliser tout évènement
   await supabase.from("activity_logs").insert({
     org_id: schedule.org_id,
     action: "psp_webhook",
@@ -176,7 +207,6 @@ serve(async (req: Request) => {
     })
   }
 
-  // 3) Idempotence : cette référence PSP a-t-elle déjà encaissé ?
   const { data: existing } = await supabase
     .from("payments")
     .select("id")
@@ -189,13 +219,15 @@ serve(async (req: Request) => {
     })
   }
 
-  // 4) Créer le paiement
+  // `amount_fcfa` est un entier ; GeniusPay peut renvoyer un décimal (350000.00).
+  const montant = Math.round(Number(event.amount)) || schedule.amount_fcfa
+
   const { data: payment, error: payErr } = await supabase
     .from("payments")
     .insert({
       org_id: schedule.org_id,
       rent_schedule_id: schedule.id,
-      amount_fcfa: event.amount || schedule.amount_fcfa,
+      amount_fcfa: montant,
       method: "psp",
       psp_provider: event.provider ?? "simulation",
       psp_reference: event.providerRef,
@@ -206,28 +238,57 @@ serve(async (req: Request) => {
     .single()
 
   if (payErr || !payment) {
-    // Conflit d'unicité = course concurrente déjà encaissée → OK idempotent
-    return new Response(JSON.stringify({ ok: true, race: true }), {
-      headers: { "Content-Type": "application/json" },
-    })
+    // 23505 = violation d'unicité sur psp_reference : une autre livraison du même
+    // webhook a déjà encaissé. C'est le seul cas réellement idempotent → 200.
+    if (payErr?.code === "23505") {
+      return new Response(JSON.stringify({ ok: true, duplicate: true }), {
+        headers: { "Content-Type": "application/json" },
+      })
+    }
+    // Tout autre échec est une VRAIE erreur. Répondre 2xx ici ferait croire au PSP
+    // que l'encaissement a réussi et l'empêcherait de réessayer : on renvoie 500.
+    console.error(
+      `encaissement impossible pour ${event.providerRef} : ` +
+      `${payErr?.message ?? "insertion sans ligne renvoyée"} ` +
+      `(code=${payErr?.code ?? "?"}, details=${payErr?.details ?? "?"}, hint=${payErr?.hint ?? "?"})`
+    )
+    return new Response(
+      JSON.stringify({ error: "Encaissement impossible", detail: payErr?.message ?? null }),
+      { status: 500, headers: { "Content-Type": "application/json" } }
+    )
   }
 
-  // 5) Passer l'échéance à 'paid'
   await supabase.from("rent_schedules").update({ status: "paid" }).eq("id", schedule.id)
 
-  // 6) Générer la quittance (même format que l'encaissement manuel : LW-YYYY-NNNN)
-  const { count } = await supabase
-    .from("receipts")
-    .select("*", { count: "exact", head: true })
-    .eq("org_id", schedule.org_id)
-  const seq = (count ?? 0) + 1
-  const receiptNumber = `LW-${new Date().getFullYear()}-${String(seq).padStart(4, "0")}`
-  await supabase
-    .from("receipts")
-    .insert({ org_id: schedule.org_id, payment_id: payment.id, receipt_number: receiptNumber })
+  // Numérotation des quittances : déléguée à next_receipt_number(), qui sérialise
+  // les émissions concurrentes d'une même organisation et dérive le numéro du
+  // maximum réel. L'ancien calcul côté fonction comptait les lignes de
+  // l'organisation alors que l'unicité était globale : le deuxième bailleur à
+  // encaisser produisait un numéro déjà pris, et la quittance était perdue.
+  const { data: receiptNumber, error: numErr } = await supabase
+    .rpc("next_receipt_number", { p_org: schedule.org_id })
+
+  let receipt: string | null = null
+  if (numErr || !receiptNumber) {
+    console.error(`numéro de quittance indisponible : ${numErr?.message ?? "aucun numéro renvoyé"}`)
+  } else {
+    const { error: recErr } = await supabase
+      .from("receipts")
+      .insert({ org_id: schedule.org_id, payment_id: payment.id, receipt_number: receiptNumber })
+    if (recErr) {
+      // Le paiement est encaissé : on ne renvoie pas d'erreur au PSP (il
+      // réessaierait un encaissement déjà fait). On journalise pour rattrapage.
+      console.error(
+        `quittance non générée pour le paiement ${payment.id} ` +
+        `(numéro ${receiptNumber}) : ${recErr.message} (code=${recErr.code ?? "?"})`
+      )
+    } else {
+      receipt = receiptNumber as string
+    }
+  }
 
   return new Response(
-    JSON.stringify({ ok: true, payment_id: payment.id, receipt: receiptNumber }),
+    JSON.stringify({ ok: true, payment_id: payment.id, receipt }),
     { headers: { "Content-Type": "application/json" } }
   )
 })
