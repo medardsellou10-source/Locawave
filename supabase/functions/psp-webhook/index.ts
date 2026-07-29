@@ -1,7 +1,11 @@
 // Edge Function: psp-webhook
-// Reçoit les notifications du PSP (PayDunya / CinetPay / simulation), vérifie la
-// signature, et — de façon IDEMPOTENTE — encaisse l'échéance : crée le paiement,
-// passe l'échéance à 'paid', génère la quittance et notifie par WhatsApp.
+// Reçoit les notifications du PSP (GeniusPay / PayDunya / CinetPay / simulation),
+// vérifie la signature, et — de façon IDEMPOTENTE — encaisse l'échéance : crée le
+// paiement, passe l'échéance à 'paid', génère la quittance et notifie par WhatsApp.
+//
+// GeniusPay a son propre schéma de signature (timestamp + corps, secret whsec_...)
+// et est détecté/vérifié séparément via verifyGeniusPay() avant d'être normalisé
+// vers la forme PspEvent partagée par le reste de la fonction.
 //
 // Sécurité : aucune donnée bancaire n'est stockée ; la signature HMAC est
 // obligatoire (refus si secret absent). Une même référence PSP n'encaisse qu'une fois.
@@ -12,6 +16,9 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2"
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!
 const SERVICE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
 const WEBHOOK_SECRET = Deno.env.get("PSP_WEBHOOK_SECRET") ?? ""
+// GeniusPay a son propre secret de webhook (whsec_...) et son propre schéma de
+// signature — distinct du schéma générique ci-dessus. Voir normalizeGeniusPay().
+const GENIUSPAY_WEBHOOK_SECRET = Deno.env.get("GENIUSPAY_WEBHOOK_SECRET") ?? ""
 
 interface PspEvent {
   reference: string // = rent_schedules.payment_link_ref
@@ -43,34 +50,99 @@ function safeEqual(a: string, b: string): boolean {
   return diff === 0
 }
 
+// Statuts GeniusPay -> statuts internes attendus par la suite de la fonction.
+// Doc : pending | processing | completed | failed | cancelled | refunded | expired.
+function normalizeGeniusPayStatus(status: string): string {
+  return status === "completed" ? "completed" : status
+}
+
+/**
+ * Vérifie et normalise un webhook GeniusPay vers la forme PspEvent partagée.
+ * Schéma propre à ce fournisseur (différent du schéma générique ci-dessus) :
+ *   - en-têtes X-Webhook-Signature / X-Webhook-Timestamp / X-Webhook-Event
+ *   - signature = HMAC-SHA256(timestamp + "." + corps_json, whsec_secret)
+ *   - fenêtre anti-rejeu de 5 minutes sur le timestamp
+ * Renvoie `null` si la signature ou le timestamp sont invalides.
+ */
+async function verifyGeniusPay(req: Request, rawBody: string): Promise<PspEvent | null> {
+  if (!GENIUSPAY_WEBHOOK_SECRET) return null
+
+  const signature = req.headers.get("x-webhook-signature") ?? ""
+  const timestamp = req.headers.get("x-webhook-timestamp") ?? ""
+  if (!signature || !timestamp) return null
+
+  const expected = await hmacHex(`${timestamp}.${rawBody}`, GENIUSPAY_WEBHOOK_SECRET)
+  if (!safeEqual(signature.toLowerCase(), expected)) return null
+
+  const skewSeconds = Math.abs(Math.floor(Date.now() / 1000) - Number(timestamp))
+  if (!Number.isFinite(skewSeconds) || skewSeconds > 300) return null
+
+  let payload: {
+    event?: string
+    data?: {
+      reference?: string
+      amount?: number
+      status?: string
+      provider?: string
+      metadata?: { locawave_reference?: string }
+    }
+  }
+  try {
+    payload = JSON.parse(rawBody)
+  } catch {
+    return null
+  }
+  const d = payload.data
+  const ourRef = d?.metadata?.locawave_reference
+  if (!d || !ourRef || !d.status || !d.reference) return null
+
+  return {
+    reference: ourRef,
+    providerRef: d.reference,
+    amount: d.amount ?? 0,
+    status: normalizeGeniusPayStatus(d.status),
+    provider: d.provider ?? "geniuspay",
+  }
+}
+
 serve(async (req: Request) => {
   if (req.method !== "POST") {
     return new Response("Method not allowed", { status: 405 })
   }
 
-  // Secret obligatoire : sans lui, on ne peut pas vérifier l'authenticité → refus.
-  if (!WEBHOOK_SECRET) {
-    return new Response(JSON.stringify({ error: "Webhook non configuré" }), { status: 500 })
-  }
-
   const rawBody = await req.text()
-
-  // 1) Vérification de signature (HMAC-SHA256 du corps brut)
-  const provided =
-    req.headers.get("x-psp-signature") ??
-    req.headers.get("x-paydunya-signature") ??
-    req.headers.get("x-token") ??
-    ""
-  const expected = await hmacHex(rawBody, WEBHOOK_SECRET)
-  if (!provided || !safeEqual(provided.toLowerCase(), expected)) {
-    return new Response(JSON.stringify({ error: "Signature invalide" }), { status: 401 })
-  }
+  const isGeniusPay = req.headers.has("x-webhook-signature") && req.headers.has("x-webhook-event")
 
   let event: PspEvent
-  try {
-    event = JSON.parse(rawBody)
-  } catch {
-    return new Response(JSON.stringify({ error: "JSON invalide" }), { status: 400 })
+
+  if (isGeniusPay) {
+    // GeniusPay a un schéma de signature distinct (timestamp + corps) : on ne
+    // peut pas le vérifier avec le HMAC générique ci-dessous.
+    const normalized = await verifyGeniusPay(req, rawBody)
+    if (!normalized) {
+      return new Response(JSON.stringify({ error: "Signature GeniusPay invalide" }), { status: 401 })
+    }
+    event = normalized
+  } else {
+    // Secret obligatoire : sans lui, on ne peut pas vérifier l'authenticité → refus.
+    if (!WEBHOOK_SECRET) {
+      return new Response(JSON.stringify({ error: "Webhook non configuré" }), { status: 500 })
+    }
+    // Vérification de signature (HMAC-SHA256 du corps brut)
+    const provided =
+      req.headers.get("x-psp-signature") ??
+      req.headers.get("x-paydunya-signature") ??
+      req.headers.get("x-token") ??
+      ""
+    const expected = await hmacHex(rawBody, WEBHOOK_SECRET)
+    if (!provided || !safeEqual(provided.toLowerCase(), expected)) {
+      return new Response(JSON.stringify({ error: "Signature invalide" }), { status: 401 })
+    }
+    try {
+      event = JSON.parse(rawBody)
+    } catch {
+      return new Response(JSON.stringify({ error: "JSON invalide" }), { status: 400 })
+    }
   }
 
   const supabase = createClient(SUPABASE_URL, SERVICE_KEY)

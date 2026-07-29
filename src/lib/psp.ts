@@ -12,11 +12,11 @@
  * compléter les blocs createTransaction / verifySignature du provider choisi.
  */
 
-export type PspProvider = "simulation" | "paydunya" | "cinetpay"
+export type PspProvider = "simulation" | "paydunya" | "cinetpay" | "geniuspay"
 
 export function getPspProvider(): PspProvider {
   const p = (process.env.PSP_PROVIDER ?? "simulation").toLowerCase()
-  if (p === "paydunya" || p === "cinetpay") return p
+  if (p === "paydunya" || p === "cinetpay" || p === "geniuspay") return p
   return "simulation"
 }
 
@@ -94,6 +94,57 @@ export async function createPspTransaction(
     }
   }
 
+  if (provider === "geniuspay") {
+    // GeniusPay — agrégateur (Wave, Orange Money, MTN, cartes) — https://geniuspay.ci
+    // Secrets requis : GENIUSPAY_API_KEY (pk_...), GENIUSPAY_API_SECRET (sk_...).
+    // Phase 1 : verrouillé sur Wave. GeniusPay n'a AUCUN mécanisme de séquestre —
+    // c'est un encaissement direct (pending → completed), pas un hold. Ne pas
+    // présenter ce provider comme un séquestre dans l'UI ou la communication.
+    const apiKey = process.env.GENIUSPAY_API_KEY
+    const apiSecret = process.env.GENIUSPAY_API_SECRET
+    if (!apiKey || !apiSecret) {
+      throw new Error("GeniusPay non configuré : renseigner GENIUSPAY_API_KEY / GENIUSPAY_API_SECRET")
+    }
+    const base = process.env.GENIUSPAY_BASE_URL ?? "https://geniuspay.ci/api/v1/merchant"
+
+    const res = await fetch(`${base}/payments`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-API-Key": apiKey,
+        "X-API-Secret": apiSecret,
+      },
+      body: JSON.stringify({
+        amount: input.amountFcfa,
+        currency: "XOF",
+        payment_method: "wave",
+        description: input.description.slice(0, 500),
+        customer: {
+          name: input.customerName,
+          phone: input.customerPhone,
+        },
+        success_url: input.returnUrl,
+        error_url: input.cancelUrl,
+        // GeniusPay génère sa propre `reference` (MTX-...) ; c'est via metadata
+        // que NOTRE référence interne fait l'aller-retour jusqu'au webhook.
+        metadata: { locawave_reference: input.reference },
+      }),
+    })
+    const data = await res.json()
+    if (!res.ok || data?.success !== true || !data?.data) {
+      throw new Error(`GeniusPay: création échouée (${data?.error?.message ?? res.status})`)
+    }
+    const paymentUrl: string | undefined = data.data.payment_url ?? data.data.checkout_url
+    if (!paymentUrl) {
+      throw new Error("GeniusPay: réponse sans URL de paiement")
+    }
+    return {
+      provider: "geniuspay",
+      providerRef: data.data.reference, // MTX-xxxxxxxxxx
+      paymentUrl,
+    }
+  }
+
   if (provider === "cinetpay") {
     // === À COMPLÉTER avec un compte CinetPay ===
     // Secrets requis : CINETPAY_API_KEY, CINETPAY_SITE_ID
@@ -136,6 +187,19 @@ export async function computeWebhookSignature(
   return Array.from(new Uint8Array(sig))
     .map((b) => b.toString(16).padStart(2, "0"))
     .join("")
+}
+
+/**
+ * Signature webhook GeniusPay — schéma propre à ce fournisseur, DIFFÉRENT du
+ * schéma générique ci-dessus : HMAC-SHA256(timestamp + "." + corps_json, secret),
+ * documenté sur https://geniuspay.ci/docs/api#webhooks.
+ */
+export async function computeGeniusPaySignature(
+  timestamp: string,
+  rawBody: string,
+  secret: string
+): Promise<string> {
+  return computeWebhookSignature(`${timestamp}.${rawBody}`, secret)
 }
 
 /** Comparaison constante (anti-timing) de deux signatures hex. */
