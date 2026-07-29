@@ -118,10 +118,16 @@ export async function createPspTransaction(
         amount: input.amountFcfa,
         currency: "XOF",
         payment_method: "wave",
+        // `gateway` ET `customer.country` sont indispensables : testé en sandbox,
+        // avec le seul `payment_method` GeniusPay route quand même vers Orange
+        // Money et géolocalise le client sur l'IP de l'appelant (on obtenait
+        // country=MA pour un numéro +221). Les deux champs forcent Wave/Sénégal.
+        gateway: "wave",
         description: input.description.slice(0, 500),
         customer: {
           name: input.customerName,
           phone: input.customerPhone,
+          country: process.env.GENIUSPAY_COUNTRY ?? "SN",
         },
         success_url: input.returnUrl,
         error_url: input.cancelUrl,
