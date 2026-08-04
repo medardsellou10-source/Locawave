@@ -10,7 +10,7 @@ import { Loader2, UserCheck } from "lucide-react"
 import { toast } from "sonner"
 
 export type ProviderOption = { id: string; name: string; trades: string[]; trusted: boolean }
-type WorkOrder = { id: string; provider_id: string | null; amount_fcfa: number | null; status: string; escrow_status: string }
+type WorkOrder = { id: string; provider_id: string | null; amount_fcfa: number | null; status: string; payment_state: string }
 
 export function IncidentAssign({
   incidentId, orgId, propertyId, ownerId, providers, onChanged,
@@ -26,7 +26,7 @@ export function IncidentAssign({
 
   const load = useCallback(async () => {
     const { data } = await supabase.from("work_orders")
-      .select("id, provider_id, amount_fcfa, status, escrow_status")
+      .select("id, provider_id, amount_fcfa, status, payment_state")
       .eq("incident_id", incidentId).maybeSingle()
     setWo((data as WorkOrder) ?? null)
   }, [incidentId])
@@ -40,7 +40,7 @@ export function IncidentAssign({
     const { error } = await supabase.from("work_orders").insert({
       org_id: orgId, incident_id: incidentId, property_id: propertyId, client_id: ownerId,
       provider_id: providerId, type: "incident_repair", amount_fcfa: amt,
-      status: "assigned", escrow_status: amt ? "held" : "none",
+      status: "assigned", payment_state: "not_due",
     })
     if (error) { toast.error("Erreur d'assignation"); setBusy(false); return }
     await supabase.from("incidents").update({ status: "assigned" }).eq("id", incidentId)
@@ -52,10 +52,10 @@ export function IncidentAssign({
   async function validate() {
     if (!wo) return
     setBusy(true)
-    await supabase.from("work_orders").update({ status: "completed", escrow_status: wo.escrow_status === "held" ? "released" : wo.escrow_status }).eq("id", wo.id)
+    await supabase.from("work_orders").update({ status: "completed", payment_state: "due" }).eq("id", wo.id)
     await supabase.from("incidents").update({ status: "resolved" }).eq("id", incidentId)
-    await supabase.from("audit_log").insert({ entity: "work_orders", entity_id: wo.id, action: "validated_escrow_released", actor_id: ownerId })
-    toast.success("Intervention validée — séquestre libéré")
+    await supabase.from("audit_log").insert({ entity: "work_orders", entity_id: wo.id, action: "intervention_validee", actor_id: ownerId })
+    toast.success("Intervention validée — le paiement est dû au prestataire")
     setBusy(false); load(); onChanged()
   }
 
@@ -64,9 +64,9 @@ export function IncidentAssign({
     return (
       <div className="flex flex-wrap items-center gap-2 text-xs">
         <Badge className="bg-blue-100 text-blue-700"><UserCheck className="w-3 h-3 mr-1" />{prov?.name ?? "Prestataire"}</Badge>
-        <span className="text-gray-500">Mission : {wo.status} · séquestre : {wo.escrow_status}{wo.amount_fcfa ? ` (${formatFCFA(wo.amount_fcfa)})` : ""}</span>
+        <span className="text-gray-500">Mission : {wo.status} · paiement : {wo.payment_state}{wo.amount_fcfa ? ` (${formatFCFA(wo.amount_fcfa)})` : ""}</span>
         {wo.status !== "completed" && (
-          <Button size="sm" variant="outline" disabled={busy} onClick={validate}>Valider & libérer le séquestre</Button>
+          <Button size="sm" variant="outline" disabled={busy} onClick={validate}>Valider l'intervention</Button>
         )}
       </div>
     )

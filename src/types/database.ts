@@ -1434,11 +1434,14 @@ export type Database = {
           approved_at: string | null
           created_at: string | null
           description: string | null
-          escrow_status: string
           id: string
           order_index: number
+          payment_state: string
           project_id: string
           psp_reference: string | null
+          settled_at: string | null
+          settlement_note: string | null
+          settlement_proof_url: string | null
           status: string
           submitted_at: string | null
           title: string
@@ -1449,11 +1452,14 @@ export type Database = {
           approved_at?: string | null
           created_at?: string | null
           description?: string | null
-          escrow_status?: string
           id?: string
           order_index?: number
+          payment_state?: string
           project_id: string
           psp_reference?: string | null
+          settled_at?: string | null
+          settlement_note?: string | null
+          settlement_proof_url?: string | null
           status?: string
           submitted_at?: string | null
           title: string
@@ -1464,11 +1470,14 @@ export type Database = {
           approved_at?: string | null
           created_at?: string | null
           description?: string | null
-          escrow_status?: string
           id?: string
           order_index?: number
+          payment_state?: string
           project_id?: string
           psp_reference?: string | null
+          settled_at?: string | null
+          settlement_note?: string | null
+          settlement_proof_url?: string | null
           status?: string
           submitted_at?: string | null
           title?: string
@@ -2346,12 +2355,14 @@ export type Database = {
           client_id: string
           created_at: string | null
           description: string | null
-          escrow_status: string
           id: string
           incident_id: string | null
           org_id: string | null
+          payment_state: string
           property_id: string | null
           provider_id: string | null
+          settled_at: string | null
+          settlement_proof_url: string | null
           status: string
           type: string
           updated_at: string | null
@@ -2363,12 +2374,14 @@ export type Database = {
           client_id: string
           created_at?: string | null
           description?: string | null
-          escrow_status?: string
           id?: string
           incident_id?: string | null
           org_id?: string | null
+          payment_state?: string
           property_id?: string | null
           provider_id?: string | null
+          settled_at?: string | null
+          settlement_proof_url?: string | null
           status?: string
           type?: string
           updated_at?: string | null
@@ -2380,12 +2393,14 @@ export type Database = {
           client_id?: string
           created_at?: string | null
           description?: string | null
-          escrow_status?: string
           id?: string
           incident_id?: string | null
           org_id?: string | null
+          payment_state?: string
           property_id?: string | null
           provider_id?: string | null
+          settled_at?: string | null
+          settlement_proof_url?: string | null
           status?: string
           type?: string
           updated_at?: string | null
@@ -2755,6 +2770,7 @@ export type Database = {
       lw_edge_command: { Args: { fn: string }; Returns: string }
       lw_fcfa: { Args: { n: number }; Returns: string }
       mark_overdue_schedules: { Args: never; Returns: number }
+      next_receipt_number: { Args: { p_org: string }; Returns: string }
       populate_geometry_columns:
         | { Args: { tbl_oid: unknown; use_typmod?: boolean }; Returns: number }
         | { Args: { use_typmod?: boolean }; Returns: string }

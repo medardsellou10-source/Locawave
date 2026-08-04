@@ -20,12 +20,11 @@ import { ArrowLeft, HardHat, Plus, Send, Loader2 } from "lucide-react"
 import { toast } from "sonner"
 
 type Project = { id: string; title: string; description: string | null; total_budget_fcfa: number | null; status: string }
-type Milestone = { id: string; order_index: number; title: string; description: string | null; amount_fcfa: number; status: string; escrow_status: string }
+type Milestone = { id: string; order_index: number; title: string; description: string | null; amount_fcfa: number; status: string; payment_state: string }
 type Update = { id: string; milestone_id: string; kind: string; media_urls: string[] | null; note: string | null; taken_at: string }
 
 const MS_STATUS: Record<string, { label: string; cls: string }> = {
   planned: { label: "Planifiée", cls: "bg-gray-100 text-gray-600" },
-  funded: { label: "Financée", cls: "bg-indigo-100 text-indigo-700" },
   in_progress: { label: "En cours", cls: "bg-blue-100 text-blue-700" },
   submitted: { label: "Soumise", cls: "bg-amber-100 text-amber-700" },
   approved: { label: "Validée & payée", cls: "bg-green-100 text-green-700" },
@@ -59,7 +58,7 @@ export default function ChantierProviderPage() {
       .select("id, title, description, total_budget_fcfa, status").eq("id", projectId).maybeSingle()
     setProject(p as Project)
     const { data: ms } = await supabase.from("project_milestones")
-      .select("id, order_index, title, description, amount_fcfa, status, escrow_status")
+      .select("id, order_index, title, description, amount_fcfa, status, payment_state")
       .eq("project_id", projectId).order("order_index", { ascending: true })
     setMilestones((ms as Milestone[]) ?? [])
     const { data: up } = await supabase.from("milestone_updates")
@@ -163,10 +162,10 @@ export default function ChantierProviderPage() {
                     <Button variant="outline" size="sm" onClick={() => postNote(m)}>Note</Button>
                   </div>
                   <div className="flex gap-2 flex-wrap">
-                    {m.status === "planned" || m.status === "funded" ? (
+                    {m.status === "planned" ? (
                       <Button size="sm" variant="outline" disabled={busy === m.id} onClick={() => setStatus(m, "in_progress")}>Démarrer</Button>
                     ) : null}
-                    {(m.status === "in_progress" || m.status === "rejected" || m.status === "funded") && (
+                    {(m.status === "in_progress" || m.status === "rejected") && (
                       <Button size="sm" disabled={busy === m.id} onClick={() => setStatus(m, "submitted")} className="bg-[#f97316] hover:bg-[#ea580c] text-white">
                         {busy === m.id ? <Loader2 className="w-4 h-4 animate-spin" /> : <><Send className="w-4 h-4 mr-1" /> Soumettre à validation</>}
                       </Button>

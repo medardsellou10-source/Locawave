@@ -22,7 +22,7 @@ import { toast } from "sonner"
 type Project = {
   id: string; title: string; description: string | null; total_budget_fcfa: number | null
   status: string; provider_id: string | null
-  milestones?: { amount_fcfa: number; status: string; escrow_status: string }[]
+  milestones?: { amount_fcfa: number; status: string; payment_state: string }[]
 }
 type Provider = { id: string; display_name: string | null }
 
@@ -55,7 +55,7 @@ export default function ChantiersPage() {
     setUid(user.id)
     const { data } = await supabase
       .from("construction_projects")
-      .select("id, title, description, total_budget_fcfa, status, provider_id, milestones:project_milestones(amount_fcfa, status, escrow_status)")
+      .select("id, title, description, total_budget_fcfa, status, provider_id, milestones:project_milestones(amount_fcfa, status, payment_state)")
       .order("created_at", { ascending: false })
     setProjects((data as Project[]) ?? [])
     const { data: provs } = await supabase.from("provider_profiles").select("id, display_name").eq("is_verified", true)
@@ -82,10 +82,10 @@ export default function ChantiersPage() {
 
   function metrics(p: Project) {
     const ms = p.milestones ?? []
-    const released = ms.filter((m) => m.escrow_status === "released").reduce((s, m) => s + (m.amount_fcfa || 0), 0)
+    const regle = ms.filter((m) => m.payment_state === "settled").reduce((s, m) => s + (m.amount_fcfa || 0), 0)
     const approved = ms.filter((m) => m.status === "approved").length
     const progress = ms.length ? Math.round((approved / ms.length) * 100) : 0
-    return { released, progress, count: ms.length }
+    return { regle, progress, count: ms.length }
   }
 
   return (
@@ -139,7 +139,7 @@ export default function ChantiersPage() {
                       <div className="h-full bg-[#f97316]" style={{ width: `${m.progress}%` }} />
                     </div>
                     <div className="flex items-center justify-between mt-2 text-xs text-gray-500">
-                      <span>{m.progress}% validé · {formatFCFA(m.released)} libérés</span>
+                      <span>{m.progress}% validé · {formatFCFA(m.regle)} réglés</span>
                       <span className="flex items-center gap-1 text-[#f97316]">Ouvrir <ArrowRight className="w-3.5 h-3.5" /></span>
                     </div>
                   </CardContent>

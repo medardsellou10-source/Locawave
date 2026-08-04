@@ -14,7 +14,7 @@ const PILLARS = [
   { icon: Search, title: "Trouver", desc: "Annonces vérifiées, recherche par carte et proximité, visites (dont vidéo pour la diaspora).", color: "bg-blue-100 text-blue-600" },
   { icon: KeyRound, title: "Louer", desc: "Candidature en ligne, bail généré automatiquement, espace locataire et paiement sécurisé.", color: "bg-indigo-100 text-indigo-600" },
   { icon: Wallet, title: "Gérer", desc: "Loyers, quittances PDF, finances par bien, rappels WhatsApp et tableau de bord temps réel.", color: "bg-green-100 text-green-600" },
-  { icon: HardHat, title: "Entretenir", desc: "Suivi de chantier photos/vidéos en temps réel, paiement par phase sous séquestre.", color: "bg-orange-100 text-orange-600" },
+  { icon: HardHat, title: "Entretenir", desc: "Suivi de chantier en photos et vidéos réelles. Vous ne réglez une phase qu'après l'avoir validée.", color: "bg-orange-100 text-orange-600" },
   { icon: Wrench, title: "Servir", desc: "Prestataires vérifiés près de chez vous, messagerie intégrée, avantages (santé, formation).", color: "bg-purple-100 text-purple-600" },
 ]
 
@@ -23,7 +23,7 @@ const FEATURES = [
   { icon: KeyRound, title: "Espace locataire & paiement", desc: "Le locataire suit ses échéances, paie en ligne (Wave/OM) et télécharge ses quittances depuis son espace.", color: "bg-indigo-100 text-indigo-600" },
   { icon: HardHat, title: "Suivi de chantier", desc: "Construisez/rénovez à distance : photos & vidéos en temps réel, validez chaque phase avant de débloquer le paiement.", color: "bg-orange-100 text-orange-600" },
   { icon: Star, title: "Prestataires & Trust Score", desc: "Artisans vérifiés (KYC), notés sur leurs missions réelles. Constituez votre carnet d'artisans de confiance.", color: "bg-amber-100 text-amber-600" },
-  { icon: ShieldCheck, title: "Paiement sous séquestre", desc: "Les fonds sont gelés jusqu'à validation du travail. En cas de litige, médiation intégrée. On ne détient jamais vos fonds.", color: "bg-green-100 text-green-600" },
+  { icon: ShieldCheck, title: "Vous payez après validation", desc: "Chaque phase doit être prouvée en photos avant d'être réglée. Locawave ne détient jamais vos fonds : vous réglez le prestataire directement. En cas de litige, médiation intégrée.", color: "bg-green-100 text-green-600" },
   { icon: Bell, title: "Incidents en temps réel", desc: "Le locataire signale un problème avec photo ; vous êtes notifié (WhatsApp) et suivez la résolution en direct.", color: "bg-red-100 text-red-600" },
   { icon: HeartPulse, title: "Avantages & protection", desc: "Accès à la micro-assurance santé (CMU) et à des modules de formation avec badges pour les prestataires.", color: "bg-pink-100 text-pink-600" },
   { icon: FileText, title: "Quittances & rappels auto", desc: "Quittances PDF instantanées et rappels WhatsApp J-5 / jour J / J+3. Zéro relance manuelle.", color: "bg-slate-100 text-slate-600" },
@@ -33,7 +33,7 @@ const FEATURES = [
 const PERSONAS = [
   {
     role: "owner", emoji: "🏠", title: "Propriétaire & diaspora",
-    points: ["Gérez vos biens depuis l'étranger", "Suivez vos chantiers en temps réel", "Paiements et séquestre sécurisés", "Relevés pour votre fiscalité"],
+    points: ["Gérez vos biens depuis l'étranger", "Suivez vos chantiers en temps réel", "Ne réglez qu'après avoir validé", "Relevés pour votre fiscalité"],
     cta: "Gérer mes biens", color: "from-blue-600 to-blue-500",
   },
   {
@@ -43,7 +43,7 @@ const PERSONAS = [
   },
   {
     role: "provider", emoji: "🛠️", title: "Prestataire & aidant",
-    points: ["Vitrine pro avec réalisations", "Missions et chantiers payés sous séquestre", "Trust Score qui valorise votre sérieux", "Avantages santé & formation"],
+    points: ["Vitrine pro avec réalisations", "Missions validées par écrit, règlements tracés", "Trust Score qui valorise votre sérieux", "Avantages santé & formation"],
     cta: "Proposer mes services", color: "from-orange-600 to-orange-500",
   },
 ]
@@ -58,7 +58,7 @@ const PLANS = [
   {
     name: "Pro", price: "20 000", period: "/mois",
     description: "Pour les gestionnaires actifs",
-    features: ["Jusqu'à 25 biens", "Suivi de chantier & prestataires", "Séquestre & litiges", "Rapports mensuels", "3 utilisateurs", "Support prioritaire"],
+    features: ["Jusqu'à 25 biens", "Suivi de chantier & prestataires", "Validation par phase & litiges", "Rapports mensuels", "3 utilisateurs", "Support prioritaire"],
     cta: "Essai gratuit 14 jours", variant: "pro" as const,
   },
   {
@@ -71,8 +71,8 @@ const PLANS = [
 
 const FAQ = [
   { q: "Qu'est-ce que Locawave exactement ?", a: "Locawave est l'« OS du logement » au Sénégal : trouver un logement, le louer, le gérer, l'entretenir (chantiers & réparations) et accéder à des services de proximité — le tout dans une seule app, pour les propriétaires, la diaspora, les locataires et les prestataires." },
-  { q: "Comment fonctionne le suivi de chantier ?", a: "Votre chef de chantier (prestataire vérifié) envoie des photos et vidéos en temps réel pour chaque phase. Vous validez chaque phase avant que le paiement, placé sous séquestre, ne soit libéré. Vous suivez votre construction sans vous déplacer." },
-  { q: "Mon argent est-il sécurisé ?", a: "Oui. Les paiements de services et de chantiers passent par un séquestre : les fonds sont gelés jusqu'à la validation du travail. Locawave ne détient jamais vos fonds — tout est piloté via un prestataire de paiement agréé. En cas de désaccord, une médiation est intégrée." },
+  { q: "Comment fonctionne le suivi de chantier ?", a: "Votre chef de chantier (prestataire vérifié) envoie des photos et vidéos en temps réel pour chaque phase. Vous validez chaque phase au vu des preuves, et ce n'est qu'ensuite que le paiement devient dû. Vous suivez votre construction sans vous déplacer." },
+  { q: "Comment suis-je protégé sur les travaux ?", a: "Locawave n'encaisse pas vos travaux et ne bloque aucun fonds. Ce que la plateforme garantit, c'est l'ordre des opérations : le prestataire dépose ses preuves, vous les examinez, vous validez, et c'est seulement à ce moment que le paiement devient dû. Vous réglez le prestataire directement, puis vous l'enregistrez dans l'app. Tout reste écrit et daté, et une médiation est intégrée en cas de désaccord." },
   { q: "Comment sont vérifiés les prestataires ?", a: "Chaque prestataire passe une vérification d'identité (KYC) et n'est affiché qu'une fois validé. Il est noté via un Trust Score basé sur ses missions réelles, ses avis et ses certifications." },
   { q: "Locawave fonctionne-t-il pour la diaspora ?", a: "C'est notre cœur de cible. Gérez vos loyers, suivez vos chantiers en direct, recevez des alertes WhatsApp et payez en toute sécurité depuis n'importe où dans le monde." },
   { q: "Dois-je installer une application ?", a: "Non. Locawave est une application web installable (PWA) accessible depuis n'importe quel navigateur — téléphone, tablette ou ordinateur. Vous pouvez l'ajouter à votre écran d'accueil." },
@@ -145,7 +145,7 @@ export default function LandingPage() {
               </h1>
               <p className="text-lg md:text-xl text-gray-300 mb-8 max-w-xl mx-auto lg:mx-0">
                 Une seule app pour tout le logement au Sénégal : annonces vérifiées, baux et loyers,
-                suivi de chantier en temps réel et prestataires de confiance — avec paiements sécurisés sous séquestre.
+                suivi de chantier en temps réel et prestataires vérifiés — vous ne réglez qu'après avoir validé.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
                 <Link href="/register" className="w-full sm:w-auto bg-[#f97316] hover:bg-[#ea580c] text-white px-8 py-3.5 rounded-lg text-lg font-semibold transition-colors flex items-center justify-center gap-2 shadow-lg shadow-orange-500/20">
@@ -170,7 +170,7 @@ export default function LandingPage() {
               { label: "Wave", node: <div className="w-7 h-7 rounded-full bg-[#1B9AF5] flex items-center justify-center text-white font-black text-sm">W</div> },
               { label: "Orange Money", node: <div className="w-7 h-7 rounded-full bg-[#FF6600] flex items-center justify-center text-white font-black text-sm">O</div> },
               { label: "WhatsApp", node: <div className="w-7 h-7 rounded-full bg-[#25D366] flex items-center justify-center"><MessageCircle className="w-4 h-4 text-white" /></div> },
-              { label: "Séquestre sécurisé", node: <div className="w-7 h-7 rounded-full bg-[#1a2744] flex items-center justify-center"><ShieldCheck className="w-4 h-4 text-white" /></div> },
+              { label: "Validation avant paiement", node: <div className="w-7 h-7 rounded-full bg-[#1a2744] flex items-center justify-center"><ShieldCheck className="w-4 h-4 text-white" /></div> },
               { label: "Prestataires vérifiés (KYC)", node: <div className="w-7 h-7 rounded-full bg-green-600 flex items-center justify-center"><Check className="w-4 h-4 text-white" /></div> },
               { label: "Quittances PDF", node: <div className="w-7 h-7 rounded-full bg-red-500 flex items-center justify-center text-white font-black text-[10px]">PDF</div> },
               { label: "RGPD · Loi 2008-12", node: <div className="w-7 h-7 rounded-full bg-[#0f1a2e] flex items-center justify-center"><Shield className="w-4 h-4 text-white" /></div> },
@@ -261,7 +261,7 @@ export default function LandingPage() {
               <ul className="space-y-3">
                 {[
                   { icon: Camera, t: "Photos & vidéos en temps réel", d: "Votre chef de chantier documente chaque avancée depuis le terrain." },
-                  { icon: ShieldCheck, t: "Paiement par phase sous séquestre", d: "Les fonds ne sont libérés qu'après votre validation de la phase." },
+                  { icon: ShieldCheck, t: "Paiement phase par phase", d: "Une phase ne devient payable qu'après que vous en ayez validé les preuves." },
                   { icon: BarChart3, t: "Budget & traçabilité", d: "Suivez le financé, le libéré et le restant, avec un historique complet." },
                 ].map((f) => (
                   <li key={f.t} className="flex items-start gap-3">
@@ -291,8 +291,8 @@ export default function LandingPage() {
               ))}
               <div className="mt-5 grid grid-cols-3 gap-2 text-center text-xs">
                 <div className="bg-white/5 rounded-lg py-2"><p className="text-gray-400">Budget</p><p className="font-bold">12M</p></div>
-                <div className="bg-white/5 rounded-lg py-2"><p className="text-indigo-300">Séquestre</p><p className="font-bold">5M</p></div>
-                <div className="bg-white/5 rounded-lg py-2"><p className="text-green-300">Libéré</p><p className="font-bold">4M</p></div>
+                <div className="bg-white/5 rounded-lg py-2"><p className="text-amber-300">À régler</p><p className="font-bold">5M</p></div>
+                <div className="bg-white/5 rounded-lg py-2"><p className="text-green-300">Réglé</p><p className="font-bold">4M</p></div>
               </div>
             </div>
           </div>
@@ -330,7 +330,7 @@ export default function LandingPage() {
             <div className="grid md:grid-cols-4 gap-6 text-center">
               {[
                 { icon: ShieldCheck, t: "Identités vérifiées", d: "KYC obligatoire pour publier ou intervenir." },
-                { icon: Wallet, t: "Fonds sous séquestre", d: "Libérés après validation — jamais détenus par nous." },
+                { icon: Wallet, t: "La preuve avant le règlement", d: "Vous validez, puis vous payez. Nous ne détenons jamais vos fonds." },
                 { icon: Star, t: "Avis authentiques", d: "Uniquement après une vraie mission ou location." },
                 { icon: Shield, t: "Données protégées", d: "Hébergement EU · loi sénégalaise 2008-12." },
               ].map((c) => (
@@ -408,7 +408,7 @@ export default function LandingPage() {
           </div>
           <p className="text-center text-sm text-gray-500 mt-8 max-w-2xl mx-auto">
             <span className="font-semibold text-[#1a2744]">+ 5% de commission</span> uniquement sur les transactions de
-            <strong> services & chantiers</strong> réalisées dans l'app (prélevée à la libération du séquestre).
+            <strong> services & chantiers</strong> réalisées dans l'app (prélevée lorsque la phase est validée et réglée).
             <span className="text-gray-400"> Aucune commission sur les loyers.</span>
           </p>
         </div>

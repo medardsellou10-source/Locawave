@@ -14,6 +14,53 @@ y liste ce qui cloche dans ce dispositif — c'est la partie la plus utile du do
 
 ---
 
+## ⚠️ Règles de conformité — à lire avant toute diffusion
+
+Ce document a été **corrigé le 4 août 2026** après vérification du produit réel.
+Les créations initiales promettaient un séquestre qui n'existe pas. Ce qui suit
+est vrai ; ne le déforme pas.
+
+### Ce que Locawave fait réellement sur les chantiers
+
+Locawave **n'encaisse pas les travaux et ne bloque aucun fonds**. Vérifié auprès
+de GeniusPay : `POST /cashouts` et `POST /payouts` ne sont pas exposés, aucun
+versement programmable n'existe. Un vrai séquestre supposerait que Locawave
+détienne l'argent d'un tiers — activité réglementée (agrément BCEAO).
+
+Ce que la plateforme garantit, c'est **l'ordre des opérations** : le prestataire
+dépose ses preuves → le propriétaire les examine → il valide → **c'est seulement
+alors que le paiement devient dû**. Le propriétaire règle le prestataire
+directement, puis l'enregistre dans l'application.
+
+| Interdit | Autorisé |
+|---|---|
+| « L'argent reste bloqué chez Wave » | « Vous ne payez qu'après avoir validé » |
+| « Les fonds sont gelés / sous séquestre » | « La preuve d'abord, le règlement ensuite » |
+| « Le paiement se débloque » | « Le paiement devient dû » |
+| « Locawave sécurise vos fonds » | « Locawave ne détient jamais vos fonds » |
+
+### Deux promesses encore non tenues par le produit
+
+**WhatsApp — ne pas diffuser en l'état.** Les identifiants Twilio ne sont pas
+configurés : aucun message ne part. Les créations qui promettent des relances
+« sur WhatsApp » sont fausses tant que la passerelle n'est pas branchée ET
+testée sur de vrais locataires. En attendant, la formulation exacte est
+« relances automatiques dans l'application ».
+
+**Datation des photos.** `milestone_updates.taken_at` vaut `DEFAULT now()` :
+c'est la date de **dépôt**, pas de prise de vue. Aucune lecture EXIF. Un
+prestataire peut re-téléverser une vieille photo, elle sera datée d'aujourd'hui.
+Dire « photo datée et rattachée à une phase » (vrai), jamais « horodatée à la
+prise de vue » (faux).
+
+### Règle permanente
+
+Aucune interface générée par IA dans une création : on part d'une capture réelle
+du produit. Fabriquer un écran qui montre une fonctionnalité inexistante est une
+pratique commerciale trompeuse, et Meta la traite comme du contenu manipulé.
+
+---
+
 ## Sommaire
 
 1. [Ce que dit la recherche](#1--ce-que-dit-la-recherche)
@@ -43,25 +90,25 @@ y liste ce qui cloche dans ce dispositif — c'est la partie la plus utile du do
 | CAS JUDICIAIRE EMBLÉMATIQUE (le plus proche du scénario Locawave) : une femme de la diaspora vivant en France a confié la construction de sa maison R+2 à son beau-frère, envoyant régulièrement de l'argent depuis la France. L'expertise judiciaire a établi que seulement 36,3 millions FCFA avaient réellement été investis dans les travaux, le bâtiment restant inachevé et non conforme. C'est exactement le récit central de la campagne — et il est documenté, pas inventé. (Affaire à Bobo-Dioulasso, Burkina Faso, 2023 — pays voisin, dynamique identique.) | Quotidien Sidwaya, 2023 | ✅ sourcé |
 | Escroquerie de masse ciblant la diaspora africaine dont des Sénégalais : une femme de 41 ans du Val-d'Oise a proposé des investissements immobiliers en Afrique de l'Ouest présentés comme « communautaires et solidaires », en insistant sur « l'entraide, la transparence, la confiance et la sécurité ». 97 victimes, préjudice évalué à 1,268 million d'euros. Enseignement clé : les arnaqueurs utilisent DÉJÀ le vocabulaire de la confiance et de la transparence — Locawave ne peut donc pas se contenter de le promettre, il doit le PROUVER visuellement. | Senego (2025) ; Orishas-finance | ✅ sourcé |
 | Un promoteur immobilier a été condamné à 6 mois ferme et 11 millions FCFA de dommages-intérêts pour escroquerie foncière (terrain vendu en 2023). Les fraudes récurrentes documentées : terrains vendus plusieurs fois, absence de documents légaux, promesses non tenues d'intermédiaires douteux. | allAfrica, décembre 2025 ; Seneweb (dossier foncier) | ✅ sourcé |
-| MÉCANISME DE DÉFIANCE DÉJÀ INVENTÉ PAR LES MIGRANTS (insight stratégique majeur) : des recherches académiques documentent que des familles de migrants envoient l'argent DIRECTEMENT aux commerçants locaux plutôt qu'aux membres de la famille, pour garantir que les fonds servent bien à l'achat prévu. C'est un mécanisme de pré-engagement artisanal — autrement dit, le séquestre Locawave ne crée pas un besoin, il formalise un réflexe que la diaspora a déjà inventé seule. | Revue Européenne des Migrations Internationales, journals.openedition.org/remi/4201 | ✅ sourcé |
+| MÉCANISME DE DÉFIANCE DÉJÀ INVENTÉ PAR LES MIGRANTS (insight stratégique majeur) : des recherches académiques documentent que des familles de migrants envoient l'argent DIRECTEMENT aux commerçants locaux plutôt qu'aux membres de la famille, pour garantir que les fonds servent bien à l'achat prévu. C'est un mécanisme de pré-engagement artisanal — autrement dit, la validation avant paiement de Locawave ne crée pas un besoin, elle formalise un réflexe que la diaspora a déjà inventé seule. | Revue Européenne des Migrations Internationales, journals.openedition.org/remi/4201 | ✅ sourcé |
 | Le tabou familial est documenté académiquement : un migrant (« Diatourou ») ayant versé près de 1 000 euros pour un projet d'épicerie avec son cousin a découvert que l'argent avait servi à éponger une dette familiale. Il « n'a pas cherché à rentrer dans ses fonds » par respect de la hiérarchie familiale. C'est la clé émotionnelle : la victime ne porte pas plainte, ne réclame rien, et se tait. La douleur est doublée par le silence. | Revue Européenne des Migrations Internationales, journals.openedition.org/remi/4201 | ✅ sourcé |
 | MOTS EXACTS — le ressentiment diaspora / pays (verbatims authentiques de Sénégalais, pas du marketing) : « l'argent que nous envoyons a été durement gagné » ; ceux restés au pays « aiment faire la fête et gaspiller l'argent dans des cérémonies » ; « On devient des méchants et des ingrats, des mbougoul mbook » ; « on culpabilise, sans jamais avoir le minimum pour vivre décemment » ; « on ne ramasse pas les euros ou les dollars sous les arbres » ; « notre fierté mal placée à faire croire que tout va bien, alors que l'on galère en Europe » ; « Expliquer que la vie au Nord est une galère est difficile à croire ». Le terme wolof « mbougoul mbook » (ingrat, celui qui renie les siens) est l'accusation redoutée — c'est POUR ÉVITER CE MOT que les gens n'osent pas demander de comptes. | au-senegal.com, « Sénégalais de la diaspora : les difficiles rapports avec ceux qui restent au pays » (article + commentaires signés Lala, Bassene) | ✅ sourcé |
 | MOTS EXACTS — forum de construction (verbatims de particuliers) : « Construire au Sénégal va vous user. Vous dépenserez deux fois plus » (Narriman Ngaparou) ; « ne vous embarquez surtout pas dans la construction » (Alphi) ; « nous avons nous-mêmes perdu beaucoup d'argent et de nerf » (Arlette Sevestre). Noter le mot « user » et « perdu... de nerf » : la douleur exprimée est autant l'ÉPUISEMENT NERVEUX que la perte financière. | Forum Sénégal, Expat.com, fil « Nous avons le projet de construire notre maison » | ✅ sourcé |
 | MOTS EXACTS — vocabulaire du détournement de chantier : l'argent « disparaît entre l'entrepreneur et l'homme de confiance ». L'expression « homme de confiance » est LE terme consacré au Sénégal pour désigner le mandataire local — et c'est précisément ce personnage qui est le point de défaillance. Autre verbatim : les entrepreneurs multiplient les coûts par 2 à 3 en se disant « ils sont de la diaspora, donc ils doivent avoir de l'argent ». Un chantier sans suivi dépasserait son budget de 15 à 25 % en moyenne (chiffre de blog sectoriel, non vérifié). | maisonsenegal.com (page inaccessible en direct, HTTP 403 ; extraits via résultats de recherche) — pour le « 15 à 25 % » : ESTIMATION NON VERIFIEE | ⚠️ estimation |
-| CONCURRENCE DIRECTE IDENTIFIÉE : SEETLU (seetlu.com) se positionne exactement sur « Suivi de chantier au Sénégal pour la diaspora : surveillez votre construction à distance », avec une page SEO « Arnaque construction au Sénégal, les 7 signes ». Autres acteurs sur le créneau « construire au Sénégal depuis l'étranger » : hubcephas.com, ecolux-btp.com, sylocons.com, ecogennexus.com. Le créneau n'est PAS vierge — mais aucun de ces acteurs ne combine suivi photo/vidéo + séquestre piloté par PSP + gestion locative. C'est là que Locawave se différencie. | seetlu.com et sites concurrents, consultés juillet 2026 | ✅ sourcé |
+| CONCURRENCE DIRECTE IDENTIFIÉE : SEETLU (seetlu.com) se positionne exactement sur « Suivi de chantier au Sénégal pour la diaspora : surveillez votre construction à distance », avec une page SEO « Arnaque construction au Sénégal, les 7 signes ». Autres acteurs sur le créneau « construire au Sénégal depuis l'étranger » : hubcephas.com, ecolux-btp.com, sylocons.com, ecogennexus.com. Le créneau n'est PAS vierge — mais aucun de ces acteurs ne combine suivi photo/vidéo + validation obligatoire avant paiement + gestion locative. C'est là que Locawave se différencie. | seetlu.com et sites concurrents, consultés juillet 2026 | ✅ sourcé |
 | MOTS EXACTS — les 7 signes d'arnaque formulés par un concurrent (SEETLU). ATTENTION : c'est de la COPY MARKETING, pas de la parole spontanée d'utilisateur. Mais elle est excellente et révèle les mécanismes précis : « On vous envoie des images, mais toujours sous le même angle, à la même heure » ; « Chaque appel se termine par une demande d'argent sans facture ni justificatif » ; « Un appel vidéo de dix minutes est la vérification la plus simple qui existe » ; « Sans papier, impossible de savoir où va l'argent » ; « Personne ne peut vous dire précisément quel pourcentage est réalisé » ; « Il faut désormais 30 secondes pour ajouter un étage à une maison sur une photo » ; « L'urgence permanente est une technique classique : elle vous empêche de réfléchir » ; « Chaque année, une partie de cet argent disparaît » ; le sujet reste « tabou, parce qu'il touche souvent la famille ». | seetlu.com/arnaque-construction-senegal (copy concurrent, à ne pas copier mot pour mot) | ✅ sourcé |
 | MÉDIAS ET CANAUX : WhatsApp est décrit comme d'usage « quasi universel » dans la diaspora sénégalaise d'Italie et d'Espagne, « leur principal outil de communication, avant l'email » (source commerciale, non chiffrée). La recherche académique confirme la centralité du téléphone et de réseaux de relais SMS (groupes d'une cinquantaine de personnes) pour diffuser l'information. Médias communautaires historiques : Lamp Fall FM (radio, 2002), Touba TV (2010), Lamp Fall TV (2011) — médias confessionnels mourides visant explicitement la diaspora. Le chiffre « 450 000 Sénégalais sur Facebook » circule mais provient d'une thèse ancienne (2010) : totalement obsolète, NE PAS L'UTILISER. | whakup.com (non sourcé) ; thèse Bordeaux 2010 (obsolète) ; ResearchGate sur les médias confessionnels — AUCUNE DONNÉE D'AUDIENCE ACTUELLE FIABLE TROUVÉE | ❌ non vérifiable |
 | LACUNE HONNÊTE À SIGNALER : je n'ai trouvé AUCUNE donnée fiable et récente sur (a) les taux de pénétration TikTok/Facebook spécifiques à la diaspora sénégalaise par pays, (b) les coûts média (CPM/CPC) pour cibler cette audience, (c) le nombre de membres des groupes Facebook diaspora. Ces chiffres devront être obtenus directement dans le Gestionnaire de publicités Meta (estimation d'audience gratuite avant lancement) et TikTok Ads Manager. Ne pas mettre de chiffre média dans le business plan tant qu'ils ne sont pas relevés dans les plateformes. | ESTIMATION NON VERIFIEE — aucune donnée trouvée | ❌ non vérifiable |
 
 **Ce que ça change pour la création :**
 
-- ANGLE MAÎTRE — vendre la PREUVE, pas la confiance. L'escroquerie du Val-d'Oise (97 victimes, 1,268 M€) était vendue avec les mots « entraide, transparence, confiance et sécurité ». Ces mots sont brûlés : ils sont désormais le vocabulaire des arnaqueurs. Locawave ne doit JAMAIS ouvrir une publicité par « faites-nous confiance ». Il doit ouvrir par une preuve visible à l'écran : une photo horodatée, un pourcentage d'avancement, un bouton de validation. Slogan de travail : « Ne faites plus confiance. Vérifiez. »
+- ANGLE MAÎTRE — vendre la PREUVE, pas la confiance. L'escroquerie du Val-d'Oise (97 victimes, 1,268 M€) était vendue avec les mots « entraide, transparence, confiance et sécurité ». Ces mots sont brûlés : ils sont désormais le vocabulaire des arnaqueurs. Locawave ne doit JAMAIS ouvrir une publicité par « faites-nous confiance ». Il doit ouvrir par une preuve visible à l'écran : une photos datées et rattachées à une phase, un pourcentage d'avancement, un bouton de validation. Slogan de travail : « Ne faites plus confiance. Vérifiez. »
 - ANGLE ÉMOTIONNEL N°1 — le tabou familial, jamais l'accusation. La recherche académique le prouve : la victime ne réclame rien, par respect de la hiérarchie familiale. Une publicité qui dit « votre famille vous vole » sera rejetée avec violence et fera fuir l'audience. La bonne formulation retourne la charge : « Ce n'est pas de la méfiance. C'est de la clarté. » ou « Demander des photos, ce n'est pas accuser quelqu'un. » Locawave se positionne comme l'outil qui permet de contrôler SANS avoir à accuser — c'est-à-dire qui évite au propriétaire d'être traité de « mbougoul mbook ».
 - CRÉATIF SIGNATURE — le diptyque « même angle, même heure ». Le verbatim concurrent le plus exploitable est : on vous envoie toujours la même photo sous le même angle. Image NanoBanana Pro : écran de téléphone en gros plan, fil WhatsApp montrant trois photos quasi identiques d'un mur de parpaings inachevé, datées de trois mois différents, avec les légendes « Mars », « Mai », « Juillet ». Lumière identique sur les trois. Mouvement image→vidéo : lent zoom avant sur les dates pendant que les trois photos se superposent et se révèlent identiques. Puis coupure sur l'interface Locawave, orange #f97316, avec un vrai fil de progression phase par phase.
-- CRÉATIF SIGNATURE — la main qui ne clique pas. Traduire le séquestre en un geste unique et compréhensible. Image : gros plan sur un pouce suspendu au-dessus d'un bouton orange « Valider la phase — Débloquer le paiement », l'écran affichant en dessous la photo d'une toiture non terminée. Le pouce ne descend pas. Texte : « La toiture n'est pas finie. Vous ne payez pas la toiture. » Mouvement image→vidéo : le pouce recule, l'écran passe de la toiture inachevée à la toiture terminée, PUIS le pouce descend et le bouton s'illumine en vert. C'est la démonstration la plus courte possible du différenciateur, sans un mot de jargon.
+- CRÉATIF SIGNATURE — la main qui ne clique pas. Traduire la validation avant paiement en un geste unique et compréhensible. Image : gros plan sur un pouce suspendu au-dessus d'un bouton orange « Valider la phase », l'écran affichant en dessous la photo d'une toiture non terminée. Le pouce ne descend pas. Texte : « La toiture n'est pas finie. Vous ne payez pas la toiture. » Mouvement image→vidéo : le pouce recule, l'écran passe de la toiture inachevée à la toiture terminée, PUIS le pouce descend et le bouton s'illumine en vert. C'est la démonstration la plus courte possible du différenciateur, sans un mot de jargon.
 - CRÉATIF — la scène de l'hiver européen. Le verbatim « on ne ramasse pas les euros ou les dollars sous les arbres » et « on galère en Europe » donne le décor. Image : un homme sénégalais de 45 ans en tenue de travail (gilet haute visibilité, chantier ou entrepôt), pause de nuit, appuyé contre un mur, téléphone à la main, buée devant la bouche, néons froids d'un parking de Milan ou de Bergame. Sur son écran, chaud et orange : sa maison à Diamniadio en photos. Le contraste froid/chaud EST le message. Mouvement : la caméra se rapproche lentement de l'écran jusqu'à ce que la lumière orange envahisse le cadre. Aucun texte pendant 3 secondes.
 - CRÉATIF — « durement gagné ». Reprendre le verbatim exact « l'argent que nous envoyons a été durement gagné ». Image : mains fatiguées et abîmées d'un ouvrier, en très gros plan, tenant un téléphone affichant le tableau de bord Locawave avec un montant en FCFA écrit correctement (« 2 500 000 FCFA », espaces, jamais de virgule). Éclairage latéral dur pour marquer la peau et les callosités. Mouvement : léger tremblement de la main, puis stabilisation ; le montant à l'écran s'anime de « En attente » à « Validé ». Accroche : « Cet argent, vous savez ce qu'il vous a coûté. Maintenant, vous savez où il va. »
-- CRÉATIF — la photo truquée. Le verbatim « Il faut désormais 30 secondes pour ajouter un étage à une maison sur une photo » est une peur nouvelle et sous-exploitée, très forte à l'ère de l'IA. Image : une photo de maison R+1 en cours de retouche sur un écran, avec un étage supplémentaire visiblement collé, bords flous, ombres incohérentes. Loupe ou zone surlignée en orange sur le raccord raté. Mouvement : la fausse étage se dissout et disparaît, révélant la maison réelle plus basse. Texte : « Une photo, ça se fabrique. Une phase validée, non. » Attention : ne pas surpromettre — ne revendiquer que ce que Locawave fait réellement (horodatage, validation par phase, alerte si aucune photo depuis 7 jours).
+- CRÉATIF — la photo truquée. Le verbatim « Il faut désormais 30 secondes pour ajouter un étage à une maison sur une photo » est une peur nouvelle et sous-exploitée, très forte à l'ère de l'IA. Image : une photo de maison R+1 en cours de retouche sur un écran, avec un étage supplémentaire visiblement collé, bords flous, ombres incohérentes. Loupe ou zone surlignée en orange sur le raccord raté. Mouvement : la fausse étage se dissout et disparaît, révélant la maison réelle plus basse. Texte : « Une photo, ça se fabrique. Une phase validée, non. » Attention : ne pas surpromettre — ne revendiquer que ce que Locawave fait réellement (datation du dépôt, validation par phase, alerte si aucune photo depuis 7 jours).
 - CRÉATIF — l'alerte « aucune photo depuis 7 jours ». C'est une fonctionnalité RÉELLEMENT livrée et c'est la meilleure preuve produit, car elle répond directement au verbatim « avancement flou ». Image : notification push sur écran verrouillé de smartphone, fond bleu marine #1a2744, texte orange : « Aucune photo de votre chantier depuis 7 jours. » Heure affichée : 06:12. Mouvement : la notification glisse depuis le haut, vibration légère. C'est un format ultra-court (3-4 s) parfait pour un hook TikTok/Reels — la notification arrive avant même que le spectateur ait compris de quoi il s'agit.
 - CRÉATIF — le budget qui dérape. Répondre au verbatim « Chaque appel se termine par une demande d'argent sans facture ni justificatif » et à « Construire au Sénégal va vous user. Vous dépenserez deux fois plus ». Image : deux barres de budget côte à côte, l'une explosant hors du cadre en rouge, l'autre contenue en orange avec la mention « Alerte budget dépassé » (fonctionnalité réellement livrée). Mouvement : la barre rouge gonfle vite et déborde, la barre orange s'arrête net avec un petit choc visuel. Accroche reprenant le forum : « Deux fois plus cher. C'est ce que tout le monde raconte. Pas une fatalité. »
 - TON À BANNIR ABSOLUMENT : ne jamais montrer un membre de la famille au Sénégal comme un voleur, un fainéant ou un profiteur. Le verbatim « ils aiment faire la fête et gaspiller l'argent dans des cérémonies » existe et il est authentique — mais le dire dans une publicité serait un suicide de marque au Sénégal et diviserait l'audience diaspora elle-même. Le vrai antagoniste des créatifs doit être l'OPACITÉ, l'absence d'information, le flou — jamais une personne. Montrer des chantiers, des écrans, des dates, du vide informationnel. Jamais un visage coupable.
@@ -70,8 +117,8 @@ y liste ce qui cloche dans ce dispositif — c'est la partie la plus utile du do
 - CIBLAGE OPÉRATIONNEL : concentrer le budget sur les villes documentées — Gênes, Milan, Turin, Rome, Bergame (Italie) ; Barcelone, Madrid, Séville, Murcie (Espagne) ; Île-de-France et Rhône-Alpes (France) ; New York et Ohio/Cincinnati (États-Unis, communauté sénégalaise connue). 60 % des transferts venant de France + Italie + Espagne, les USA sont un marché test à petit budget, pas une priorité de phase 1. Créer les créatifs en 9:16 natif pour Reels/TikTok et en 4:5 pour le feed Facebook.
 - WHATSAPP EST LE CANAL DE CONVERSION, PAS FACEBOOK. WhatsApp est décrit comme d'usage quasi universel dans cette diaspora, avant l'email. Toutes les publicités doivent donc pointer vers un « Click-to-WhatsApp » plutôt que vers un formulaire web. Corollaire créatif : montrer WhatsApp DANS les visuels (le fil de discussion avec le maçon) crée une reconnaissance immédiate — le spectateur voit sa propre vie à l'écran. C'est aussi cohérent avec la fonctionnalité rappels WhatsApp déjà livrée.
 - PREUVE DE PRIX À METTRE EN AVANT TÔT : l'argument « le prix ne dépend pas du montant du loyer » est un différenciateur rationnel puissant contre les agences qui prennent un pourcentage. Créatif dédié : deux tickets côte à côte, « Agence : 10 % de 350 000 FCFA chaque mois » vs « Locawave : 10 000 FCFA par mois, quel que soit votre loyer ». Toujours écrire les montants avec des espaces. Mouvement : le montant de l'agence grimpe en boucle, celui de Locawave reste figé. Ce créatif cible le propriétaire bailleur, pas le constructeur — le garder pour une campagne séparée, ne pas mélanger les deux récits dans une même publicité.
-- AVERTISSEMENT CONCURRENTIEL : SEETLU occupe déjà le terrain sémantique « suivi de chantier au Sénégal pour la diaspora » et référence une page « les 7 signes d'arnaque ». Ne pas reprendre leurs formulations mot pour mot dans les créatifs — d'abord pour des raisons évidentes, ensuite parce que la différenciation de Locawave n'est pas le suivi photo (qu'ils font) mais le SÉQUESTRE PAR PHASE piloté via Wave/Orange Money, plus la continuité TROUVER→LOUER→GÉRER. Le message doit être : les autres vous montrent le chantier ; Locawave conditionne le paiement à ce que vous avez vu.
-- MENTION LÉGALE À NE JAMAIS OUBLIER DANS LES CRÉATIFS FINANCIERS : Locawave ne détient jamais les fonds. Toute publicité qui montre un blocage de paiement doit rendre visible que le séquestre est un statut piloté via le prestataire de paiement (Wave / Orange Money). Une accroche du type « nous gardons votre argent » serait à la fois fausse et juridiquement risquée. Formulation sûre : « Le paiement reste bloqué chez votre opérateur tant que vous n'avez pas validé. »
+- AVERTISSEMENT CONCURRENTIEL : SEETLU occupe déjà le terrain sémantique « suivi de chantier au Sénégal pour la diaspora » et référence une page « les 7 signes d'arnaque ». Ne pas reprendre leurs formulations mot pour mot dans les créatifs — d'abord pour des raisons évidentes, ensuite parce que la différenciation de Locawave n'est pas le suivi photo (qu'ils font) mais la VALIDATION OBLIGATOIRE AVANT PAIEMENT, phase par phase, plus la continuité TROUVER→LOUER→GÉRER. Le message doit être : les autres vous montrent le chantier ; Locawave conditionne le paiement à ce que vous avez vu.
+- MENTION LÉGALE À NE JAMAIS OUBLIER DANS LES CRÉATIFS FINANCIERS : Locawave ne détient jamais les fonds. Toute publicité qui montre un blocage de paiement doit rendre visible que l'exigibilité du paiement est pilotée par la validation, pas par le prestataire de paiement (Wave / Orange Money). Une accroche du type « nous gardons votre argent » serait à la fois fausse et juridiquement risquée. Formulation sûre : « Vous ne réglez le prestataire qu'après avoir validé la phase. »
 
 ---
 
@@ -145,9 +192,9 @@ y liste ce qui cloche dans ce dispositif — c'est la partie la plus utile du do
 | Autres acteurs SaaS/proptech identifiés au Sénégal : GestionLocative Sénégal (encaissement en FCFA via Wave et Orange Money, 100 % français), Baye Zaate (plateforme de gestion immobilière avec IA), Alpha.sn (investir à distance dans l'immobilier sénégalais). Aucun ne met en avant le suivi de chantier avec paiement par phase. | ia-lab-immo.com, cyriljarnias.com (dossier proptech Sénégal), consultés 28/07/2026 | ✅ sourcé |
 | AUCUN concurrent SaaS de gestion locative sénégalais identifié n'affiche publiquement ses prix. Locawave (Solo 10 000 / Pro 20 000 / Agence 45 000 FCFA) est donc, à ma connaissance, le seul à publier une grille tarifaire — c'est un différenciateur de transparence exploitable en publicité. | ESTIMATION NON VERIFIEE (absence de preuve après consultation de systimmo.com et recherches sur les autres acteurs — une absence de tarif public n'est pas une preuve d'absence de tarif) | ⚠️ estimation |
 | ANGLE MORT MAJEUR CONFIRMÉ : le 'suivi de chantier pour la diaspora' au Sénégal est occupé par des AGENCES DE SERVICE HUMAIN, pas par des produits logiciels. Acteurs recensés : SEETLU, Wizodia, HubCephas, ImmoBelite, DiaspoLead Immo. Tous vendent de la prestation (visites, rapports, maîtrise d'ouvrage déléguée), aucun ne vend un abonnement produit. | seetlu.com, hubcephas.com, immobelite.com, diaspoleadimmo.com, MySweetImmo (04/09/2020) pour Wizodia — consultés 28/07/2026 | ✅ sourcé |
-| SEETLU (le plus proche concurrent frontal) : techniciens génie civil qui font les visites, rapports photo et vidéo GÉOLOCALISÉS, mention de 'paiements vérifiés', 3 formules affichées mais AUCUN prix public. Aucune mention de séquestre, de déblocage de paiement par phase, ni de validation des preuves par le client. Communication très 'famille', multicanal (WhatsApp, Instagram, TikTok, Facebook, LinkedIn). | seetlu.com, consulté 28/07/2026 | ✅ sourcé |
+| SEETLU (le plus proche concurrent frontal) : techniciens génie civil qui font les visites, rapports photo et vidéo GÉOLOCALISÉS, mention de 'paiements vérifiés', 3 formules affichées mais AUCUN prix public. Aucune mention de blocage de fonds, ni de validation des preuves par le client. Communication très 'famille', multicanal (WhatsApp, Instagram, TikTok, Facebook, LinkedIn). | seetlu.com, consulté 28/07/2026 | ✅ sourcé |
 | Wizodia s'adresse à la diaspora de Côte d'Ivoire, Cameroun, Sénégal, Bénin et Togo avec un écosystème de professionnels vérifiés (promoteurs, architectes, notaires, constructeurs) et un suivi de chantier à distance par des équipes sur place. Le modèle est celui d'un intermédiaire de confiance humain, pas d'un logiciel en libre-service. | MySweetImmo, article du 04/09/2020 | ✅ sourcé |
-| ANGLE MORT N°1 EXPLOITABLE : aucun acteur identifié ne combine (a) produit logiciel en self-service, (b) preuves photo/vidéo horodatées par phase, ET (c) déblocage du paiement conditionné à la validation des preuves par le propriétaire. Les agences donnent la preuve mais gardent la main sur l'argent ; les SaaS gèrent l'argent du loyer mais ignorent le chantier. | ESTIMATION NON VERIFIEE (synthèse de la revue des sites publics de 8 acteurs — pas d'accès aux produits eux-mêmes) | ⚠️ estimation |
+| ANGLE MORT N°1 EXPLOITABLE : aucun acteur identifié ne combine (a) produit logiciel en self-service, (b) preuves photo/vidéo datée par phase, ET (c) exigibilité du paiement conditionnée à la validation des preuves par le propriétaire. Les agences donnent la preuve mais gardent la main sur l'argent ; les SaaS gèrent l'argent du loyer mais ignorent le chantier. | ESTIMATION NON VERIFIEE (synthèse de la revue des sites publics de 8 acteurs — pas d'accès aux produits eux-mêmes) | ⚠️ estimation |
 | ANGLE MORT N°2 : Expat-Dakar et CoinAfrique dominent les annonces immobilières au Sénégal mais restent des plateformes de petites annonces GÉNÉRALISTES (voitures, emploi, informatique, services). La relation s'arrête à l'échange d'un numéro de téléphone : aucun outil de gestion post-transaction, aucune traçabilité, aucun recours en cas de litige. | expat-dakar.com, sn.coinafrique.com, classement agence-immobiliere-dakar.com (2025) — consultés 28/07/2026 | ✅ sourcé |
 | CoinAfrique est décrit comme la plateforme d'annonces la plus connue d'Afrique francophone, mais 'moins adaptée à un usage professionnel ou à une recherche immobilière approfondie'. Expat-Dakar est l'un des plus anciens sites d'annonces du Sénégal. | agence-immobiliere-dakar.com, classement des sites d'annonces immobilières au Sénégal (2025) | ✅ sourcé |
 | Chiffres de trafic / audience comparés d'Expat-Dakar vs CoinAfrique : INTROUVABLES dans des sources publiques fiables. Idem pour les tarifs d'annonce premium / boost / abonnement agence d'Expat-Dakar (packs de crédits mentionnés, montants non publiés). | ESTIMATION NON VERIFIEE — donnée absente, ne pas l'inventer dans le business plan | ❌ non vérifiable |
@@ -175,7 +222,7 @@ y liste ce qui cloche dans ce dispositif — c'est la partie la plus utile du do
 **Ce que ça change pour la création :**
 
 - DEUX MARCHÉS PUBLICITAIRES, DEUX BUDGETS : au Sénégal, 1 000 impressions coûtent environ 200 à 1 200 FCFA [estimation] ; sur la diaspora en France, 3 300 à 9 800 FCFA [estimation]. Conséquence directe sur la production d'images : les créas Sénégal peuvent être nombreuses et jetables (tester 10 visuels à 3 000 FCFA/jour) ; les créas diaspora France doivent être peu nombreuses et très travaillées, car chaque impression coûte 5 à 15 fois plus cher. Ne pas produire le même volume des deux côtés.
-- ATTAQUER L'ANGLE MORT N°1 EN IMAGE : les concurrents diaspora (SEETLU, Wizodia, HubCephas) montrent la PREUVE mais jamais le CONTRÔLE DE L'ARGENT. Le visuel signature de Locawave doit montrer les deux dans le même cadre : à gauche la photo réelle de la toiture posée, à droite le bouton 'Débloquer le paiement de la phase 3' encore inactif. Prompt NanoBanana : écran de smartphone en mains, split-screen photo chantier / interface orange #f97316, bouton grisé avec libellé 'Valider les preuves pour débloquer', lumière de fin d'après-midi, main d'homme noir 40-50 ans, arrière-plan flou d'appartement européen en hiver.
+- ATTAQUER L'ANGLE MORT N°1 EN IMAGE : les concurrents diaspora (SEETLU, Wizodia, HubCephas) montrent la PREUVE mais jamais le CONTRÔLE DE L'ARGENT. Le visuel signature de Locawave doit montrer les deux dans le même cadre : à gauche la photo réelle de la toiture posée, à droite le bouton 'Régler la phase 3' encore inactif. Prompt NanoBanana : écran de smartphone en mains, split-screen photo chantier / interface orange #f97316, bouton grisé avec libellé 'Valider les preuves', lumière de fin d'après-midi, main d'homme noir 40-50 ans, arrière-plan flou d'appartement européen en hiver.
 - MOUVEMENT IMAGE→VIDÉO POUR CE VISUEL : très lent push-in sur l'écran (2 s), puis le pouce appuie et le bouton passe du gris à l'orange avec un léger flash. Durée totale 4 à 6 s. C'est le hook — il doit tenir dans les 2 premières secondes exigées par TikTok.
 - LE CONTRASTE GÉOGRAPHIQUE EST LE HOOK LE PLUS FORT : plan 1 = fenêtre pluvieuse d'un appartement en France, plan 2 = même personne regardant son téléphone, plan 3 = ce qu'il voit, un chantier à Diamniadio en plein soleil avec un maçon qui salue la caméra. Trois images à générer, transition par match-cut sur le téléphone. Cette structure exploite l'insight émotionnel 'l'argent envoyé au pays' sans jamais accuser personne — donc sans risque de rejet culturel.
 - REPRENDRE LA TRANSPARENCE TARIFAIRE COMME ARME VISUELLE : aucun concurrent identifié n'affiche ses prix. Produire un visuel unique, très épuré, fond bleu marine #1a2744, où seuls trois nombres apparaissent en très grande taille : 10 000 · 20 000 · 45 000 FCFA. Sous-titre : 'Le prix ne dépend pas de votre loyer.' C'est le format le moins cher à produire et le plus difficile à copier pour un concurrent qui a construit son modèle sur le devis opaque.
@@ -185,7 +232,7 @@ y liste ce qui cloche dans ce dispositif — c'est la partie la plus utile du do
 - NE PAS FAIRE DE TIKTOK LE CANAL UNIQUE : la plateforme a été suspendue au Sénégal le 2 août 2023 et le rétablissement n'a jamais été officiellement daté. Toute créa produite pour TikTok doit être exportable en Reels et en Facebook feed sans retournage — donc cadrer 9:16 avec les zones de sécurité des trois plateformes, et ne jamais incruster de texte dans le tiers inférieur.
 - FACEBOOK MARKETPLACE EST UN CANAL D'ANNONCES, PAS DE MARQUE : y publier les biens (le module marketplace de Locawave), pas le discours produit. C'est là que se joue la substitution à Expat-Dakar et CoinAfrique. L'argument à incruster en légende : 'La visite, le bail, le paiement et la quittance restent dans l'application' — c'est exactement ce que les plateformes d'annonces généralistes ne savent pas faire.
 - ARBITRAGE ÉCONOMIQUE À GARDER EN TÊTE EN PRODUISANT LES CRÉAS DIASPORA : un lead diaspora coûte entre 18 000 et 66 000 FCFA [estimation dérivée], alors qu'un abonné Solo rapporte 120 000 FCFA sur 12 mois. Les créas diaspora ne doivent donc PAS vendre l'abonnement à 10 000 FCFA — elles doivent vendre le chantier (commission 5 %, panier bien plus élevé). Le visuel diaspora parle de construction et de preuve ; le visuel Sénégal parle de loyer et de quittance. Deux univers graphiques distincts.
-- LE SÉQUESTRE DOIT ÊTRE MONTRÉ SANS MENTIR : Locawave ne détient jamais les fonds. Le visuel doit donc représenter un STATUT, pas un coffre-fort. Éviter absolument les icônes de coffre, de banque ou de pile de billets détenus par la marque. Préférer une frise de phases avec des pastilles : 'Fondations — payée', 'Élévation — payée', 'Toiture — en attente de votre validation'. C'est plus juste juridiquement et visuellement plus original que le vocabulaire escrow habituel.
+- LA VALIDATION AVANT PAIEMENT DOIT ÊTRE MONTRÉE SANS MENTIR : Locawave ne détient jamais les fonds. Le visuel doit donc représenter un STATUT, pas un coffre-fort. Éviter absolument les icônes de coffre, de banque ou de pile de billets détenus par la marque. Préférer une frise de phases avec des pastilles : 'Fondations — payée', 'Élévation — payée', 'Toiture — en attente de votre validation'. C'est plus juste juridiquement et visuellement plus original que le vocabulaire escrow habituel.
 - MESURER AVANT DE CROIRE : aucun coût par lead fiable n'existe pour le Sénégal. Prévoir 30 jours de test à budget faible (3 000 FCFA/jour à Dakar suffisent selon les estimations d'agence) avec 4 à 6 créas différentes, pour produire VOTRE propre benchmark. C'est ce chiffre-là, et pas un chiffre trouvé sur un blog, qui doit entrer dans le business plan.
 - FORMATER LES MONTANTS PARTOUT AVEC ESPACE : '350 000 FCFA', jamais '350,000'. À vérifier explicitement dans chaque prompt NanoBanana, car les modèles d'image reproduisent par défaut la convention anglo-saxonne à la virgule et cela trahirait immédiatement une créa générée pour un public sénégalais.
 
@@ -197,7 +244,7 @@ y liste ce qui cloche dans ce dispositif — c'est la partie la plus utile du do
 
 > **Ne payez que ce que vous avez vu.**
 
-Au Sénégal, tout le monde vous montre des photos ; personne ne conditionne l'argent à ce que vous avez vu. Locawave inverse l'ordre habituel : le chantier avance par phases, chaque phase doit être prouvée en photos et vidéos réelles, et le paiement de cette phase ne se débloque qu'après votre validation — Locawave ne détient jamais les fonds, le blocage reste chez Wave ou Orange Money. La campagne ne vend donc pas la confiance (c'est le vocabulaire des escrocs, et il est brûlé), elle vend la vérification : une toiture à l'écran avant la toiture payée. Et ce même principe — la preuve d'abord, l'argent ensuite — se prolonge dans la location : quittance PDF, relance, score de ponctualité, chaque franc a une trace.
+Au Sénégal, tout le monde vous montre des photos ; personne ne conditionne l'argent à ce que vous avez vu. Locawave inverse l'ordre habituel : le chantier avance par phases, chaque phase doit être prouvée en photos et vidéos réelles, et vous ne réglez cette phase qu'après l'avoir validée — Locawave ne détient jamais les fonds, le blocage reste chez Wave ou Orange Money. La campagne ne vend donc pas la confiance (c'est le vocabulaire des escrocs, et il est brûlé), elle vend la vérification : une toiture à l'écran avant la toiture payée. Et ce même principe — la preuve d'abord, l'argent ensuite — se prolonge dans la location : quittance PDF, relance, score de ponctualité, chaque franc a une trace.
 
 **Accroches alternatives à tester :**
 
@@ -211,7 +258,7 @@ Au Sénégal, tout le monde vous montre des photos ; personne ne conditionne l'a
 
 ### Positionnement
 
-Pour le propriétaire sénégalais — à Dakar comme à Bergame, Créteil ou Barcelone — qui met de l'argent dans un bien qu'il ne peut pas surveiller tous les jours, Locawave est le système du logement où le paiement suit la preuve. Les agences de suivi de chantier vous envoient des photos mais gardent la main sur l'argent ; les logiciels de gestion locative gèrent le loyer mais ignorent totalement le chantier ; Expat-Dakar et CoinAfrique s'arrêtent à l'échange d'un numéro de téléphone. Locawave est le seul à tenir les deux bouts : la preuve horodatée par phase ET le déblocage du paiement conditionné à votre validation, plus la continuité TROUVER → LOUER → GÉRER → ENTRETENIR → SERVIR. Position de marque : l'adversaire n'est jamais une personne, c'est le flou. On ne parle pas de famille, on ne parle pas de voleurs — on parle de dates, de photos, de phases et de montants en FCFA.
+Pour le propriétaire sénégalais — à Dakar comme à Bergame, Créteil ou Barcelone — qui met de l'argent dans un bien qu'il ne peut pas surveiller tous les jours, Locawave est le système du logement où le paiement suit la preuve. Les agences de suivi de chantier vous envoient des photos mais gardent la main sur l'argent ; les logiciels de gestion locative gèrent le loyer mais ignorent totalement le chantier ; Expat-Dakar et CoinAfrique s'arrêtent à l'échange d'un numéro de téléphone. Locawave est le seul à tenir les deux bouts : la preuve datée par phase ET le exigibilité du paiement conditionnée à votre validation, plus la continuité TROUVER → LOUER → GÉRER → ENTRETENIR → SERVIR. Position de marque : l'adversaire n'est jamais une personne, c'est le flou. On ne parle pas de famille, on ne parle pas de voleurs — on parle de dates, de photos, de phases et de montants en FCFA.
 
 ### Les piliers du message
 
@@ -220,7 +267,7 @@ Chaque promesse est adossée à une fonctionnalité réellement livrée — c'es
 
 | Pilier | Promesse | Preuve dans le produit |
 |---|---|---|
-| **Le paiement suit la preuve, phase par phase** | Vous ne réglez une phase de travaux qu'après avoir vu et validé les preuves de cette phase. | Suivi de chantier par phases avec photos et vidéos réelles ; le propriétaire valide les preuves depuis son téléphone et c'est cette validation qui débloque le paiement. Locawave ne détient jamais les fonds : le séquestre est un statut piloté via Wave ou Orange Money, l'argent reste bloqué chez l'opérateur tant que vous n'avez pas validé. Formulation à l'écran : « Fondations — payée · Élévation — payée · Toiture — en attente de votre validation ». Interdit en créa : coffre-fort, pile de billets, mot « nous gardons votre argent ». |
+| **Le paiement suit la preuve, phase par phase** | Vous ne réglez une phase de travaux qu'après avoir vu et validé les preuves de cette phase. | Suivi de chantier par phases avec photos et vidéos réelles ; le propriétaire valide les preuves depuis son téléphone et c'est cette validation qui rend le paiement dû. Locawave ne détient jamais les fonds : Locawave ne fait que verrouiller l'ordre : preuve, validation, puis règlement, le paiement ne devient dû qu'après votre validation. Formulation à l'écran : « Fondations — payée · Élévation — payée · Toiture — en attente de votre validation ». Interdit en créa : coffre-fort, pile de billets, mot « nous gardons votre argent ». |
 | **Le silence du chantier déclenche une alerte** | Vous n'avez plus besoin d'appeler pour savoir où ça en est : c'est le chantier qui vous prévient. | Trois alertes chantier réellement livrées : « phase soumise », « budget dépassé », « aucune photo depuis 7 jours ». Cette dernière est la meilleure démonstration produit, parce qu'elle répond exactement au reproche le plus répandu — les mêmes photos, sous le même angle, à trois mois d'écart. Créa signature : notification sur écran verrouillé, fond bleu marine #1a2744, texte orange #f97316, « Aucune photo de votre chantier depuis 7 jours. » |
 | **Le loyer rentre sans que vous couriez derrière** | Plus d'appels le 5 du mois, plus de quittance écrite à la main, et les bons payeurs ne sont pas harcelés. | Quittances PDF automatiques ; rappels dans l'app et sur WhatsApp ; relances progressives J+3 / J+7 / J+15 au ton croissant ; rappel intelligent qui épargne les bons payeurs ; score de ponctualité du locataire de 0 à 100 calculé sur l'historique réel ; alertes fin de bail à 90 / 60 / 30 jours ; OCR des reçus Wave et Orange Money ; tableau de bord encaissé / en attente / en retard / taux de recouvrement ; rapport hebdomadaire au propriétaire. |
 | **Personne n'entre sans être vérifié, et tout reste écrit** | Le maçon, le plombier, le locataire, l'annonce : tout ce qui vous engage laisse une trace dans l'application. | KYC obligatoire pour tout prestataire affiché dans l'annuaire et pour tout propriétaire qui publie une annonce ; avis réservés à ceux qui ont réellement loué ou réservé ; messagerie intégrée — la transaction ne sort jamais de l'app, jamais un simple échange de numéro ; gestion des litiges avec médiation. À rapprocher du droit sénégalais, argument gratuit et vrai : le contrat verbal est la première source de litige, et sans état des lieux d'entrée contradictoire le bailleur ne peut rien retenir sur la caution. |
@@ -281,7 +328,7 @@ Chaque promesse est adossée à une fonctionnalité réellement livrée — c'es
 | Étape | Objectif | Canal | Message | KPI |
 |---|---|---|---|---|
 | **1. Notoriété — faire exister la douleur en 3 secondes, sans son** | Toucher deux audiences séparées (Sénégal résident / diaspora Europe) avec des créas courtes qui montrent le flou, jamais un logo. Deux campagnes, deux budgets, jamais dans le même ensemble publicitaire. | Facebook feed + Reels (le plus gros réseau ciblable du Sénégal, audience majoritairement masculine 35-55, ce qui colle au bailleur) pour le Sénégal ; Reels et TikTok organique/Spark Ads ciblés Île-de-France et Rhône-Alpes, Bergame, Milan, Turin, Rome, Gênes, Barcelone, Madrid, Séville, Murcie pour la diaspora. YouTube en soutien (série longue en wolof « suivre un chantier depuis l'étranger »). LinkedIn pour l'offre Agence. Tout en 9:16, plus un 1:1 pour Marketplace. | Sénégal : la douleur locative quotidienne — le carnet froissé et l'appel du 5 du mois. Diaspora : « Trois mois. La même photo. » / « Ce n'est pas de la méfiance. » Texte incrusté en français, 5 mots maximum, voix off wolof pour la version Sénégal, 100 % français pour la diaspora. Aucun visage coupable, aucun membre de la famille montré en fautif : l'antagoniste est le flou. | Taux de rétention à 3 secondes (viser au-dessus de 25 % avant d'augmenter un budget) et coût pour 1 000 impressions relevé dans VOTRE compte, pas dans un blog. Aucun CPM fiable n'existe pour le Sénégal : 30 jours de test à budget faible, 4 à 6 créas, pour produire votre propre référence. Ne jamais optimiser sur les likes. |
-| **2. Considération — passer de l'émotion à la démonstration** | Amener la personne à voir concrètement la frise de phases et le bouton de validation, et ouvrir une conversation. | Click-to-WhatsApp en destination par défaut (WhatsApp est l'outil quotidien de cette audience, avant l'email) ; groupes Facebook de bailleurs et de Sénégalais d'Italie/Espagne/France en organique ; annonces sur Expat-Dakar et CoinAfrique où les propriétaires sont déjà en intention ; LinkedIn pour les agences ; YouTube pour la version longue. | Démonstration écran, pas discours : « Fondations — payée · Élévation — payée · Toiture — en attente de votre validation. » Et la phrase juridiquement exacte à ne jamais déformer : le paiement reste bloqué chez votre opérateur Wave ou Orange Money tant que vous n'avez pas validé — Locawave ne détient jamais les fonds. Pour le volet locatif : la quittance PDF et les relances J+3 / J+7 / J+15. | Coût par conversation WhatsApp réellement ouverte (et non par clic), et taux de réponse au deuxième message. Sur la diaspora, surveiller ce coût de près : un lead en France coûte plusieurs dizaines de milliers de FCFA quand un abonné Solo rapporte 120 000 FCFA sur douze mois — donc les créas diaspora doivent parler chantier (commission 5 %, panier élevé), pas abonnement à 10 000 FCFA. |
+| **2. Considération — passer de l'émotion à la démonstration** | Amener la personne à voir concrètement la frise de phases et le bouton de validation, et ouvrir une conversation. | Click-to-WhatsApp en destination par défaut (WhatsApp est l'outil quotidien de cette audience, avant l'email) ; groupes Facebook de bailleurs et de Sénégalais d'Italie/Espagne/France en organique ; annonces sur Expat-Dakar et CoinAfrique où les propriétaires sont déjà en intention ; LinkedIn pour les agences ; YouTube pour la version longue. | Démonstration écran, pas discours : « Fondations — payée · Élévation — payée · Toiture — en attente de votre validation. » Et la phrase juridiquement exacte à ne jamais déformer : vous ne réglez qu'après avoir validé, par Wave ou Orange Money tant que vous n'avez pas validé — Locawave ne détient jamais les fonds. Pour le volet locatif : la quittance PDF et les relances J+3 / J+7 / J+15. | Coût par conversation WhatsApp réellement ouverte (et non par clic), et taux de réponse au deuxième message. Sur la diaspora, surveiller ce coût de près : un lead en France coûte plusieurs dizaines de milliers de FCFA quand un abonné Solo rapporte 120 000 FCFA sur douze mois — donc les créas diaspora doivent parler chantier (commission 5 %, panier élevé), pas abonnement à 10 000 FCFA. |
 | **3. Essai — obtenir un premier acte réel en moins de 48 heures** | Faire produire à l'utilisateur sa première preuve : une quittance PDF envoyée, ou un chantier créé avec sa première phase. Tant qu'il n'a rien produit, il n'a rien compris. | Essai gratuit sur l'application web (PWA, rien à installer depuis une boutique) ; accompagnement humain par WhatsApp les 48 premières heures ; relance in-app. | Sénégal : « Ajoutez un bien, envoyez votre première quittance ce soir. » Diaspora : « Créez votre chantier, découpez-le en phases, demandez la première série de photos. » Une seule action demandée à la fois. | Taux d'activation à 48 h : pourcentage d'essais ayant créé au moins un bien et un locataire (ou un chantier avec une phase). Délai médian entre inscription et première quittance PDF émise. Ces deux chiffres pilotent tout le reste — un essai non activé ne se convertira pas. |
 | **4. Abonnement — laisser la preuve chiffrée faire la vente** | Convertir l'essai en Solo, Pro ou Agence, en s'appuyant sur ce que l'utilisateur a lui-même constaté pendant l'essai. | In-app + rapport hebdomadaire au propriétaire (fonctionnalité déjà livrée, c'est le meilleur argument de renouvellement) + relance WhatsApp humaine + appel pour les agences. | « Vous avez encaissé 745 000 FCFA ce mois-ci, votre taux de recouvrement est passé à 92 %. » Et l'argument de prix mis en visuel plutôt qu'en tableau : le prix ne dépend pas de votre loyer — 10 000 / 20 000 / 45 000 FCFA, quel que soit le montant encaissé, là où une agence prend un pourcentage tous les mois. | Taux essai → abonné payant à J30, et coût par abonné payant comparé aux 120 000 FCFA de revenu sur douze mois d'un Solo. Suivre séparément Sénégal et diaspora : ce sont deux économies différentes. Suivre aussi le revenu commission 5 % par chantier, qui peut à lui seul justifier un coût d'acquisition diaspora élevé. |
 | **5. Recommandation — transformer les 200 premiers en preuve publique** | Faire du parrainage le premier canal d'acquisition au Sénégal, où le bouche-à-oreille entre bailleurs et entre familles diaspora vaut plus que le budget média sur une cible aussi étroite. | Module de parrainage déjà en production ; avis vérifiés (réservés à ceux qui ont réellement loué ou réservé) ; témoignages face caméra en français teinté de wolof, tournés sans décor publicitaire, réinjectés en Spark Ads sur TikTok et en Reels ; annuaire de prestataires vérifiés qui devient lui-même un motif de venue. | « Il l'a fait construire depuis Bergame. Il a payé la toiture le jour où il l'a vue. » Le témoignage à la première personne peut dire ce que la marque ne dira jamais — y compris la peur d'être traité de mbougoul mbook — mais aucune accroche de marque ne doit reprendre ce registre. | Pourcentage d'abonnés ayant parrainé au moins une personne à J90, coût d'acquisition d'un inscrit parrainé comparé à un inscrit payant, et taux de rétention à 6 mois. Instrumenter dès le premier jour les 200 premiers inscrits (nombre de biens, quartier, résident au Sénégal ou à l'étranger, chantier ou pas) : aucune donnée publique n'existe sur le nombre de bailleurs au Sénégal, votre propre base sera la seule source de vérité du plan. |
@@ -353,7 +400,7 @@ mais tout texte à incruster dans le visuel est **en français**, entre guilleme
 > 
 > REDIRECTION. Tous les épisodes pointent vers une conversation WhatsApp, pas vers un formulaire. Créer une audience de reciblage « a vu 75 % de l'épisode 01 » et lui servir directement 05, en sautant les épisodes intermédiaires : quelqu'un qui a reconnu sa douleur n'a pas besoin de la pédagogie, il a besoin de voir le pouce s'arrêter.
 > 
-> GARDE-FOUS NON NÉGOCIABLES. Aucune créa ne montre de coffre-fort, de liasse de billets ou de transfert d'argent. Aucune ne désigne un coupable : ni beau-frère, ni maçon, ni membre de la famille. La formulation du séquestre ne se déforme jamais — « l'argent reste bloqué chez Wave ou Orange Money tant que vous n'avez pas validé, Locawave ne détient jamais les fonds ». Le registre intime (la peur d'être traité de mbougoul mbook) est réservé aux témoignages à la première personne de la phase recommandation ; aucune accroche de marque ne l'emploie.
+> GARDE-FOUS NON NÉGOCIABLES. Aucune créa ne montre de coffre-fort, de liasse de billets ou de transfert d'argent. Aucune ne désigne un coupable : ni beau-frère, ni maçon, ni membre de la famille. La formulation du paiement ne se déforme jamais — « vous ne réglez le prestataire qu'après avoir validé la phase, Locawave ne détient jamais les fonds ». Le registre intime (la peur d'être traité de mbougoul mbook) est réservé aux témoignages à la première personne de la phase recommandation ; aucune accroche de marque ne l'emploie.
 
 ### `HERO-01` — Épisode 1 — Le flou. On installe la douleur sans jamais accuser personne : trois photos identiques à trois mois d'écart. L'antagoniste n'est pas le beau-frère, c'est l'absence de date, de phase et de preuve. Aucun logo dans les 3 premières secondes.
 
@@ -372,7 +419,7 @@ Des photos, il en reçoit. Toujours le même mur. Toujours le même angle. Toujo
 
 Le problème n'est pas la personne au bout du fil. Le problème, c'est le flou.
 
-Avec Locawave, un chantier n'est plus un tas d'argent envoyé au hasard : il est découpé en phases. Chaque phase doit être prouvée par des photos et des vidéos horodatées. Et le paiement de cette phase ne se débloque qu'après votre validation — l'argent reste bloqué chez Wave ou Orange Money, Locawave ne détient jamais les fonds.
+Avec Locawave, un chantier n'est plus un tas d'argent envoyé au hasard : il est découpé en phases. Chaque phase doit être prouvée par des photos et des vidéos datée. Et vous ne réglez cette phase qu'après l'avoir validée — vous ne payez qu'après avoir validé, Locawave ne détient jamais les fonds.
 
 Épisode 1 sur 6 : le flou.
 ```
@@ -395,11 +442,11 @@ Très lent push-in de 4 s sur le visage (échelle 100 % → 108 %) avec un lége
 
 > Vingt millions de francs envoyés. Trois photos du même mur. Le problème, ce n'est pas lui. Le problème, c'est qu'il n'y a ni date, ni phase, ni preuve.
 
-### `HERO-02` — Épisode 2 — La première preuve. On passe du flou à la date : les fondations sont photographiées sur place, horodatées, rattachées à une phase. Démonstration produit côté terrain, lumineuse, exactement l'inverse visuel de l'épisode 1.
+### `HERO-02` — Épisode 2 — La première preuve. On passe du flou à la date : les fondations sont photographiées sur place, datée, rattachées à une phase. Démonstration produit côté terrain, lumineuse, exactement l'inverse visuel de l'épisode 1.
 
 **Cible :** Ousmane Diallo (spectateur) — et par ricochet le chef de chantier / prestataire qui exécute
 
-**Accroche (les 1,5 première seconde) :** « Fondations. Preuve horodatée. »
+**Accroche (les 1,5 première seconde) :** « Fondations. Preuve datée. »
 
 **Texte de l'annonce**
 
@@ -408,7 +455,7 @@ Jour 1. Les fondations.
 
 Ce n'est plus « je t'envoie une photo quand j'y pense ». C'est une phase du chantier, avec ses preuves attendues, sa date et son heure.
 
-Quatre photos, une courte vidéo, prises sur place et horodatées. Le propriétaire les reçoit à Bergame, les regarde le soir même, valide.
+Quatre photos, une courte vidéo, datées à leur dépôt et rattachées à une phase. Le propriétaire les reçoit à Bergame, les regarde le soir même, valide.
 
 La phase « Fondations » passe en payée. Ni avant, ni au téléphone, ni sur promesse.
 
@@ -433,7 +480,7 @@ Départ sur un plan large fixe 1 s, puis lent travelling avant de 3 s combiné �
 
 **Voix off / dialogue**
 
-> Jour un. Les fondations. Quatre photos, une vidéo, prises sur place, horodatées. Il les regarde le soir même à Bergame. Il valide. La phase est payée. Pas avant.
+> Jour un. Les fondations. Quatre photos, une vidéo, prises sur place, datée. Il les regarde le soir même à Bergame. Il valide. La phase est payée. Pas avant.
 
 ### `HERO-03` — Épisode 3 — Le renversement d'objection, vu du côté du prestataire. C'est la créa qui désamorce « mon beau-frère va croire que je me méfie » : ici, celui qui travaille est protégé, validé par écrit et payé plus vite. Point de vue inversé, seul épisode où le propriétaire n'apparaît pas.
 
@@ -450,26 +497,26 @@ On croit que demander des preuves protège le propriétaire. C'est faux : ça pr
 
 Avant, le maçon appelait, expliquait, attendait. Il avançait de sa poche, il relançait, et le jour où quelqu'un l'accusait à tort, il n'avait rien à montrer.
 
-Maintenant il soumet sa phase avec ses photos. Le propriétaire valide depuis Bergame. Le paiement de la phase se débloque chez Wave — Locawave ne détient jamais les fonds, il ne fait que constater que la preuve est là.
+Maintenant il soumet sa phase avec ses photos. Le propriétaire valide depuis Bergame. Vous réglez la phase par Wave après l'avoir validée — Locawave ne détient jamais les fonds, il ne fait que constater que la preuve est là.
 
 Personne ne se justifie au téléphone. Tout est écrit.
 
 Épisode 3 sur 6 : celui qui travaille est payé plus vite.
 ```
 
-**Texte à incruster dans le visuel :** `Élévation validée. Paiement débloqué.`
+**Texte à incruster dans le visuel :** `Élévation validée. Phase validée.`
 
 **Appel à l'action :** Épisode 4 demain : le silence. Prestataires vérifiés, propriétaires à distance — écrivez « CHANTIER » sur WhatsApp.
 
 **Prompt image — NanoBanana Pro**
 
 ```text
-Vertical medium shot of a muscular 42-year-old Senegalese mason with dark skin and cement-dusted forearms, wearing a faded orange #f97316 t-shirt, grey work trousers and a cloth tied around his head, standing on a simple wooden scaffold plank against the half-built cinder-block first floor of an R+1 house in Diamniadio Senegal, pausing with a trowel still in his left hand while he reads his smartphone held in his right hand, fine cement dust floating in the air and catching the light, blue plastic water barrel and a cement mixer visible below, warm late-afternoon sun raking across the rough block wall and throwing his shadow onto it, shot on a 35mm lens at f/2.8, palette of grey block, ochre dust, orange and deep navy shadow, the phone screen clearly readable and showing a navy app card with the French lines "Élévation — validée par le propriétaire" and "Paiement débloqué · 1 250 000 FCFA" with an orange check icon, bold white French text overlay at the top reading "Validée. Payée. Sans discussion.", photorealistic documentary style, vertical 9:16.
+Vertical medium shot of a muscular 42-year-old Senegalese mason with dark skin and cement-dusted forearms, wearing a faded orange #f97316 t-shirt, grey work trousers and a cloth tied around his head, standing on a simple wooden scaffold plank against the half-built cinder-block first floor of an R+1 house in Diamniadio Senegal, pausing with a trowel still in his left hand while he reads his smartphone held in his right hand, fine cement dust floating in the air and catching the light, blue plastic water barrel and a cement mixer visible below, warm late-afternoon sun raking across the rough block wall and throwing his shadow onto it, shot on a 35mm lens at f/2.8, palette of grey block, ochre dust, orange and deep navy shadow, the phone screen clearly readable and showing a navy app card with the French lines "Élévation — validée par le propriétaire" and "Phase validée · 1 250 000 FCFA à régler" with an orange check icon, bold white French text overlay at the top reading "Validée. Payée. Sans discussion.", photorealistic documentary style, vertical 9:16.
 ```
 
 **Animation image → vidéo**
 
-Plan fixe 1 s sur le maçon qui lit, puis lent pan latéral droite→gauche de 3 s le long du mur d'élévation qui révèle la hauteur atteinte, et retour en zoom serré de 2 s sur l'écran du téléphone jusqu'à « Paiement débloqué · 1 250 000 FCFA ». Sur le dernier tiers, la poussière de ciment est animée en particules lentes. Transition : fondu au noir rapide 0,3 s, coupure totale du son pour ouvrir l'épisode 4 sur le silence.
+Plan fixe 1 s sur le maçon qui lit, puis lent pan latéral droite→gauche de 3 s le long du mur d'élévation qui révèle la hauteur atteinte, et retour en zoom serré de 2 s sur l'écran du téléphone jusqu'à « Phase validée · 1 250 000 FCFA à régler ». Sur le dernier tiers, la poussière de ciment est animée en particules lentes. Transition : fondu au noir rapide 0,3 s, coupure totale du son pour ouvrir l'épisode 4 sur le silence.
 
 **Voix off / dialogue**
 
@@ -515,7 +562,7 @@ Extreme close-up vertical still life of a modern smartphone lying face-up on a w
 
 > Aucune voix off. Silence total pendant six secondes, puis une seule vibration. C'est le vide qui doit être entendu. Sous-titre incrusté uniquement.
 
-### `HERO-05` — Épisode 5 — Le climax : le pouce suspendu au-dessus du bouton orange, la toiture visiblement inachevée sur la photo de preuve. C'est la créa qui porte l'accroche signature et le mécanisme de séquestre, formulé exactement comme il est juridiquement vrai.
+### `HERO-05` — Épisode 5 — Le climax : le pouce suspendu au-dessus du bouton orange, la toiture visiblement inachevée sur la photo de preuve. C'est la créa qui porte l'accroche signature et le mécanisme de validation avant paiement, formulé exactement comme il est juridiquement vrai.
 
 **Cible :** Ousmane Diallo, 47 ans, Bergame — décision de paiement d'une phase à fort montant
 
@@ -530,7 +577,7 @@ On lui demande de payer la toiture. Il ouvre l'application, il regarde les preuv
 
 Alors il ne valide pas. Et parce qu'il ne valide pas, rien ne part.
 
-À retenir, mot pour mot : l'argent reste bloqué chez Wave ou Orange Money tant que vous n'avez pas validé. Locawave ne détient jamais les fonds. Il constate la preuve, il déclenche votre validation, c'est tout.
+À retenir, mot pour mot : vous ne réglez le prestataire qu'après avoir validé la phase. Locawave ne détient jamais les fonds. Il constate la preuve, il déclenche votre validation, c'est tout.
 
 Dix jours plus tard, les tuiles sont posées, les photos arrivent, il valide. La toiture est payée le jour où elle existe.
 
@@ -555,7 +602,7 @@ Le pouce descend de 2 cm puis s'arrête net et remonte légèrement, en 1,5 s �
 
 **Voix off / dialogue**
 
-> On lui demande de payer la toiture. La charpente est posée. La couverture, non. Il ne valide pas. L'argent reste bloqué chez son opérateur. Dix jours plus tard, les tuiles sont là. Il valide. La toiture est payée le jour où elle existe.
+> On lui demande de payer la toiture. La charpente est posée. La couverture, non. Il ne valide pas. L'argent reste chez le propriétaire. Dix jours plus tard, les tuiles sont là. Il valide. La toiture est payée le jour où elle existe.
 
 ### `HERO-06` — Épisode 6 — La résolution, en horizontal 16:9 : c'est le plan de fin du montage long de 60-90 s. Le récapitulatif complet des phases validées, la maison réelle derrière, et l'accroche signature. Seule créa où l'on voit le résultat et où la marque s'affiche pleinement.
 
@@ -568,7 +615,7 @@ Le pouce descend de 2 cm puis s'arrête net et remonte légèrement, en 1,5 s �
 ```
 Jour 45 — il rentre.
 
-Deux ans plus tôt, il envoyait de l'argent et recevait des photos qui se ressemblaient toutes. Cette fois, il connaissait la maison avant de la voir : quatre phases, quatre séries de preuves horodatées, quatre validations depuis son téléphone à Bergame.
+Deux ans plus tôt, il envoyait de l'argent et recevait des photos qui se ressemblaient toutes. Cette fois, il connaissait la maison avant de la voir : quatre phases, quatre séries de preuves datée, quatre validations depuis son téléphone à Bergame.
 
 Fondations — payée. Élévation — payée. Toiture — payée. Finitions — payée.
 
@@ -603,7 +650,7 @@ Ouverture sur un très lent travelling arrière de 5 s : on part du téléphone 
 
 ## Facebook — campagne diaspora (France, Italie, Espagne, USA)
 
-> **Note stratégique.** Six créations, six angles réellement différents, tous articulés sur une seule mécanique : la preuve d'abord, l'argent ensuite. Règles tenues dans chaque créa : l'antagoniste est toujours le flou, jamais une personne ; aucun membre de la famille n'est montré en fautif (FB-02 fait même du beau-frère le bénéficiaire du système) ; jamais de coffre-fort, de liasse de billets ni de formule laissant croire que Locawave détient les fonds — la phrase juridiquement exacte « l'argent reste bloqué chez Wave ou Orange Money tant que vous n'avez pas validé » est reprise à l'identique dans les six textes. Répartition des formats : trois carrés 1:1 pour le feed (FB-01, FB-03, FB-05) et trois verticaux 9:16 pour les Reels (FB-02, FB-04, FB-06). Répartition des cibles : quatre créas chantier (FB-01, FB-02, FB-03, FB-05) qui portent le panier élevé et la commission de 5 %, et deux créas de respiration — FB-04 sur l'alerte produit, la meilleure démonstration disponible, et FB-06 sur la bailleuse diaspora, seule créa féminine et seule créa locative, indispensable pour ne pas réduire la diaspora aux hommes qui construisent. À tester par paires : FB-01 contre FB-03 (douleur constatée à distance contre douleur constatée sur place), FB-05 contre FB-04 (démonstration du paiement contre démonstration de l'alerte). Ne jamais mélanger cette campagne diaspora avec la campagne Sénégal résident dans le même ensemble publicitaire : ce sont deux économies et deux coûts par conversation totalement différents. Destination recommandée : click-to-WhatsApp, et mesure sur le coût par conversation ouverte, pas sur le clic. Un mot de vigilance : le registre « mbougoul mbook » et la peur d'être traité d'ingrat n'apparaissent dans aucune accroche de marque — ils sont réservés aux témoignages à la première personne de l'étape 5 du tunnel.
+> **Note stratégique.** Six créations, six angles réellement différents, tous articulés sur une seule mécanique : la preuve d'abord, l'argent ensuite. Règles tenues dans chaque créa : l'antagoniste est toujours le flou, jamais une personne ; aucun membre de la famille n'est montré en fautif (FB-02 fait même du beau-frère le bénéficiaire du système) ; jamais de coffre-fort, de liasse de billets ni de formule laissant croire que Locawave détient les fonds — la phrase juridiquement exacte « vous ne réglez le prestataire qu'après avoir validé la phase » est reprise à l'identique dans les six textes. Répartition des formats : trois carrés 1:1 pour le feed (FB-01, FB-03, FB-05) et trois verticaux 9:16 pour les Reels (FB-02, FB-04, FB-06). Répartition des cibles : quatre créas chantier (FB-01, FB-02, FB-03, FB-05) qui portent le panier élevé et la commission de 5 %, et deux créas de respiration — FB-04 sur l'alerte produit, la meilleure démonstration disponible, et FB-06 sur la bailleuse diaspora, seule créa féminine et seule créa locative, indispensable pour ne pas réduire la diaspora aux hommes qui construisent. À tester par paires : FB-01 contre FB-03 (douleur constatée à distance contre douleur constatée sur place), FB-05 contre FB-04 (démonstration du paiement contre démonstration de l'alerte). Ne jamais mélanger cette campagne diaspora avec la campagne Sénégal résident dans le même ensemble publicitaire : ce sont deux économies et deux coûts par conversation totalement différents. Destination recommandée : click-to-WhatsApp, et mesure sur le coût par conversation ouverte, pas sur le clic. Un mot de vigilance : le registre « mbougoul mbook » et la peur d'être traité d'ingrat n'apparaissent dans aucune accroche de marque — ils sont réservés aux témoignages à la première personne de l'étape 5 du tunnel.
 
 ### `FBD-01` — La maison qu'on construit depuis l'étranger — les mêmes photos, sous le même angle, à trois mois d'écart. La douleur constatée à distance, sans accuser personne.
 
@@ -618,9 +665,9 @@ Trois mois. La même photo, sous le même angle.
 
 Vous avez envoyé 1 200 000 FCFA pour l'élévation. Vous recevez une image qui ressemble trait pour trait à celle d'avril. Et vous n'osez pas insister, parce qu'insister, chez nous, ça coûte plus cher que l'argent.
 
-Locawave change l'ordre des choses. Votre chantier est découpé en phases. Chaque phase doit être prouvée par des photos et des vidéos horodatées, prises sur place. Le paiement de cette phase ne se débloque qu'après votre validation, depuis votre téléphone, à Bergame comme à Barcelone.
+Locawave change l'ordre des choses. Votre chantier est découpé en phases. Chaque phase doit être prouvée par des photos et des vidéos datée, prises sur place. Vous ne réglez cette phase qu'après l'avoir validée, depuis votre téléphone, à Bergame comme à Barcelone.
 
-Locawave ne détient jamais votre argent : il reste bloqué chez Wave ou Orange Money tant que vous n'avez pas validé.
+Locawave ne détient jamais votre argent : vous ne le versez qu'après avoir validé la phase.
 
 Ce n'est pas de la méfiance. C'est de la clarté.
 Essai gratuit, rien à installer.
@@ -661,19 +708,19 @@ Avec Locawave, ce n'est plus vous qui réclamez. C'est le système qui demande l
 
 Le jour où quelqu'un l'accusera à tort, il aura un dossier daté qui parle pour lui.
 
-Locawave ne détient jamais les fonds : l'argent reste bloqué chez Wave ou Orange Money jusqu'à votre validation.
+Locawave ne détient jamais les fonds : vous ne payez qu'après avoir validé jusqu'à votre validation.
 
 Ce n'est pas de la méfiance. C'est de la clarté.
 ```
 
-**Texte à incruster dans le visuel :** `"Phase Élévation — validée. Paiement débloqué."`
+**Texte à incruster dans le visuel :** `"Phase Élévation — validée. Phase validée."`
 
 **Appel à l'action :** Découvrir le suivi de chantier
 
 **Prompt image — NanoBanana Pro**
 
 ```text
-Vertical 9:16 photorealistic documentary portrait, low three-quarter angle, of a 35-year-old Senegalese site foreman with dark skin, a short beard and a genuinely relieved half-smile, wearing an orange #f97316 hard hat, a dusty navy blue #1a2744 work shirt with rolled sleeves and cement dust on his forearms, standing in the middle of an unfinished R+1 concrete-block house under construction in Diamniadio with exposed rebar columns, wooden scaffolding and stacked cement blocks behind him, looking down at the smartphone in his hand whose screen is clearly readable and shows a mobile app with a vertical phase timeline in French reading "Fondations — payée", "Élévation — validée par le propriétaire", "Toiture — à venir" with a green check beside the second line and the amount "1 450 000 FCFA · paiement débloqué" underneath, late afternoon dry-season sunlight raking across the site with warm golden dust in the air and a pale blue Sahel sky, shot on a 35mm lens at f/2.8, palette of ochre dust, navy and orange, bold white French text in the lower third reading "Il n'a plus à se justifier. Son travail est validé par écrit.", vertical 9:16.
+Vertical 9:16 photorealistic documentary portrait, low three-quarter angle, of a 35-year-old Senegalese site foreman with dark skin, a short beard and a genuinely relieved half-smile, wearing an orange #f97316 hard hat, a dusty navy blue #1a2744 work shirt with rolled sleeves and cement dust on his forearms, standing in the middle of an unfinished R+1 concrete-block house under construction in Diamniadio with exposed rebar columns, wooden scaffolding and stacked cement blocks behind him, looking down at the smartphone in his hand whose screen is clearly readable and shows a mobile app with a vertical phase timeline in French reading "Fondations — payée", "Élévation — validée par le propriétaire", "Toiture — à venir" with a green check beside the second line and the amount "1 450 000 FCFA · phase validée, à régler" underneath, late afternoon dry-season sunlight raking across the site with warm golden dust in the air and a pale blue Sahel sky, shot on a 35mm lens at f/2.8, palette of ochre dust, navy and orange, bold white French text in the lower third reading "Il n'a plus à se justifier. Son travail est validé par écrit.", vertical 9:16.
 ```
 
 **Animation image → vidéo**
@@ -699,7 +746,7 @@ Elle n'est pas là où vous la croyiez.
 
 Ça n'arrive pas parce que les gens sont malhonnêtes. Ça arrive parce que pendant deux ans, l'information a circulé par appels et par photos envoyées à la va-vite, sans dates, sans montants, sans rien d'écrit. Et personne, ni vous ni celui qui suit le chantier, n'a jamais eu la vraie image.
 
-Locawave donne cette image, chaque semaine, sans que vous ayez à demander : phase par phase, photos et vidéos horodatées, budget dépensé, budget restant. Et vous ne réglez une phase qu'après avoir validé ses preuves — l'argent reste bloqué chez Wave ou Orange Money jusque-là.
+Locawave donne cette image, chaque semaine, sans que vous ayez à demander : phase par phase, photos et vidéos datées et rattachées à une phase, budget dépensé, budget restant. Et vous ne réglez une phase qu'après avoir validé ses preuves — vous ne payez qu'après avoir validé jusque-là.
 
 Le prochain voyage, vous saurez exactement ce qui vous attend avant de monter dans l'avion.
 
@@ -783,7 +830,7 @@ Fondations — payée
 Élévation — payée
 Toiture — en attente de votre validation
 
-Tant que vous n'avez pas ouvert les photos et les vidéos de la toiture, tant que vous n'avez pas appuyé sur ce bouton, la phase n'est pas réglée. Et ce n'est pas Locawave qui garde l'argent — nous ne détenons jamais les fonds : il reste bloqué chez Wave ou Orange Money jusqu'à votre validation.
+Tant que vous n'avez pas ouvert les photos et les vidéos de la toiture, tant que vous n'avez pas appuyé sur ce bouton, la phase n'est pas réglée. Et ce n'est pas Locawave qui garde l'argent — nous ne détenons jamais les fonds : vous ne les versez qu'après votre validation.
 
 Vous êtes à Créteil, à Bergame, à Barcelone ou à New York. Vous voyez la toiture à l'écran avant de payer la toiture.
 
@@ -798,7 +845,7 @@ Essai gratuit · commission de 5 % uniquement sur les travaux.
 **Prompt image — NanoBanana Pro**
 
 ```text
-Square 1:1 photorealistic close-up product shot of a dark-skinned West African man's hand and thumb hovering two centimetres above a smartphone screen without touching it, the phone held in the other hand against a plain deep navy blue #1a2744 background, the screen filling most of the frame and showing a crisp mobile app interface in French with a vertical phase timeline: "Fondations — payée · 3 200 000 FCFA" with a green check, "Élévation — payée · 4 750 000 FCFA" with a green check, and "Toiture — en attente de votre validation · 2 900 000 FCFA" highlighted in orange #f97316, above the timeline a small grid of four thumbnail photographs of a real Senegalese construction site showing fresh roof timbers and corrugated sheets, and at the bottom a wide orange #f97316 button with white text reading "Valider et débloquer le paiement", crisp studio lighting with a soft highlight along the phone edge and the orange screen glow reflecting on the fingertips, shot on a 85mm lens at f/4, high contrast navy and orange palette, no other text in the frame, square 1:1.
+Square 1:1 photorealistic close-up product shot of a dark-skinned West African man's hand and thumb hovering two centimetres above a smartphone screen without touching it, the phone held in the other hand against a plain deep navy blue #1a2744 background, the screen filling most of the frame and showing a crisp mobile app interface in French with a vertical phase timeline: "Fondations — payée · 3 200 000 FCFA" with a green check, "Élévation — payée · 4 750 000 FCFA" with a green check, and "Toiture — en attente de votre validation · 2 900 000 FCFA" highlighted in orange #f97316, above the timeline a small grid of four thumbnail photographs of a real Senegalese construction site showing fresh roof timbers and corrugated sheets, and at the bottom a wide orange #f97316 button with white text reading "Valider cette phase", crisp studio lighting with a soft highlight along the phone edge and the orange screen glow reflecting on the fingertips, shot on a 85mm lens at f/4, high contrast navy and orange palette, no other text in the frame, square 1:1.
 ```
 
 **Animation image → vidéo**
@@ -858,7 +905,7 @@ Vertical 9:16 photorealistic intimate shot of a 38-year-old Senegalese woman wit
 > 
 > Points de vigilance juridiques et de marque, à ne pas déformer en production :
 > 1. FB-01 est écrit à la première personne. Tel quel, c'est un SCRIPT, pas un témoignage authentique. Meta et le droit de la publicité interdisent de faire passer un texte inventé pour la parole d'un client réel. Deux options propres : (a) le tourner avec un vrai abonné qui reprend ses propres mots à partir de cette structure — c'est de loin le plus performant, et le persona Cheikh Mbaye existe très probablement déjà dans votre base ; (b) le publier tel quel mais à la deuxième personne, en supprimant les guillemets et le format témoignage. Ne pas publier un faux client avec un visage généré et un prénom inventé présenté comme réel.
-> 2. Séquestre : la seule formulation autorisée est « le paiement reste bloqué chez Wave ou Orange Money tant que vous n'avez pas validé — Locawave ne détient jamais les fonds ». Jamais « nous gardons votre argent », jamais de coffre-fort, de cadenas sur des billets ni de pile de FCFA en visuel. C'est repris tel quel dans FB-05.
+> 2. Paiement : la seule formulation autorisée est « vous ne réglez le prestataire qu'après avoir validé la phase — Locawave ne détient jamais les fonds ». Jamais « nous gardons votre argent », jamais de coffre-fort, de cadenas sur des billets ni de pile de FCFA en visuel. C'est repris tel quel dans FB-05.
 > 3. Aucune fonctionnalité inventée : tout ce qui est cité (quittance PDF, relances J+3/J+7/J+15, rappel intelligent, score de ponctualité, alertes fin de bail 90/60/30, alertes chantier, OCR Wave/OM, tableau de bord, rapport hebdomadaire, KYC, médiation) est dans le périmètre livré. Les chiffres affichés à l'écran (745 000 FCFA, 92 %, 96/100, 220 000 FCFA) sont des exemples d'interface, pas des résultats promis à l'annonceur — ne pas les transformer en promesse du type « augmentez votre recouvrement de 92 % ».
 > 4. L'antagoniste est toujours le flou, jamais une personne. Aucune créa ne montre un maçon, un locataire ou un parent en position de coupable. FB-05 va jusqu'à retourner l'argument au bénéfice du chef de chantier — c'est ce qui désamorce l'objection « je vais vexer mon homme de confiance », et c'est aussi ce qui rend l'annonce partageable sans honte.
 > 5. Production images : NanoBanana Pro rend bien le texte mais dérape sur les longues chaînes. Générer chaque prompt 3 à 4 fois et ne garder que la version où les montants en FCFA et les accents français sont exacts ; vérifier systématiquement « Encaissé », « En retard », « Ponctualité », et l'espace comme séparateur de milliers (220 000 FCFA, jamais 220,000). Si une incrustation ressort fautive, régénérer sans le texte et l'ajouter au montage.
@@ -1058,12 +1105,12 @@ Sur Locawave, le chantier est découpé en phases, et chaque phase doit être pr
 • photos et vidéos réelles déposées phase par phase
 • alerte automatique « aucune photo depuis 7 jours »
 • alerte « budget dépassé » et alerte « phase soumise »
-• le paiement d'une phase ne se débloque qu'après VOTRE validation
+• vous ne réglez une phase qu'après l'avoir VALIDÉE
 
 À l'écran, c'est aussi simple que ça :
 Fondations — payée · Élévation — payée · Toiture — en attente de votre validation.
 
-Locawave ne détient jamais votre argent : il reste bloqué chez Wave ou Orange Money tant que vous n'avez pas validé.
+Locawave ne détient jamais votre argent : vous ne le versez qu'après avoir validé la phase.
 
 Ce n'est pas de la méfiance, c'est de la clarté. Et votre chef de chantier y gagne aussi : son travail est validé par écrit, et il est payé plus vite, phase après phase, sans discussion.
 
@@ -1283,7 +1330,7 @@ Parallaxe verticale de 5 secondes : la caméra descend très lentement vers la t
 
 > Voix off wolof teintée de français, ton calme d'homme de 50 ans : « Le carnet, il écrit bien. Mais le 5 du mois, c'est toi qui appelles. » Puis, en français : « Locawave relance à ta place. Et ceux qui paient à l'heure, on les laisse tranquilles. »
 
-### `FBM-03` — L'annonce de service diaspora, publiée sur les Marketplace locaux du Sénégal ET vue par les diasporas qui parcourent les annonces de Dakar depuis l'étranger. Angle : la phrase juridique exacte — l'argent reste bloqué chez Wave ou Orange Money, Locawave ne détient jamais les fonds — et le désamorçage familial en fin d'annonce.
+### `FBM-03` — L'annonce de service diaspora, publiée sur les Marketplace locaux du Sénégal ET vue par les diasporas qui parcourent les annonces de Dakar depuis l'étranger. Angle : la phrase juridique exacte — vous ne payez qu'après avoir validé, Locawave ne détient jamais les fonds — et le désamorçage familial en fin d'annonce.
 
 **Cible :** Ousmane Diallo, 47 ans, Bergame, R+1 en construction à Diamniadio supervisée par son beau-frère
 
@@ -1298,14 +1345,14 @@ Catégorie : Services
 
 Vous construisez à Diamniadio, Thiès, Mbour ou Saly pendant que vous travaillez en France, en Italie, en Espagne ou aux États-Unis. Vous envoyez l'argent. Vous recevez des photos. Et vous ne sauriez pas dire, aujourd'hui, quel pourcentage de la maison est réellement fait.
 
-Locawave découpe votre chantier en phases : fondations, élévation, dalle, toiture, finitions. À chaque phase, le chef de chantier dépose des photos et des vidéos horodatées depuis son téléphone. Vous les regardez depuis le vôtre. Le paiement de la phase ne se débloque qu'après votre validation.
+Locawave découpe votre chantier en phases : fondations, élévation, dalle, toiture, finitions. À chaque phase, le chef de chantier dépose des photos et des vidéos datée depuis son téléphone. Vous les regardez depuis le vôtre. Vous ne réglez la phase qu'après l'avoir validée.
 
 À l'écran, ça ressemble à ça :
 Fondations — payée
 Élévation — payée
 Toiture — en attente de votre validation
 
-Point important, à lire deux fois : Locawave ne détient jamais votre argent. Le montant reste bloqué chez votre opérateur, Wave ou Orange Money, tant que vous n'avez pas validé la phase.
+Point important, à lire deux fois : Locawave ne détient jamais votre argent. Le montant n'est dû qu'après votre validation, tant que vous n'avez pas validé la phase.
 
 Vous recevez aussi trois alertes automatiques : phase soumise, budget dépassé, et aucune photo depuis 7 jours.
 
@@ -1330,13 +1377,13 @@ Rack focus de 6 secondes : on démarre net sur le chantier flou-avant-plan inver
 
 **Voix off / dialogue**
 
-> Français neutre, voix d'homme posée, aucun pathos : « Fondations, payée. Élévation, payée. Toiture… la toiture n'est pas finie. » Silence de 1 seconde. « Alors vous ne payez pas la toiture. L'argent reste bloqué chez Wave. Locawave n'y touche pas. »
+> Français neutre, voix d'homme posée, aucun pathos : « Fondations, payée. Élévation, payée. Toiture… la toiture n'est pas finie. » Silence de 1 seconde. « Alors vous ne payez pas la toiture. Vous validez, puis vous payez. Locawave n'y touche pas. »
 
 ### `FBM-04` — Annonce de recrutement de prestataires. On renverse le récit : sur Marketplace, le maçon est habituellement celui qu'on soupçonne. Ici il est celui qu'on protège — payé plus vite, protégé le jour où on l'accuse à tort. C'est aussi la meilleure façon de remplir l'annuaire vérifié, qui est un actif de la marketplace Locawave.
 
 **Cible :** Prestataires du bâtiment de Dakar, Thiès, Mbour, Saly, Diamniadio : maçons, plombiers, électriciens, chefs de chantier, carreleurs
 
-**Accroche (les 1,5 première seconde) :** « Phase validée, argent débloqué. »
+**Accroche (les 1,5 première seconde) :** « Phase validée, à régler. »
 
 **Texte de l'annonce**
 
@@ -1353,25 +1400,25 @@ Ce que ça change pour vous :
 · Vous passez la vérification d'identité (KYC). C'est obligatoire pour apparaître, et c'est exactement ce qui vous distingue de la concurrence.
 · Vous êtes visible dans l'annuaire avec vos réalisations et vos avis — et seuls les clients qui ont réellement travaillé avec vous peuvent en laisser un. Personne ne peut vous salir gratuitement.
 · Le chantier est découpé en phases, avec un montant convenu par phase. Vous déposez les photos de la phase terminée depuis votre téléphone.
-· Le client valide, le paiement de la phase se débloque chez Wave ou Orange Money. Fini le « je t'envoie ça la semaine prochaine ».
-· Tout est écrit et horodaté : le montant, la date, les photos. Le jour où quelqu'un conteste votre travail, vous avez la preuve. C'est votre protection autant que la sienne.
+· Le client valide, puis règle la phase par Wave ou Orange Money. Fini le « je t'envoie ça la semaine prochaine ».
+· Tout est écrit et daté : le montant, la date, les photos. Le jour où quelqu'un conteste votre travail, vous avez la preuve. C'est votre protection autant que la sienne.
 
 Inscription à l'annuaire gratuite. Zones couvertes : Dakar, Thiès, Mbour, Saly, Diamniadio.
 ```
 
-**Texte à incruster dans le visuel :** `Phase validée. Paiement débloqué.`
+**Texte à incruster dans le visuel :** `Phase validée. Phase validée.`
 
 **Appel à l'action :** Envoyez « PRESTATAIRE » en message avec votre métier et votre zone : on lance votre vérification cette semaine.
 
 **Prompt image — NanoBanana Pro**
 
 ```text
-Square 1:1 photorealistic medium close-up portrait of a Senegalese mason in his late thirties, dark skin, short beard, wearing a dusty navy blue #1a2744 work shirt with rolled sleeves and an orange #f97316 hard hat pushed slightly back, cement dust on his forearms, standing on an unfinished concrete slab of an R+1 house under construction in Diamniadio with cinder-block walls and rebar behind him, looking down at the smartphone he holds in both hands with a calm satisfied half-smile, the phone screen clearly visible and showing a French-language Locawave screen with a navy #1a2744 header reading "Élévation" and a large white card containing a green check mark, the text "Phase validée par le propriétaire" and below it in bold "450 000 FCFA débloqués", late afternoon golden Senegalese sun raking from the left creating warm rim light on his shoulder and hat, shot on a 50mm lens at f/2.2, palette of grey concrete, red laterite dust, navy #1a2744 and orange #f97316, bold white sans-serif text overlaid along the bottom reading "Phase validée. Paiement débloqué.", square 1:1 format.
+Square 1:1 photorealistic medium close-up portrait of a Senegalese mason in his late thirties, dark skin, short beard, wearing a dusty navy blue #1a2744 work shirt with rolled sleeves and an orange #f97316 hard hat pushed slightly back, cement dust on his forearms, standing on an unfinished concrete slab of an R+1 house under construction in Diamniadio with cinder-block walls and rebar behind him, looking down at the smartphone he holds in both hands with a calm satisfied half-smile, the phone screen clearly visible and showing a French-language Locawave screen with a navy #1a2744 header reading "Élévation" and a large white card containing a green check mark, the text "Phase validée par le propriétaire" and below it in bold "450 000 FCFA à régler", late afternoon golden Senegalese sun raking from the left creating warm rim light on his shoulder and hat, shot on a 50mm lens at f/2.2, palette of grey concrete, red laterite dust, navy #1a2744 and orange #f97316, bold white sans-serif text overlaid along the bottom reading "Phase validée. Phase validée.", square 1:1 format.
 ```
 
 **Animation image → vidéo**
 
-Push-in lent de 5 secondes vers le visage puis micro-tilt vers l'écran du téléphone (zoom 100 % vers 118 %). À la 2,5e seconde, la carte « 450 000 FCFA débloqués » apparaît sur l'écran avec un slide-up de 0,3 s, et l'homme relève la tête et sourit. Transition : coupe sur un plan large du chantier au coucher du soleil.
+Push-in lent de 5 secondes vers le visage puis micro-tilt vers l'écran du téléphone (zoom 100 % vers 118 %). À la 2,5e seconde, la carte « 450 000 FCFA à régler » apparaît sur l'écran avec un slide-up de 0,3 s, et l'homme relève la tête et sourit. Transition : coupe sur un plan large du chantier au coucher du soleil.
 
 **Voix off / dialogue**
 
@@ -1441,7 +1488,7 @@ Locawave donne à chacun de vos propriétaires son propre accès en lecture, san
 · Ils voient leurs biens, leurs loyers encaissés, en attente et en retard, et leur taux de recouvrement. Ils arrêtent de vous appeler pour ça.
 · Ils reçoivent un rapport hebdomadaire automatique. Vous ne l'écrivez pas.
 · Les quittances PDF partent toutes seules, les relances locataires aussi, à J+3, J+7 et J+15 sur WhatsApp.
-· Pour les propriétaires qui font construire : suivi de chantier par phases, avec photos horodatées et déblocage du paiement après leur validation. L'argent reste chez Wave ou Orange Money — ni vous ni Locawave ne le détenez.
+· Pour les propriétaires qui font construire : suivi de chantier par phases, avec photos datées et rattachées à une phase et paiement dû seulement après leur validation. L'argent reste chez Wave ou Orange Money — ni vous ni Locawave ne le détenez.
 · Vos annonces sortent avec le badge propriétaire vérifié, et la relation ne s'arrête plus à un numéro de téléphone donné à un inconnu.
 
 45 000 FCFA par mois pour toute l'agence, quel que soit le montant des loyers gérés. C'est moins qu'un mandat perdu.
@@ -1477,7 +1524,7 @@ Push-in très léger de 4 secondes sur le visage (zoom 100 % vers 108 %) avec un
 > 
 > Répartition d'audience : TT-01, TT-06 et TT-08 sont des créas DIASPORA (chantier, panier élevé, commission 5 % — c'est ce qui justifie un coût d'acquisition européen). TT-03, TT-05 et TT-07 sont des créas SÉNÉGAL RÉSIDENT (locatif, abonnement 10 000 FCFA). TT-02 et TT-04 marchent sur les deux. Ne jamais mettre diaspora et Sénégal dans le même ensemble publicitaire : ce sont deux économies différentes.
 > 
-> Trois règles tenues dans les huit scripts : (1) l'antagoniste est le flou, jamais une personne — aucun beau-frère, aucun locataire, aucun maçon n'est montré en fautif ; (2) la formulation du séquestre n'est jamais déformée — l'argent reste bloqué chez Wave ou Orange Money, Locawave ne détient jamais les fonds ; aucun coffre-fort, aucune liasse de billets dans les visuels ; (3) le hook tombe avant 1,5 s, en image et en texte incrusté de 5 mots maximum, lisible sans son.
+> Trois règles tenues dans les huit scripts : (1) l'antagoniste est le flou, jamais une personne — aucun beau-frère, aucun locataire, aucun maçon n'est montré en fautif ; (2) la formulation du paiement n'est jamais déformée — vous ne payez qu'après avoir validé, Locawave ne détient jamais les fonds ; aucun coffre-fort, aucune liasse de billets dans les visuels ; (3) le hook tombe avant 1,5 s, en image et en texte incrusté de 5 mots maximum, lisible sans son.
 > 
 > Production : tourner les 8 en une session de génération, puis animer. Les plans « écran » (TT-04, TT-01 PLAN 5, TT-08 PLAN 5) sont les plus rentables à réutiliser — générez-les en haute définition, ils resserviront en Reels et sur Marketplace. Pour la version Sénégal de TT-03, TT-05 et TT-07, réenregistrer la voix off en wolof sur exactement le même montage : le texte incrusté reste en français.
 > 
@@ -1513,10 +1560,10 @@ Texte incrusté : « Demander des photos, ce n'est accuser personne. »
 PLAN 5 — 13,0 à 20,0 s
 Bascule sur l'écran Locawave : la frise des phases du chantier.
 Texte incrusté : « Fondations — payée · Élévation — payée · Toiture — en attente de votre validation. »
-Puis, en bas : « L'argent reste bloqué chez Wave. Locawave n'y touche jamais. »
+Puis, en bas : « Vous validez, puis vous payez. Locawave n'y touche jamais. »
 
 PLAN 6 — 20,0 à 24,0 s
-La toiture apparaît en photo horodatée sur l'écran. Le bouton orange devient actif.
+La toiture apparaît en photos datées et rattachées à une phase sur l'écran. Le bouton orange devient actif.
 Texte incrusté : « Ne payez que ce que vous avez vu. »
 
 SON : nappe grave et pulsation lente type afro-cinématique, aucune parole jusqu'au PLAN 5 ; à 13,0 s un « clic » d'interface sec + montée de percussions sabar filtrées ; coupure nette du son à 24,0 s sur le logo.
@@ -1537,9 +1584,9 @@ PLAN 3 : Tight over-the-shoulder vertical 9:16 shot of the same man's phone scre
 
 PLAN 4 : Very tight vertical 9:16 close-up of a dark-skinned man's thick thumb frozen in mid-air one centimetre above a phone keyboard, absolutely still, not touching the glass, the empty reply field visible and lit, tiny dust particles caught in the screen light, the rest of the frame swallowed by navy #1a2744 shadow, shot on a 100mm macro lens at f/2.8 with extremely shallow focus on the thumbnail, French overlay text in white centred in the lower area reading "Demander des photos, ce n'est accuser personne.", vertical 9:16 format.
 
-PLAN 5 : Clean vertical 9:16 product shot of a modern smartphone held upright in a dark-skinned hand against a deep navy #1a2744 background, the screen displaying the Locawave French mobile app interface: a vertical construction timeline with three rows, the first row "Fondations" with a green check and the label "payée", the second row "Élévation" with a green check and the label "payée", the third row "Toiture" greyed out with an orange #f97316 clock icon and the label "en attente de votre validation", a greyed inactive orange button at the bottom reading "Valider et débloquer le paiement" and beneath it small white text "1 200 000 FCFA", crisp studio rim light on the phone edges, shot on a 50mm lens at f/5.6, small white French overlay text at the very bottom of the frame reading "L'argent reste bloqué chez Wave. Locawave n'y touche jamais.", vertical 9:16 format.
+PLAN 5 : Clean vertical 9:16 product shot of a modern smartphone held upright in a dark-skinned hand against a deep navy #1a2744 background, the screen displaying the Locawave French mobile app interface: a vertical construction timeline with three rows, the first row "Fondations" with a green check and the label "payée", the second row "Élévation" with a green check and the label "payée", the third row "Toiture" greyed out with an orange #f97316 clock icon and the label "en attente de votre validation", a greyed inactive orange button at the bottom reading "Valider cette phase" and beneath it small white text "1 200 000 FCFA", crisp studio rim light on the phone edges, shot on a 50mm lens at f/5.6, small white French overlay text at the very bottom of the frame reading "Vous validez, puis vous payez. Locawave n'y touche jamais.", vertical 9:16 format.
 
-PLAN 6 : Vertical 9:16 split composition, the upper two thirds a real photograph of a freshly completed red-brown corrugated roof on a two-storey concrete house in Diamniadio Senegal under a bright dry-season sky with a small timestamp overlay reading "7 juin · 16 h 12", the lower third the same phone interface where the "Toiture" row now shows a green check and the orange #f97316 button is fully active and glowing, reading "Valider et débloquer le paiement", warm late-afternoon Senegalese sunlight, shot on a 24mm lens at f/8 with high clarity, large bold French overlay text in orange #f97316 centred over the join reading "Ne payez que ce que vous avez vu.", vertical 9:16 format.
+PLAN 6 : Vertical 9:16 split composition, the upper two thirds a real photograph of a freshly completed red-brown corrugated roof on a two-storey concrete house in Diamniadio Senegal under a bright dry-season sky with a small timestamp overlay reading "7 juin · 16 h 12", the lower third the same phone interface where the "Toiture" row now shows a green check and the orange #f97316 button is fully active and glowing, reading "Valider cette phase", warm late-afternoon Senegalese sunlight, shot on a 24mm lens at f/8 with high clarity, large bold French overlay text in orange #f97316 centred over the join reading "Ne payez que ce que vous avez vu.", vertical 9:16 format.
 ```
 
 **Animation image → vidéo**
@@ -1548,7 +1595,7 @@ PLAN 1 (1,6 s) : zoom numérique très lent sur les deux dates, 105 % à 112 %, 
 
 **Voix off / dialogue**
 
-> (Voix off masculine, grave, calme, aucune emphase — à partir du PLAN 3 seulement) : « On lui demande l'argent de la toiture. La dernière photo a six semaines. Il ne dit rien, parce que réclamer, chez lui, ça se paie cher. » (temps) « Alors ce n'est plus lui qui réclame. C'est le système. Fondations, payée. Élévation, payée. Toiture : en attente de sa validation. L'argent reste bloqué chez Wave tant qu'il n'a pas vu. » (temps) « Ne payez que ce que vous avez vu. »
+> (Voix off masculine, grave, calme, aucune emphase — à partir du PLAN 3 seulement) : « On lui demande l'argent de la toiture. La dernière photo a six semaines. Il ne dit rien, parce que réclamer, chez lui, ça se paie cher. » (temps) « Alors ce n'est plus lui qui réclame. C'est le système. Fondations, payée. Élévation, payée. Toiture : en attente de sa validation. Vous validez, puis vous payez tant qu'il n'a pas vu. » (temps) « Ne payez que ce que vous avez vu. »
 
 ### `TT-02` — Storytime face caméra — la caution perdue faute d'écrit : bascule du volet locatif, raconté par une femme, à voix basse, la nuit
 
@@ -1700,7 +1747,7 @@ Le doigt appuie sur « Toiture ». La galerie s'ouvre : 0 photo. Le bouton reste
 Texte incrusté : « Pas de preuve, pas de bouton. »
 
 PLAN 4 — 11,0 à 16,0 s
-4 photos horodatées se chargent. Le bouton orange s'allume : « Valider et débloquer le paiement — 1 200 000 FCFA ».
+4 photos datées et rattachées à une phase se chargent. Le bouton orange s'allume : « Valider cette phase — 1 200 000 FCFA ».
 Texte incrusté : « La preuve d'abord. L'argent ensuite. »
 
 PLAN 5 — 16,0 à 20,0 s
@@ -1721,11 +1768,11 @@ PLAN 1 : Full-bleed vertical 9:16 screen capture of the Locawave French mobile a
 
 PLAN 2 : Full-bleed vertical 9:16 screen capture of the same Locawave French app timeline mid-scroll, three rows fully legible: "Fondations" with a green check and "payée · 3 400 000 FCFA", "Élévation" with a green check and "payée · 5 100 000 FCFA", and "Toiture" greyed with an orange #f97316 clock icon and "en attente de votre validation · 1 200 000 FCFA", a dark-skinned thumb blurred in motion at the right edge, deep navy #1a2744 background, ultra-crisp UI, straight-on device capture, French overlay text in white at the bottom reading "Deux phases payées. Une bloquée.", vertical 9:16 format.
 
-PLAN 3 : Full-bleed vertical 9:16 screen capture of the Locawave French app detail screen headed "Toiture", showing an empty photo gallery area with a dashed grey outline and the centred French message "Aucune photo reçue pour cette phase", and at the bottom a fully greyed-out disabled button reading "Valider et débloquer le paiement", a dark-skinned fingertip pressing the dead button with a faint grey ripple, deep navy #1a2744 background, ultra-crisp UI rendering, straight-on device capture, French overlay text in orange #f97316 across the middle reading "Pas de preuve, pas de bouton.", vertical 9:16 format.
+PLAN 3 : Full-bleed vertical 9:16 screen capture of the Locawave French app detail screen headed "Toiture", showing an empty photo gallery area with a dashed grey outline and the centred French message "Aucune photo reçue pour cette phase", and at the bottom a fully greyed-out disabled button reading "Valider cette phase", a dark-skinned fingertip pressing the dead button with a faint grey ripple, deep navy #1a2744 background, ultra-crisp UI rendering, straight-on device capture, French overlay text in orange #f97316 across the middle reading "Pas de preuve, pas de bouton.", vertical 9:16 format.
 
-PLAN 4 : Full-bleed vertical 9:16 screen capture of the same Locawave French "Toiture" screen now populated with a two-by-two grid of four real photographs of a red-brown corrugated metal roof being installed on a concrete house in Diamniadio Senegal under bright dry-season sky, each thumbnail carrying a small white timestamp such as "7 juin · 16 h 12", and below them a fully active glowing orange #f97316 button reading "Valider et débloquer le paiement — 1 200 000 FCFA", deep navy #1a2744 background, ultra-crisp UI, straight-on device capture, French overlay text in white at the top reading "La preuve d'abord. L'argent ensuite.", vertical 9:16 format.
+PLAN 4 : Full-bleed vertical 9:16 screen capture of the same Locawave French "Toiture" screen now populated with a two-by-two grid of four real photographs of a red-brown corrugated metal roof being installed on a concrete house in Diamniadio Senegal under bright dry-season sky, each thumbnail carrying a small white timestamp such as "7 juin · 16 h 12", and below them a fully active glowing orange #f97316 button reading "Valider cette phase — 1 200 000 FCFA", deep navy #1a2744 background, ultra-crisp UI, straight-on device capture, French overlay text in white at the top reading "La preuve d'abord. L'argent ensuite.", vertical 9:16 format.
 
-PLAN 5 : Full-bleed vertical 9:16 screen capture of the Locawave French app zoomed on the bottom section, the active orange #f97316 button reading "Valider et débloquer le paiement" with, directly beneath it, a small grey information banner with a lock-free shield icon and two lines of legible French text "Les fonds restent bloqués chez Wave ou Orange Money." and "Locawave ne détient jamais votre argent.", deep navy #1a2744 background, ultra-crisp UI rendering, straight-on device capture with a slight screen bloom around the button, no hand in frame, French overlay text in white at the very top reading "Ne payez que ce que vous avez vu.", vertical 9:16 format.
+PLAN 5 : Full-bleed vertical 9:16 screen capture of the Locawave French app zoomed on the bottom section, the active orange #f97316 button reading "Valider cette phase" with, directly beneath it, a small grey information banner with a lock-free shield icon and two lines of legible French text "Vous validez, puis vous payez." and "Locawave ne détient jamais votre argent.", deep navy #1a2744 background, ultra-crisp UI rendering, straight-on device capture with a slight screen bloom around the button, no hand in frame, French overlay text in white at the very top reading "Ne payez que ce que vous avez vu.", vertical 9:16 format.
 ```
 
 **Animation image → vidéo**
@@ -1984,7 +2031,7 @@ PLAN 3 : Wide vertical 9:16 shot from the identical camera position on the same 
 
 PLAN 4 : Vertical 9:16 close-up of a smartphone lock screen glowing in a dark room at night, deep navy #1a2744 wallpaper, a single notification card at the centre with a small orange #f97316 app icon and legible French text reading "Locawave · maintenant" on the first line and "Aucune photo de votre chantier depuis 7 jours." on the second, the time "23:41" and the date "14 mai" above, the phone resting on a bedside table with a blurred window and cold blue European night light behind, shot on a 60mm macro lens at f/2.8, French overlay text in white at the very bottom reading "Le silence déclenche une alerte.", vertical 9:16 format.
 
-PLAN 5 : Wide vertical 9:16 shot from the identical Diamniadio camera position showing the house now topped with a completed red-brown corrugated metal roof over a visible timber frame, two workers on the roof edge in orange #f97316 hard hats, bright hard afternoon light and a deep blue dry-season sky, shot on a 24mm lens at f/8, with a phone-shaped inset in the lower right corner showing the Locawave French app where a glowing active orange #f97316 button reads "Valider et débloquer le paiement — 1 200 000 FCFA", French overlay text in white across the top reading "Toiture — vue, puis payée.", vertical 9:16 format.
+PLAN 5 : Wide vertical 9:16 shot from the identical Diamniadio camera position showing the house now topped with a completed red-brown corrugated metal roof over a visible timber frame, two workers on the roof edge in orange #f97316 hard hats, bright hard afternoon light and a deep blue dry-season sky, shot on a 24mm lens at f/8, with a phone-shaped inset in the lower right corner showing the Locawave French app where a glowing active orange #f97316 button reads "Valider cette phase — 1 200 000 FCFA", French overlay text in white across the top reading "Toiture — vue, puis payée.", vertical 9:16 format.
 
 PLAN 6 : Wide vertical 9:16 shot from the identical camera position of the now finished two-storey house in Diamniadio at dusk, walls freshly rendered and painted cream with a navy #1a2744 gate, one warm light glowing in an upstairs window, a young boy's bicycle against the wall, deep orange and violet dry-season sunset sky behind, shot on a 24mm lens at f/5.6 with rich contrast between the warm interior light and the cooling sky, bold French overlay text in orange #f97316 across the lower third reading "Ne payez que ce que vous avez vu.", vertical 9:16 format.
 ```
@@ -2001,7 +2048,7 @@ PLAN 1 (1,5 s) : très léger push-in de 100 % à 106 %, ciel animé en time-lap
 
 ## Recrutement des prestataires (maçons, plombiers, électriciens, chefs de chantier) — Facebook feed 1:1, Facebook Reels et TikTok 9:16
 
-> **Note stratégique.** Ordre de diffusion recommandé : PRE-03 (« Je te paierai à la fin. ») et PRE-05 (« Il est à Bergame. ») en tête de test — ce sont les deux seules créas qui parlent d'argent réellement gagné, donc les deux qui feront lever la main. PRE-01 et PRE-04 servent à la conversion des indécis une fois qu'ils ont déjà croisé la marque : elles vendent le statut, pas le chantier. PRE-02 est la créa de démonstration à réserver au retargeting de ceux qui ont ouvert une conversation WhatsApp sans finaliser.\n\nTrois garde-fous de production. Un : ne jamais laisser entendre que Locawave garantit le paiement ou détient les fonds — la formulation exacte, à ne pas déformer dans les commentaires ni dans les réponses WhatsApp, est que le montant reste bloqué chez Wave ou Orange Money et se débloque à la validation du propriétaire. Deux : ne montrer aucun mauvais payeur, aucun client de dos qui s'enfuit, aucun visage coupable — l'adversaire est la parole non écrite, jamais une personne, sinon la créa se retourne contre nos propres propriétaires. Trois : la commission de 5 % sur les travaux doit être annoncée honnêtement dès la première réponse WhatsApp, pas découverte après l'inscription ; auprès d'un artisan, une surprise tarifaire tue la recommandation, et cette cible ne recrute que par recommandation.\n\nDestination unique : click-to-WhatsApp. Un artisan ne remplit pas un formulaire web, et le KYC obligatoire se collecte bien plus vite en conversation (pièce d'identité photographiée, métier, zone, photos de deux chantiers livrés). Le KPI à suivre n'est ni le clic ni le like mais le nombre de profils réellement vérifiés par semaine, et le délai médian entre premier message et validation KYC. Objectif implicite de la séquence : constituer un annuaire assez fourni pour que la campagne diaspora tienne sa promesse — sans une offre vérifiée en place, PRE-05 devient un mensonge le jour où un propriétaire de Bergame ouvrira l'annuaire et n'y trouvera personne dans sa commune.
+> **Note stratégique.** Ordre de diffusion recommandé : PRE-03 (« Je te paierai à la fin. ») et PRE-05 (« Il est à Bergame. ») en tête de test — ce sont les deux seules créas qui parlent d'argent réellement gagné, donc les deux qui feront lever la main. PRE-01 et PRE-04 servent à la conversion des indécis une fois qu'ils ont déjà croisé la marque : elles vendent le statut, pas le chantier. PRE-02 est la créa de démonstration à réserver au retargeting de ceux qui ont ouvert une conversation WhatsApp sans finaliser.\n\nTrois garde-fous de production. Un : ne jamais laisser entendre que Locawave garantit le paiement ou détient les fonds — la formulation exacte, à ne pas déformer dans les commentaires ni dans les réponses WhatsApp, est que le montant n'est dû qu'après validation et se règlue à la validation du propriétaire. Deux : ne montrer aucun mauvais payeur, aucun client de dos qui s'enfuit, aucun visage coupable — l'adversaire est la parole non écrite, jamais une personne, sinon la créa se retourne contre nos propres propriétaires. Trois : la commission de 5 % sur les travaux doit être annoncée honnêtement dès la première réponse WhatsApp, pas découverte après l'inscription ; auprès d'un artisan, une surprise tarifaire tue la recommandation, et cette cible ne recrute que par recommandation.\n\nDestination unique : click-to-WhatsApp. Un artisan ne remplit pas un formulaire web, et le KYC obligatoire se collecte bien plus vite en conversation (pièce d'identité photographiée, métier, zone, photos de deux chantiers livrés). Le KPI à suivre n'est ni le clic ni le like mais le nombre de profils réellement vérifiés par semaine, et le délai médian entre premier message et validation KYC. Objectif implicite de la séquence : constituer un annuaire assez fourni pour que la campagne diaspora tienne sa promesse — sans une offre vérifiée en place, PRE-05 devient un mensonge le jour où un propriétaire de Bergame ouvrira l'annuaire et n'y trouvera personne dans sa commune.
 
 ### `PRE-01` — La fierté du métier — l'annuaire vérifié transforme l'ouvrage en preuve publique. On ne parle pas de plateforme, on parle de ce qu'il a construit.
 
@@ -2054,11 +2101,11 @@ Slow push-in de 4 secondes vers le visage du maçon (léger, 8 % de zoom), avec 
 ```
 Phase validée. Phase payée.
 
-Sur un chantier Locawave, le travail est découpé en phases : fondations, élévation, toiture, finitions. À la fin de chaque phase, vous soumettez vos photos et vos vidéos depuis votre téléphone. Le propriétaire regarde, valide — et le paiement de cette phase se débloque.
+Sur un chantier Locawave, le travail est découpé en phases : fondations, élévation, toiture, finitions. À la fin de chaque phase, vous soumettez vos photos et vos vidéos depuis votre téléphone. Le propriétaire regarde, valide — et c'est alors qu'il règle cette phase.
 
 Pas à la fin du chantier. À la fin de la phase.
 
-Locawave ne détient jamais votre argent. Le montant reste bloqué chez Wave ou Orange Money, et il part vers vous dès la validation. Vous ne dépendez plus d'un appel, d'un rappel, d'une promesse.
+Locawave ne détient jamais votre argent. Le montant devient dû après validation, et il part vers vous dès la validation. Vous ne dépendez plus d'un appel, d'un rappel, d'une promesse.
 
 Vous montrez. Vous êtes payé. Vous passez à la suite.
 ```
@@ -2070,12 +2117,12 @@ Vous montrez. Vous êtes payé. Vous passez à la suite.
 **Prompt image — NanoBanana Pro**
 
 ```text
-Vertical 9:16 tight close-up of the strong cement-dusted hands of a 40-year-old West African Senegalese builder holding a smartphone at chest height, his dark skin scratched and calloused, a frayed orange #f97316 wristband on his left wrist and the sleeve of a navy blue #1a2744 work jacket visible at the edge of frame, the bright phone screen filling the centre of the image and clearly displaying a French mobile app interface on a navy #1a2744 background with the white header "Chantier — Villa Ngor" and a vertical list of phases each on its own row: "Fondations — payée" with a small grey check, "Élévation — validée par le propriétaire" with a bright orange #f97316 check, and beneath it an orange #f97316 rounded banner with white text "Paiement débloqué · 1 250 000 FCFA", behind the phone a softly blurred half-built concrete-block wall of a Diamniadio construction site with reinforcement bars against a pale dry-season sky, warm late-afternoon sunlight from the left rimming the fingers, shot on an 85mm macro lens at f/4 with the screen perfectly legible and the background melting away, bold white French sans-serif text across the top of the frame reading "PHASE VALIDÉE. PHASE PAYÉE.", photorealistic advertising photography, vertical 9:16 format.
+Vertical 9:16 tight close-up of the strong cement-dusted hands of a 40-year-old West African Senegalese builder holding a smartphone at chest height, his dark skin scratched and calloused, a frayed orange #f97316 wristband on his left wrist and the sleeve of a navy blue #1a2744 work jacket visible at the edge of frame, the bright phone screen filling the centre of the image and clearly displaying a French mobile app interface on a navy #1a2744 background with the white header "Chantier — Villa Ngor" and a vertical list of phases each on its own row: "Fondations — payée" with a small grey check, "Élévation — validée par le propriétaire" with a bright orange #f97316 check, and beneath it an orange #f97316 rounded banner with white text "Phase validée · 1 250 000 FCFA à régler", behind the phone a softly blurred half-built concrete-block wall of a Diamniadio construction site with reinforcement bars against a pale dry-season sky, warm late-afternoon sunlight from the left rimming the fingers, shot on an 85mm macro lens at f/4 with the screen perfectly legible and the background melting away, bold white French sans-serif text across the top of the frame reading "PHASE VALIDÉE. PHASE PAYÉE.", photorealistic advertising photography, vertical 9:16 format.
 ```
 
 **Animation image → vidéo**
 
-Plan de 5 secondes. Départ sur un très léger travelling latéral droite-gauche (3 %) pour donner du poids aux mains, puis zoom progressif sur l'écran du téléphone (de 100 % à 135 %) entre la seconde 1 et la seconde 4, cadrant en fin de mouvement uniquement la bannière orange « Paiement débloqué · 1 250 000 FCFA ». Micro-shake de main volontaire pour l'authenticité. Transition sortante : flash blanc de 3 images.
+Plan de 5 secondes. Départ sur un très léger travelling latéral droite-gauche (3 %) pour donner du poids aux mains, puis zoom progressif sur l'écran du téléphone (de 100 % à 135 %) entre la seconde 1 et la seconde 4, cadrant en fin de mouvement uniquement la bannière orange « Phase validée · 1 250 000 FCFA à régler ». Micro-shake de main volontaire pour l'authenticité. Transition sortante : flash blanc de 3 images.
 
 **Voix off / dialogue**
 
@@ -2096,7 +2143,7 @@ Vous connaissez la phrase. Vous connaissez aussi ce qui vient après : le chanti
 
 Ce n'est pas un problème d'honnêteté. C'est un problème d'écrit.
 
-Sur Locawave, rien ne repose sur une parole. Le chantier est découpé en phases, chaque phase a un montant en FCFA fixé à l'avance, et le paiement de cette phase se débloque dès que le propriétaire a validé vos preuves. Les échanges restent dans la messagerie de l'application — donc ils existent encore dans six mois. En cas de désaccord, il y a une médiation, et il y a des dates.
+Sur Locawave, rien ne repose sur une parole. Le chantier est découpé en phases, chaque phase a un montant en FCFA fixé à l'avance, et cette phase vous est due dès que le propriétaire a validé vos preuves. Les échanges restent dans la messagerie de l'application — donc ils existent encore dans six mois. En cas de désaccord, il y a une médiation, et il y a des dates.
 
 Vous n'aurez plus à faire confiance à une phrase.
 ```
@@ -2172,7 +2219,7 @@ Des milliers de Sénégalais d'Italie, de France, d'Espagne et des États-Unis f
 
 Dans l'annuaire Locawave, ils voient votre identité vérifiée, votre métier, votre zone, vos chantiers déjà livrés en photos et vos avis clients. Ils vous écrivent directement dans l'application.
 
-Et une fois le chantier lancé, tout joue pour vous : chaque phase que vous prouvez en photos est une phase qui se paie, et vos preuves horodatées vous protègent le jour où quelqu'un contestera votre travail.
+Et une fois le chantier lancé, tout joue pour vous : chaque phase que vous prouvez en photos est une phase qui se paie, et vos preuves datée vous protègent le jour où quelqu'un contestera votre travail.
 
 Ce client-là ne vous rencontrera peut-être jamais. Il peut quand même vous choisir.
 ```
@@ -2502,7 +2549,7 @@ argent. Ce qui suit n'est pas un compliment déguisé : lis-le avant de lancer.
 
 ### Les faiblesses relevées
 
-#### Formulation du séquestre : « l'argent reste bloqué chez Wave ou Orange Money tant que vous n'avez pas validé », répétée à l'identique dans ~25 créations (HERO-05, FB-05, FBM-03, TT-01, TT-04, PRE-02…)
+#### Formulation du paiement : « vous ne réglez le prestataire qu'après avoir validé la phase », répétée à l'identique dans ~25 créations (HERO-05, FB-05, FBM-03, TT-01, TT-04, PRE-02…)
 
 **Le problème.** C'est faux dans le produit livré. Dans src/app/dashboard/chantiers/[id]/page.tsx, « financer » exécute simplement .update({ escrow_status: 'held' }) et « valider » exécute .update({ escrow_status: 'released' }) : c'est une colonne texte, aucun argent ne bouge nulle part. src/lib/psp.ts a pour provider par défaut 'simulation', CinetPay lève « non configuré », et l'intégration PayDunya est un checkout-invoice classique sans aucune API de séquestre. Ni Wave ni Orange Money n'offrent de hold tiers. C'est la promesse centrale de toute la campagne et c'est la seule qui soit juridiquement dangereuse : elle porte sur de l'argent.
 
@@ -2516,15 +2563,15 @@ argent. Ce qui suit n'est pas un compliment déguisé : lis-le avant de lancer.
 
 #### TT-05, PLAN 5 : prompt d'image générant un fil WhatsApp avec trois relances automatiques et une pastille orange « envoyé automatiquement »
 
-**Le problème.** C'est la fabrication d'une capture d'écran d'une fonctionnalité qui n'existe pas dans cet état. Une fausse preuve produit dans une publicité est une pratique commerciale trompeuse, et Meta la traite comme du contenu manipulé. Le même problème se pose pour toutes les captures IA de l'interface (frise de phases, bouton « Valider et débloquer le paiement », bandeau « Les fonds restent bloqués chez Wave »).
+**Le problème.** C'est la fabrication d'une capture d'écran d'une fonctionnalité qui n'existe pas dans cet état. Une fausse preuve produit dans une publicité est une pratique commerciale trompeuse, et Meta la traite comme du contenu manipulé. Le même problème se pose pour toutes les captures IA de l'interface (frise de phases, bouton « Valider cette phase », bandeau « Vous validez, puis vous payez »).
 
 **La correction.** Règle unique : aucune interface générée par IA dans une créa. On prend une capture réelle du dashboard, on la nettoie, on l'incruste au montage. Si l'écran réel n'est pas présentable, c'est un signal produit — on corrige l'écran, pas la publicité.
 
-#### « Photos et vidéos horodatées, prises sur place » (HERO-02, FBM-03, TT-01, PRE-02, tout le pilier 1)
+#### « Photos et vidéos datée, prises sur place » (HERO-02, FBM-03, TT-01, PRE-02, tout le pilier 1)
 
-**Le problème.** Dans 044_construction_projects.sql, milestone_updates.taken_at est DEFAULT NOW() : c'est la date de dépôt, pas la date de prise de vue. Aucune lecture EXIF, aucune contrainte de capture in-app, aucun contrôle GPS. Un prestataire peut re-téléverser une photo de mars et le système l'horodatera à aujourd'hui — c'est exactement la fraude (« la même photo, sous le même angle, à trois mois d'écart ») que la campagne prétend éliminer. La créa promet une preuve technique que le produit ne produit pas.
+**Le problème.** Dans 044_construction_projects.sql, milestone_updates.taken_at est DEFAULT NOW() : c'est la date de dépôt, pas la date de prise de vue. Aucune lecture EXIF, aucune contrainte de capture in-app, aucun contrôle GPS. Un prestataire peut re-téléverser une photo de mars et le système la datera d'aujourd'hui — c'est exactement la fraude (« la même photo, sous le même angle, à trois mois d'écart ») que la campagne prétend éliminer. La créa promet une preuve technique que le produit ne produit pas.
 
-**La correction.** Court terme : reformuler en « chaque dépôt est daté et rattaché à une phase » (vrai) au lieu de « photos horodatées prises sur place » (faux). Moyen terme, avant la campagne diaspora : lire l'EXIF et afficher deux dates distinctes, « prise de vue » et « dépôt », et signaler visuellement tout écart supérieur à 48 h. C'est cette fonction-là, et elle seule, qui rend la promesse défendable.
+**La correction.** Court terme : reformuler en « chaque dépôt est daté et rattaché à une phase » (vrai) au lieu de « photos datées et rattachées à une phase prises sur place » (faux). Moyen terme, avant la campagne diaspora : lire l'EXIF et afficher deux dates distinctes, « prise de vue » et « dépôt », et signaler visuellement tout écart supérieur à 48 h. C'est cette fonction-là, et elle seule, qui rend la promesse défendable.
 
 #### Bucket de stockage 'chantier' créé public = true avec la policy chantier_storage_select_all (FOR SELECT USING bucket_id='chantier', sans restriction)
 
@@ -2608,7 +2655,7 @@ argent. Ce qui suit n'est pas un compliment déguisé : lis-le avant de lancer.
 
 | Risque | Gravité | Comment le désamorcer |
 |---|---|---|
-| Publicité trompeuse sur le séquestre : « l'argent reste bloqué chez Wave ou Orange Money » alors qu'aucun blocage n'existe (escrow_status est une colonne texte basculée à la main, PSP en mode simulation). Le premier client qui envoie 1 200 000 FCFA en croyant l'argent protégé et se fait rembourser dans le vide déclenche un litige que la publicité elle-même documente. | **Critique — bloquant absolu, aucune diffusion possible en l'état** | Chercher-remplacer la formulation dans les 25 créas concernées avant toute diffusion. Message de repli défendable : « Vous ne réglez une phase qu'après avoir validé ses preuves. Locawave ne détient jamais les fonds. » Faire valider par un juriste UEMOA. Ne rétablir la formulation d'origine que si un vrai mécanisme de blocage est contractualisé avec un PSP agréé et testé en production. |
+| Publicité trompeuse sur le séquestre : « vous ne payez qu'après avoir validé » alors qu'aucun blocage n'existe (escrow_status est une colonne texte basculée à la main, PSP en mode simulation). Le premier client qui envoie 1 200 000 FCFA en croyant l'argent protégé et se fait rembourser dans le vide déclenche un litige que la publicité elle-même documente. | **Critique — bloquant absolu, aucune diffusion possible en l'état** | Chercher-remplacer la formulation dans les 25 créas concernées avant toute diffusion. Message de repli défendable : « Vous ne réglez une phase qu'après avoir validé ses preuves. Locawave ne détient jamais les fonds. » Faire valider par un juriste UEMOA. Ne rétablir la formulation d'origine que si un vrai mécanisme de blocage est contractualisé avec un PSP agréé et testé en production. |
 | Fuite de données pendant la campagne : le bucket 'chantier' est public avec une policy SELECT sans restriction. Photos de chantiers, de maisons et de parcelles de tous les clients accessibles par URL, alors que la campagne vend la traçabilité et la protection. | **Critique** | Bucket privé + URLs signées à durée limitée. Une migration, une heure de travail, à faire avant la première impression achetée. |
 | Suspension du compte publicitaire Meta ou TikTok : cumul de faux témoignages joués par des humains de synthèse (FB-01 SN, TT-02, TT-06, HERO-01), de captures d'interface fabriquées (TT-05 PLAN 5), de contenu financier promettant une sécurisation de fonds, et d'absence totale de label « contenu généré par IA ». | **Élevée — la perte du compte publicitaire arrête le plan entier, et la réouverture prend des semaines** | Passer les créas à la deuxième personne ou les tourner avec de vrais clients. Interdire toute UI générée. Activer le label IA sur les deux plateformes. Créer un second Business Manager de secours dès la semaine 1, avec un moyen de paiement distinct. |
 | Blocage du canal WhatsApp : envoi de messages freeform hors fenêtre de 24 h via Twilio sans templates approuvés, absence d'opt-in documenté, et prospection sortante à 15-25 DM/jour depuis un profil personnel. Or WhatsApp est à la fois le canal de conversion et le canal de délivrance produit. | **Élevée** | Faire approuver 4 templates utilitaires avant la semaine 1 (rappel de loyer, quittance émise, invitation locataire, phase soumise). Documenter l'opt-in à l'ajout du locataire. Plafonner les DM à 10/jour sur deux profils. Prévoir le repli SMS pour les relances critiques. |
@@ -2622,7 +2669,7 @@ argent. Ce qui suit n'est pas un compliment déguisé : lis-le avant de lancer.
 
 ### Ce qui manque encore au dispositif
 
-- PAGE D'ATTERRISSAGE : il n'existe aucune LP par campagne. Le seul point d'arrivée hors WhatsApp est src/app/page.tsx, une home SaaS générique avec grille tarifaire. Aucune LP chantier diaspora, aucune LP « comment marche le déblocage par phase », aucune FAQ séquestre, aucun élément de réassurance juridique. Le plan achète du trafic européen à 18 000-66 000 FCFA le lead vers une page qui ne parle pas de chantier.
+- PAGE D'ATTERRISSAGE : il n'existe aucune LP par campagne. Le seul point d'arrivée hors WhatsApp est src/app/page.tsx, une home SaaS générique avec grille tarifaire. Aucune LP chantier diaspora, aucune page « comment marche la validation par phase », aucune FAQ paiement à la validation, aucun élément de réassurance juridique. Le plan achète du trafic européen à 18 000-66 000 FCFA le lead vers une page qui ne parle pas de chantier.
 - PREUVE SOCIALE : zéro témoignage, zéro chiffre de traction, zéro logo, zéro avis affiché au moment où l'on demande à un homme de Bergame de faire transiter 20 millions FCFA par un outil inconnu. Les témoignages n'arrivent qu'en semaine 11 : c'est 8 semaines de média payé sans aucune preuve tierce.
 - CONFORMITÉ WHATSAPP : 100 % du tunnel pointe vers click-to-WhatsApp, mais le dispositif ne prévoit ni compte WABA vérifié, ni templates utilitaires approuvés, ni politique d'opt-in, ni mention de collecte. supabase/functions/send-whatsapp/index.ts envoie un Body freeform : hors fenêtre de 24 h, Meta le refuse.
 - CAPACITÉ HUMAINE : 15-25 messages Marketplace/jour + accompagnement WhatsApp humain 48 h + revue KYC manuelle (kyc_documents est validé à la main par un admin) + prospection agences = 1 à 2 ETP. Le scénario « serré » à 60 000 FCFA de budget total en phase 1 n'en tient aucun compte. C'est le poste le plus cher du plan et il est à zéro.
@@ -2637,17 +2684,17 @@ argent. Ce qui suit n'est pas un compliment déguisé : lis-le avant de lancer.
 
 ### À corriger tout de suite, c'est rapide
 
-- Chercher-remplacer la phrase de séquestre dans les 25 créas concernées : « Vous ne réglez une phase qu'après avoir validé ses preuves. Locawave ne détient jamais les fonds. » Une heure de travail, elle retire le seul risque juridique critique du dispositif.
+- Chercher-remplacer la phrase de blocage de fonds dans les 25 créas concernées : « Vous ne réglez une phase qu'après avoir validé ses preuves. Locawave ne détient jamais les fonds. » Une heure de travail, elle retire le seul risque juridique critique du dispositif.
 - Passer le bucket de stockage 'chantier' en privé avec URLs signées. Une migration, avant la première impression achetée.
 - Retirer le score de ponctualité du résumé mensuel envoyé au locataire (migration 050) et de toutes les créas grand public. Le remplacer côté propriétaire par un fait neutre : « 11 mois payés à l'heure ».
 - Renommer les identifiants en SN-01…SN-06 et DIA-01…DIA-06 dans les créas, le plan média et le plan de test, pour rendre impossible le mélange des deux économies dans le gestionnaire.
 - Faire approuver 4 templates WhatsApp Business (rappel de loyer, quittance émise, invitation locataire, phase soumise) dès la semaine 1 : sans eux, aucune relance ne partira hors fenêtre de 24 h.
-- Remplacer « photos horodatées prises sur place » par « chaque dépôt est daté et rattaché à une phase » partout. Gratuit, et cela transforme une promesse fausse en promesse tenue.
+- Remplacer « photos datées et rattachées à une phase prises sur place » par « chaque dépôt est daté et rattaché à une phase » partout. Gratuit, et cela transforme une promesse fausse en promesse tenue.
 - Prendre 8 vraies captures d'écran de l'application (dashboard, frise de phases, quittance PDF, notification, fiche locataire, annuaire) et interdire toute UI générée par IA dans les créas.
 - Inverser l'ordre du feuilleton : ouvrir par HERO-03 (le point de vue du chef de chantier). Aucun coût de production, cela désamorce le risque culturel dès l'audience froide.
 - Réécrire FB-01 SN, TT-02 et TT-06 à la deuxième personne en attendant de vrais témoignages filmés, et activer le label « contenu généré par IA » sur Meta et TikTok.
 - Geler 36 créations et n'en produire que 6 maîtresses, déclinées en 3 hooks chacune. Le calendrier redevient tenable par une personne seule.
-- Construire deux pages d'atterrissage avant le premier franc de média : une chantier (frise de phases, mécanique de validation, FAQ séquestre) et une locative (quittance, relances, tableau de bord).
+- Construire deux pages d'atterrissage avant le premier franc de média : une chantier (frise de phases, mécanique de validation, FAQ paiement à la validation) et une locative (quittance, relances, tableau de bord).
 - Corriger « titre de propriété contrôlé » en « identité vérifiée et document de propriété fourni » dans FBM-01 et FBM-05.
 - Diffuser en continu pendant les 30 premiers jours au lieu de la fenêtre unique 20 h-21 h UTC, puis mesurer la répartition horaire réelle des conversations avant de restreindre.
 - Chronométrer sur 5 utilisateurs non entraînés le parcours inscription → première quittance. Si c'est au-dessus de 15 minutes, corriger le produit avant d'acheter du média.

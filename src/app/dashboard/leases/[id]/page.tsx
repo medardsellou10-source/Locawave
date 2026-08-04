@@ -27,9 +27,9 @@ type Room = { room: string; state: string; note: string }
 type Inspection = { id: string; type: string; rooms: Room[]; meter_readings: Record<string, string | null>; notes: string | null; done_at: string; tenant_signature: string | null; owner_signature: string | null }
 
 const DEPOSIT_STATUS: Record<string, { label: string; cls: string }> = {
-  held: { label: "Sous séquestre", cls: "bg-blue-100 text-blue-700" },
-  partially_released: { label: "Partiellement libérée", cls: "bg-orange-100 text-orange-700" },
-  released: { label: "Libérée (propriétaire)", cls: "bg-gray-200 text-gray-700" },
+  held: { label: "Détenue par le bailleur", cls: "bg-blue-100 text-blue-700" },
+  partially_released: { label: "Partiellement restituée", cls: "bg-orange-100 text-orange-700" },
+  released: { label: "Conservée par le bailleur", cls: "bg-gray-200 text-gray-700" },
   refunded: { label: "Restituée au locataire", cls: "bg-green-100 text-green-700" },
 }
 
@@ -73,7 +73,7 @@ export default function LeaseDetailPage() {
     const { error } = await supabase.from("deposits").insert({
       org_id: lease.org_id, lease_id: lease.id, amount_fcfa: lease.deposit_fcfa, status: "held",
     })
-    if (!error) { await audit("held", { amount: lease.deposit_fcfa }); toast.success("Caution placée sous séquestre") }
+    if (!error) { await audit("held", { amount: lease.deposit_fcfa }); toast.success("Caution enregistrée") }
     else toast.error("Erreur")
     setBusy(false); fetchData()
   }
@@ -86,7 +86,7 @@ export default function LeaseDetailPage() {
     if (!error) {
       const { data: { user } } = await supabase.auth.getUser()
       await supabase.from("audit_log").insert({ entity: "deposits", entity_id: deposit.id, action: status, actor_id: user?.id ?? null, payload: { released } })
-      toast.success("Séquestre mis à jour")
+      toast.success("Caution mise à jour")
     } else toast.error("Erreur")
     setBusy(false); fetchData()
   }
@@ -149,17 +149,17 @@ export default function LeaseDetailPage() {
         </div>
       </div>
 
-      {/* Caution / séquestre */}
+      {/* Caution */}
       <Card>
         <CardHeader className="pb-2">
-          <CardTitle className="text-base flex items-center gap-2"><Lock className="w-4 h-4 text-[#f97316]" /> Caution & séquestre</CardTitle>
+          <CardTitle className="text-base flex items-center gap-2"><Lock className="w-4 h-4 text-[#f97316]" /> Caution</CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
           <p className="text-sm text-gray-600">Montant de la caution : <span className="font-semibold">{formatFCFA(lease.deposit_fcfa)}</span></p>
           {!deposit ? (
             lease.deposit_fcfa > 0 ? (
               <Button onClick={createDeposit} disabled={busy} className="bg-[#1a2744] hover:bg-[#0f1a2e] text-white">
-                <ShieldCheck className="w-4 h-4 mr-2" /> Placer la caution sous séquestre
+                <ShieldCheck className="w-4 h-4 mr-2" /> Enregistrer la caution reçue
               </Button>
             ) : <p className="text-sm text-gray-400">Aucune caution définie sur ce bail.</p>
           ) : (

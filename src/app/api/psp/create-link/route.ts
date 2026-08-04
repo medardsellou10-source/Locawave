@@ -107,7 +107,11 @@ export async function POST(request: NextRequest) {
           org_id: schedule.org_id,
         }),
       })
-      whatsappSent = res.ok
+      // La fonction renvoie { sent: boolean } : on se fie à ce champ, pas au seul
+      // code HTTP. Auparavant `res.ok` suffisait, et l'API annonçait un envoi
+      // WhatsApp alors que la passerelle Twilio n'était même pas configurée.
+      const envoi = await res.json().catch(() => ({}))
+      whatsappSent = res.ok && envoi?.sent === true
     } catch {
       whatsappSent = false
     }

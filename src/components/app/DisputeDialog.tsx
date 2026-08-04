@@ -19,7 +19,7 @@ type Props = {
   onOpened?: () => void
 }
 
-/** Ouvre un litige : gèle les fonds en séquestre (held -> disputed) côté DB et trace dans audit_log. */
+/** Ouvre un litige : suspend l'exigibilité du paiement (due -> disputed) côté DB et trace dans audit_log. */
 export function DisputeDialog({ workOrderId, incidentId, orgId, againstId, amountFcfa, onOpened }: Props) {
   const supabase = createClient()
   const [open, setOpen] = useState(false)
@@ -44,7 +44,7 @@ export function DisputeDialog({ workOrderId, incidentId, orgId, againstId, amoun
     })
     setBusy(false)
     if (error) { toast.error("Erreur lors de l'ouverture du litige"); return }
-    toast.success("Litige ouvert — fonds gelés en séquestre")
+    toast.success("Litige ouvert — le paiement est suspendu le temps de la médiation")
     setOpen(false); setReason(""); setDescription("")
     onOpened?.()
   }
@@ -57,7 +57,7 @@ export function DisputeDialog({ workOrderId, incidentId, orgId, againstId, amoun
       <DialogContent className="max-w-md">
         <DialogHeader><DialogTitle>Ouvrir un litige</DialogTitle></DialogHeader>
         <p className="text-sm text-gray-600">
-          Les fonds en séquestre seront <strong>gelés</strong> le temps de la médiation. Décrivez le problème honnêtement.
+          Le paiement contesté <strong>cesse d&apos;être exigible</strong> le temps de la médiation. Décrivez le problème honnêtement.
         </p>
         <div className="space-y-3">
           <div><Label>Motif</Label><Input value={reason} onChange={(e) => setReason(e.target.value)} placeholder="Travail non conforme, retard, absence…" /></div>

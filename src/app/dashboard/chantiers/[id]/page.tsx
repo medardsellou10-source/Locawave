@@ -12,19 +12,18 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
-import { ArrowLeft, HardHat, Loader2, CheckCircle2, Wallet, Image as ImageIcon, Video, FileText, ShieldCheck } from "lucide-react"
+import { ArrowLeft, HardHat, Loader2, CheckCircle2, Wallet, Image as ImageIcon, Video, FileText } from "lucide-react"
 import { toast } from "sonner"
 
 type Project = { id: string; title: string; description: string | null; total_budget_fcfa: number | null; status: string; provider_id: string | null; owner_id: string }
-type Milestone = { id: string; order_index: number; title: string; description: string | null; amount_fcfa: number; status: string; escrow_status: string; submitted_at: string | null; approved_at: string | null }
+type Milestone = { id: string; order_index: number; title: string; description: string | null; amount_fcfa: number; status: string; payment_state: string; submitted_at: string | null; approved_at: string | null; settled_at: string | null }
 type Update = { id: string; milestone_id: string; kind: string; media_urls: string[] | null; note: string | null; taken_at: string; created_at: string }
 
 const MS_STATUS: Record<string, { label: string; cls: string }> = {
   planned: { label: "Planifiée", cls: "bg-gray-100 text-gray-600" },
-  funded: { label: "Financée (séquestre)", cls: "bg-indigo-100 text-indigo-700" },
   in_progress: { label: "En cours", cls: "bg-blue-100 text-blue-700" },
   submitted: { label: "Soumise à validation", cls: "bg-amber-100 text-amber-700" },
-  approved: { label: "Validée & payée", cls: "bg-green-100 text-green-700" },
+  approved: { label: "Validée", cls: "bg-green-100 text-green-700" },
   rejected: { label: "Rejetée", cls: "bg-red-100 text-red-700" },
 }
 
@@ -43,7 +42,7 @@ export default function ChantierDetailOwnerPage() {
       .select("id, title, description, total_budget_fcfa, status, provider_id, owner_id").eq("id", projectId).maybeSingle()
     setProject(p as Project)
     const { data: ms } = await supabase.from("project_milestones")
-      .select("id, order_index, title, description, amount_fcfa, status, escrow_status, submitted_at, approved_at")
+      .select("id, order_index, title, description, amount_fcfa, status, payment_state, submitted_at, approved_at, settled_at")
       .eq("project_id", projectId).order("order_index", { ascending: true })
     setMilestones((ms as Milestone[]) ?? [])
     const { data: up } = await supabase.from("milestone_updates")
@@ -67,23 +66,31 @@ export default function ChantierDetailOwnerPage() {
     return () => { supabase.removeChannel(ch) }
   }, [projectId, load])
 
-  async function fundMilestone(m: Milestone) {
-    setBusy(m.id)
-    // Simulation séquestre (en prod : lien PSP -> webhook). Fonds "held".
-    const { error } = await supabase.from("project_milestones")
-      .update({ escrow_status: "held", status: "funded" }).eq("id", m.id)
-    setBusy(null)
-    if (error) { toast.error("Erreur"); return }
-    toast.success("Phase financée — fonds placés sous séquestre"); load()
-  }
-
+  /**
+   * Valide une phase au vu des preuves déposées. La validation rend le paiement
+   * DÛ au prestataire ; elle ne déclenche aucun mouvement d'argent. Locawave
+   * n'encaisse pas les travaux : le propriétaire règle le prestataire
+   * directement, puis le confirme via settleMilestone().
+   */
   async function approveMilestone(m: Milestone) {
     setBusy(m.id)
     const { error } = await supabase.from("project_milestones")
-      .update({ status: "approved", escrow_status: "released", approved_at: new Date().toISOString() }).eq("id", m.id)
+      .update({ status: "approved", payment_state: "due", approved_at: new Date().toISOString() })
+      .eq("id", m.id)
     setBusy(null)
     if (error) { toast.error("Erreur"); return }
-    toast.success("Phase validée — paiement libéré au chef de chantier"); load()
+    toast.success("Phase validée — le paiement est dû au prestataire"); load()
+  }
+
+  /** Le propriétaire confirme avoir réglé le prestataire (paiement hors plateforme). */
+  async function settleMilestone(m: Milestone) {
+    setBusy(m.id)
+    const { error } = await supabase.from("project_milestones")
+      .update({ payment_state: "settled", settled_at: new Date().toISOString() })
+      .eq("id", m.id)
+    setBusy(null)
+    if (error) { toast.error("Erreur"); return }
+    toast.success("Règlement enregistré"); load()
   }
 
   async function rejectMilestone(m: Milestone) {
@@ -103,8 +110,8 @@ export default function ChantierDetailOwnerPage() {
   if (loading) return <div className="space-y-3"><Skeleton className="h-8 w-64" /><Skeleton className="h-40" /></div>
   if (!project) return <div className="text-gray-500 py-10 text-center">Chantier introuvable</div>
 
-  const held = milestones.filter((m) => m.escrow_status === "held").reduce((s, m) => s + m.amount_fcfa, 0)
-  const released = milestones.filter((m) => m.escrow_status === "released").reduce((s, m) => s + m.amount_fcfa, 0)
+  const aRegler = milestones.filter((m) => m.payment_state === "due").reduce((s, m) => s + m.amount_fcfa, 0)
+  const regle = milestones.filter((m) => m.payment_state === "settled").reduce((s, m) => s + m.amount_fcfa, 0)
   const planned = milestones.reduce((s, m) => s + m.amount_fcfa, 0)
   const budget = project.total_budget_fcfa ?? 0
   const allApproved = milestones.length > 0 && milestones.every((m) => m.status === "approved")
@@ -122,14 +129,20 @@ export default function ChantierDetailOwnerPage() {
 
       {/* Budget */}
       <Card className="mb-5">
-        <CardHeader className="pb-2"><CardTitle className="text-base flex items-center gap-2"><Wallet className="w-5 h-5 text-[#f97316]" /> Budget & séquestre</CardTitle></CardHeader>
+        <CardHeader className="pb-2"><CardTitle className="text-base flex items-center gap-2"><Wallet className="w-5 h-5 text-[#f97316]" /> Budget & règlements</CardTitle></CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
             <div className="bg-gray-50 rounded-lg py-3"><p className="text-xs text-gray-500">Budget total</p><p className="font-bold text-[#1a2744]">{formatFCFA(budget)}</p></div>
             <div className="bg-gray-50 rounded-lg py-3"><p className="text-xs text-gray-500">Phases planifiées</p><p className="font-bold text-[#1a2744]">{formatFCFA(planned)}</p></div>
-            <div className="bg-indigo-50 rounded-lg py-3"><p className="text-xs text-indigo-600">Sous séquestre</p><p className="font-bold text-indigo-700">{formatFCFA(held)}</p></div>
-            <div className="bg-green-50 rounded-lg py-3"><p className="text-xs text-green-600">Libéré (payé)</p><p className="font-bold text-green-700">{formatFCFA(released)}</p></div>
+            <div className="bg-amber-50 rounded-lg py-3"><p className="text-xs text-amber-700">À régler</p><p className="font-bold text-amber-800">{formatFCFA(aRegler)}</p></div>
+            <div className="bg-green-50 rounded-lg py-3"><p className="text-xs text-green-600">Déjà réglé</p><p className="font-bold text-green-700">{formatFCFA(regle)}</p></div>
           </div>
+          <p className="mt-3 text-xs text-gray-500 leading-relaxed">
+            <strong className="text-[#1a2744]">Locawave n'encaisse pas vos travaux.</strong>{" "}
+            Vous validez chaque phase au vu des preuves, puis vous réglez le prestataire
+            directement (Wave, Orange Money, virement). Locawave conserve la trace de ce
+            que vous avez vu, validé et réglé — il ne détient jamais votre argent.
+          </p>
         </CardContent>
       </Card>
 
@@ -173,18 +186,21 @@ export default function ChantierDetailOwnerPage() {
 
                 {/* Actions propriétaire */}
                 <div className="flex gap-2 mt-3 flex-wrap">
-                  {(m.status === "planned" || m.status === "in_progress") && m.escrow_status === "none" && (
-                    <Button size="sm" disabled={busy === m.id} onClick={() => fundMilestone(m)} className="bg-indigo-600 hover:bg-indigo-700 text-white">
-                      {busy === m.id ? <Loader2 className="w-4 h-4 animate-spin" /> : <><ShieldCheck className="w-4 h-4 mr-1" /> Financer la phase</>}
-                    </Button>
-                  )}
                   {m.status === "submitted" && (
                     <>
                       <Button size="sm" disabled={busy === m.id} onClick={() => approveMilestone(m)} className="bg-green-600 hover:bg-green-700 text-white">
-                        {busy === m.id ? <Loader2 className="w-4 h-4 animate-spin" /> : <><CheckCircle2 className="w-4 h-4 mr-1" /> Valider & libérer le paiement</>}
+                        {busy === m.id ? <Loader2 className="w-4 h-4 animate-spin" /> : <><CheckCircle2 className="w-4 h-4 mr-1" /> Valider cette phase</>}
                       </Button>
                       <Button size="sm" variant="outline" disabled={busy === m.id} onClick={() => rejectMilestone(m)} className="text-red-600 border-red-200">Renvoyer</Button>
                     </>
+                  )}
+                  {m.payment_state === "due" && (
+                    <Button size="sm" disabled={busy === m.id} onClick={() => settleMilestone(m)} className="bg-[#1a2744] hover:bg-[#243456] text-white">
+                      {busy === m.id ? <Loader2 className="w-4 h-4 animate-spin" /> : <><Wallet className="w-4 h-4 mr-1" /> J'ai réglé le prestataire</>}
+                    </Button>
+                  )}
+                  {m.payment_state === "settled" && m.settled_at && (
+                    <span className="text-xs text-green-700 self-center">Réglée le {formatDateFR(m.settled_at)}</span>
                   )}
                 </div>
               </CardContent>

@@ -23,7 +23,7 @@ import { toast } from "sonner"
 
 type Profile = { id: string; display_name: string | null; bio: string | null; trades: string[]; quartier: string | null; city: string | null; languages: string[]; is_verified: boolean; trust_score: number | null; jobs_done: number | null }
 type Service = { id: string; trade: string; title: string; base_price: number | null; price_unit: string }
-type WorkOrder = { id: string; description: string | null; amount_fcfa: number | null; status: string; escrow_status: string; created_at: string; client_id: string | null; org_id: string | null }
+type WorkOrder = { id: string; description: string | null; amount_fcfa: number | null; status: string; payment_state: string; created_at: string; client_id: string | null; org_id: string | null }
 type Chantier = { id: string; title: string; status: string; total_budget_fcfa: number | null }
 type Portfolio = { id: string; media_url: string; caption: string | null }
 type Cert = { id: string; label: string; issuer: string | null }
@@ -74,7 +74,7 @@ export default function PrestatairePage() {
       setBio(p.bio ?? ""); setTrades((p.trades ?? []).join(", ")); setQuartier(p.quartier ?? ""); setCity(p.city ?? "Dakar")
       const { data: svc } = await supabase.from("provider_services").select("id, trade, title, base_price, price_unit").eq("provider_id", user.id)
       setServices((svc as Service[]) ?? [])
-      const { data: wo } = await supabase.from("work_orders").select("id, description, amount_fcfa, status, escrow_status, created_at, client_id, org_id").eq("provider_id", user.id).order("created_at", { ascending: false })
+      const { data: wo } = await supabase.from("work_orders").select("id, description, amount_fcfa, status, payment_state, created_at, client_id, org_id").eq("provider_id", user.id).order("created_at", { ascending: false })
       setWorkOrders((wo as WorkOrder[]) ?? [])
       const { data: ch } = await supabase.from("construction_projects").select("id, title, status, total_budget_fcfa").eq("provider_id", user.id).order("created_at", { ascending: false })
       setChantiers((ch as Chantier[]) ?? [])
@@ -244,13 +244,13 @@ export default function PrestatairePage() {
                     <div key={w.id} className="py-3 flex items-center justify-between gap-2 flex-wrap">
                       <div>
                         <p className="text-sm font-medium">{w.description ?? "Mission"}</p>
-                        <p className="text-xs text-gray-400">{w.amount_fcfa ? formatFCFA(w.amount_fcfa) : "Montant à définir"} · séquestre : {w.escrow_status} · {formatDateFR(w.created_at)}</p>
+                        <p className="text-xs text-gray-400">{w.amount_fcfa ? formatFCFA(w.amount_fcfa) : "Montant à définir"} · {PAY_STATE[w.payment_state] ?? w.payment_state} · {formatDateFR(w.created_at)}</p>
                       </div>
                       <div className="flex items-center gap-2">
                         <Badge variant="outline">{WO_STATUS[w.status] ?? w.status}</Badge>
                         {w.status === "assigned" && <Button size="sm" variant="outline" onClick={() => setWoStatus(w.id, "in_progress")}>Démarrer</Button>}
                         {w.status === "in_progress" && <Button size="sm" className="bg-green-600 hover:bg-green-700 text-white" onClick={() => setWoStatus(w.id, "completed")}>Terminer</Button>}
-                        {w.escrow_status === "held" && (
+                        {w.payment_state === "due" && (
                           <DisputeDialog workOrderId={w.id} orgId={w.org_id} againstId={w.client_id} amountFcfa={w.amount_fcfa} onOpened={load} />
                         )}
                       </div>
@@ -327,4 +327,13 @@ export default function PrestatairePage() {
       )}
     </div>
   )
+}
+
+/** État de règlement d'une mission. Locawave n'encaisse pas les travaux :
+    ces libellés décrivent ce que le client doit ou a déjà réglé en direct. */
+const PAY_STATE: Record<string, string> = {
+  not_due: "rien à régler",
+  due: "à régler par le client",
+  settled: "réglée",
+  cancelled: "annulée",
 }

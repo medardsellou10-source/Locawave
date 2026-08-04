@@ -214,7 +214,7 @@ export default function FinancesPage() {
                     <Badge variant="outline">{commissions.filter((c) => c.source_type === "work_order").length} service(s)</Badge>
                   </div>
                 </div>
-                <p className="text-[11px] text-gray-400 mt-3">Prélevée à la libération du séquestre. Aucune commission sur les loyers.</p>
+                <p className="text-[11px] text-gray-400 mt-3">Prélevée quand une phase ou une mission est validée et réglée. Aucune commission sur les loyers.</p>
               </CardContent>
             </Card>
           )}

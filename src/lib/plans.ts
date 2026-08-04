@@ -1,12 +1,12 @@
 // Source unique de la tarification Locawave.
 // Modèle : abonnement par NOMBRE DE BIENS GÉRÉS (plus basé sur le loyer)
-// + commission sur les transactions de services/chantiers passées dans l'app (séquestre libéré).
+// + commission sur les services/chantiers validés et réglés dans l'app.
 
 export type PlanId = "solo" | "pro" | "agence"
 
-/** Commission prélevée sur les transactions services/chantiers à la libération du séquestre. */
+/** Commission prélevée sur les services/chantiers une fois la phase validée et réglée. */
 export const COMMISSION_RATE = 0.05 // 5%
-export const COMMISSION_LABEL = "5% sur les transactions services & chantiers (séquestre)"
+export const COMMISSION_LABEL = "5% sur les services & chantiers validés dans l'app"
 
 export type Plan = {
   id: PlanId
@@ -44,7 +44,7 @@ export const PLANS: Plan[] = [
     features: [
       "Jusqu'à 25 biens",
       "Suivi de chantier & prestataires vérifiés",
-      "Séquestre & médiation des litiges",
+      "Validation par phase & médiation des litiges",
       "Finances & rapports mensuels",
       "3 utilisateurs",
       "Support prioritaire",

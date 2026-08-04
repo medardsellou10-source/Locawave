@@ -94,7 +94,7 @@ export default function ServicesPage() {
       next_run: new Date().toISOString().slice(0, 10),
     })
     if (error) { toast.error("Erreur lors de la réservation"); return }
-    toast.success("Réservation récurrente créée — séquestre à chaque échéance")
+    toast.success("Réservation récurrente créée")
     setBookOpen(false); setBookTitle(""); setBookAmount("")
   }
 

@@ -149,7 +149,7 @@ export default function BillingPage() {
           </div>
           <div className="mt-4 flex items-start gap-2 rounded-lg bg-slate-50 p-3 text-sm text-gray-600">
             <Percent className="w-4 h-4 text-[#f97316] mt-0.5 shrink-0" />
-            <span>En plus de l'abonnement, une commission de <strong>5%</strong> s'applique uniquement sur les <strong>transactions de services et de chantiers</strong> réalisées dans l'app (prélevée à la libération du séquestre). Aucune commission sur les loyers.</span>
+            <span>En plus de l'abonnement, une commission de <strong>5%</strong> s'applique uniquement sur les <strong>transactions de services et de chantiers</strong> réalisées dans l'app (prélevée lorsque la phase est validée et réglée). Aucune commission sur les loyers.</span>
           </div>
         </CardContent>
       </Card>

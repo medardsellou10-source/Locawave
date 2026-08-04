@@ -57,7 +57,7 @@ export default function LitigesPage() {
 
   async function cancelDispute(d: Dispute) {
     setBusy(d.id)
-    // Le dégel du séquestre (disputed -> held) est fait par le trigger DB.
+    // Le retour à l'état exigible (disputed -> due) est fait par le trigger DB.
     const { error } = await supabase.from("disputes").update({ status: "cancelled" }).eq("id", d.id)
     setBusy(null)
     if (error) { toast.error("Erreur"); return }
@@ -67,13 +67,13 @@ export default function LitigesPage() {
   async function resolve(d: Dispute, outcome: "client" | "provider") {
     setBusy(d.id)
     const resolution = resolutions[d.id] || (outcome === "client" ? "Litige tranché en faveur du client : remboursement." : "Litige tranché en faveur du prestataire : libération des fonds.")
-    // Le mouvement du séquestre est piloté par le trigger via escrow_outcome (RLS-safe).
+    // L'exigibilité est pilotée par le trigger via escrow_outcome (RLS-safe).
     const { error } = await supabase.from("disputes")
       .update({ status: "resolved", resolution, escrow_outcome: outcome === "client" ? "refund" : "release", resolved_by: uid, resolved_at: new Date().toISOString() })
       .eq("id", d.id)
     setBusy(null)
     if (error) { toast.error("Erreur"); return }
-    toast.success("Litige résolu — séquestre " + (outcome === "client" ? "remboursé" : "libéré")); load()
+    toast.success("Litige résolu — somme " + (outcome === "client" ? "annulée" : "due au prestataire")); load()
   }
 
   return (
@@ -93,7 +93,7 @@ export default function LitigesPage() {
 
       <main className="max-w-3xl mx-auto px-4 py-6">
         <h1 className="text-2xl font-bold text-[#1a2744] flex items-center gap-2 mb-1"><Scale className="w-6 h-6 text-[#f97316]" /> Litiges</h1>
-        <p className="text-gray-500 text-sm mb-5">Suivi des litiges et gel des fonds en séquestre pendant la médiation.{isAdmin && " Vous êtes médiateur (admin)."}</p>
+        <p className="text-gray-500 text-sm mb-5">Suivi des litiges. Pendant la médiation, la somme contestée n'est plus exigible.{isAdmin && " Vous êtes médiateur (admin)."}</p>
 
         {loading ? <div className="flex justify-center py-10"><Loader2 className="w-6 h-6 animate-spin text-[#f97316]" /></div>
           : disputes.length === 0 ? <EmptyState icon={Scale} title="Aucun litige" description="Tout roule 👍 Les litiges éventuels et leur médiation apparaîtront ici." />
@@ -114,7 +114,7 @@ export default function LitigesPage() {
                     {d.description && <p className="text-gray-600">{d.description}</p>}
                     <p className="text-xs text-gray-400">
                       Ouvert le {formatDateFR(d.created_at)}
-                      {d.amount_frozen_fcfa ? ` · ${formatFCFA(d.amount_frozen_fcfa)} gelés` : ""}
+                      {d.amount_frozen_fcfa ? ` · ${formatFCFA(d.amount_frozen_fcfa)} contestés` : ""}
                     </p>
                     {d.resolution && <p className="text-green-700 bg-green-50 rounded p-2 text-xs">Résolution : {d.resolution}</p>}
 

@@ -69,7 +69,7 @@ export default function LeasesPage() {
           </span>
           <div>
             <h1 className="text-2xl font-bold tracking-tight text-[#1a2744]">Baux</h1>
-            <p className="text-sm text-gray-500">Contrats en cours, échéances et cautions sous séquestre.</p>
+            <p className="text-sm text-gray-500">Contrats en cours, échéances et cautions.</p>
           </div>
         </div>
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>

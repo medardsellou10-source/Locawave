@@ -167,7 +167,7 @@ export default function ProviderPublicPage() {
           </Card>
         )}
 
-        <p className="text-[11px] text-gray-400 text-center">Échangez et payez toujours dans l'app Locawave — séquestre sécurisé, jamais de numéro avant d'engager.</p>
+        <p className="text-[11px] text-gray-400 text-center">Échangez toujours dans l'app Locawave : devis, validation et règlement restent tracés, jamais de numéro avant d'engager.</p>
       </main>
     </div>
   )
