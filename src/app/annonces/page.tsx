@@ -25,6 +25,14 @@ type Listing = {
   id: string; title: string; type: string; rent_fcfa: number; charges_fcfa: number | null
   rooms: number | null; area_m2: number | null; quartier: string | null; city: string | null
   photos: string[] | null; is_verified: boolean; distance_km: number | null; lat: number | null; lng: number | null
+  published_at: string | null; fraicheur: string | null
+}
+
+/** Badge de fraîcheur. La règle vit dans search_listings, pas ici : un seul
+    endroit décide de ce qui est « nouveau », et tous les écrans s'y accordent. */
+const FRAICHEUR: Record<string, { label: string; cls: string }> = {
+  nouveau: { label: "Nouveau", cls: "bg-[#f97316] text-white" },
+  recent: { label: "Récent", cls: "bg-blue-100 text-blue-700" },
 }
 const DAKAR: [number, number] = [14.7167, -17.4677]
 const TYPES = ["", "appartement", "chambre", "maison", "studio", "bureau"]
@@ -110,7 +118,12 @@ export default function AnnoncesPublicPage() {
                 <CardContent className="py-4">
                   <div className="flex items-start justify-between gap-2">
                     <p className="font-semibold text-[#1a2744]">{l.title}</p>
-                    {l.is_verified && <Badge className="bg-green-100 text-green-700 gap-1 shrink-0"><CheckCircle2 className="w-3 h-3" /> Vérifié</Badge>}
+                    <div className="flex items-center gap-1.5 shrink-0">
+                      {l.fraicheur && FRAICHEUR[l.fraicheur] && (
+                        <Badge className={FRAICHEUR[l.fraicheur].cls}>{FRAICHEUR[l.fraicheur].label}</Badge>
+                      )}
+                      {l.is_verified && <Badge className="bg-green-100 text-green-700 gap-1"><CheckCircle2 className="w-3 h-3" /> Vérifié</Badge>}
+                    </div>
                   </div>
                   <p className="text-sm text-gray-500 mt-1 capitalize">{l.type}{l.rooms ? ` · ${l.rooms} pièces` : ""}{l.area_m2 ? ` · ${l.area_m2} m²` : ""}</p>
                   <p className="font-bold text-[#1a2744] mt-1">{formatFCFA(l.rent_fcfa)} <span className="text-xs font-normal text-gray-400">/ mois</span></p>
