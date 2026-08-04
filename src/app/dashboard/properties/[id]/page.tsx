@@ -4,11 +4,12 @@ export const dynamic = "force-dynamic"
 
 import { useEffect, useState } from "react"
 import { useParams, useRouter } from "next/navigation"
+import Link from "next/link"
 import { createClient } from "@/lib/supabase"
 import { useOrganization } from "@/hooks/useOrganization"
 import { PropertyForm } from "@/components/app/PropertyForm"
 import { UnitForm } from "@/components/app/UnitForm"
-import { formatFCFA } from "@/lib/formatters"
+import { formatFCFA, formatDateFR } from "@/lib/formatters"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -21,6 +22,14 @@ import type { Database } from "@/types/database"
 
 type Property = Database["public"]["Tables"]["properties"]["Row"]
 type Unit = Database["public"]["Tables"]["units"]["Row"]
+
+/** Contexte d'une unité : de quoi décider l'action utile sans clic mort. */
+type Bail = {
+  id: string; unit_id: string; start_date: string; end_date: string; rent_fcfa: number
+  tenants: { id: string; first_name: string; last_name: string; whatsapp: string | null } | null
+}
+type IncidentOuvert = { id: string; lease_id: string | null; category: string; urgency: string; status: string }
+type Annonce = { id: string; title: string; status: string; published_at: string | null }
 
 const statusConfig: Record<string, { label: string; variant: "default" | "secondary" | "destructive" | "outline" }> = {
   vacant: { label: "Vacant", variant: "secondary" },
@@ -57,6 +66,9 @@ export default function PropertyDetailPage() {
   const [editDialogOpen, setEditDialogOpen] = useState(false)
   const [unitDialogOpen, setUnitDialogOpen] = useState(false)
   const [editingUnit, setEditingUnit] = useState<Unit | undefined>()
+  const [baux, setBaux] = useState<Bail[]>([])
+  const [incidents, setIncidents] = useState<IncidentOuvert[]>([])
+  const [annonces, setAnnonces] = useState<Annonce[]>([])
 
   async function fetchData() {
     if (!org || !params.id) return
@@ -73,8 +85,29 @@ export default function PropertyDetailPage() {
       .eq("property_id", params.id as string)
       .order("unit_number")
 
+    const ids = (unitsList ?? []).map((u) => u.id)
+
+    // Le contexte de chaque unité : sans lui, la fiche ne peut proposer que
+    // « Modifier » et « Supprimer », et chaque statut mène à un cul-de-sac.
+    const [{ data: bauxList }, { data: incList }, { data: annList }] = await Promise.all([
+      ids.length
+        ? supabase.from("leases")
+            .select("id, unit_id, start_date, end_date, rent_fcfa, tenants(id, first_name, last_name, whatsapp)")
+            .in("unit_id", ids).eq("status", "active")
+        : Promise.resolve({ data: [] as unknown[] }),
+      supabase.from("incidents")
+        .select("id, lease_id, category, urgency, status")
+        .eq("property_id", params.id as string).neq("status", "resolved"),
+      supabase.from("listings")
+        .select("id, title, status, published_at")
+        .eq("property_id", params.id as string),
+    ])
+
     setProperty(prop)
     setUnits(unitsList ?? [])
+    setBaux((bauxList as unknown as Bail[]) ?? [])
+    setIncidents((incList as IncidentOuvert[]) ?? [])
+    setAnnonces((annList as Annonce[]) ?? [])
     setLoading(false)
   }
 
@@ -219,12 +252,17 @@ export default function PropertyDetailPage() {
                 <TableHead>Surface</TableHead>
                 <TableHead>Loyer</TableHead>
                 <TableHead>Statut</TableHead>
+                <TableHead>Où en est cette unité ?</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {units.map((unit) => {
                 const status = statusConfig[unit.status] ?? statusConfig.vacant
+                const bail = baux.find((b) => b.unit_id === unit.id)
+                const incident = incidents.find((i) => bail && i.lease_id === bail.id)
+                  ?? (unit.status === "maintenance" ? incidents.find((i) => !i.lease_id) : undefined)
+                const annoncePubliee = annonces.find((a) => a.status === "published")
                 return (
                   <TableRow key={unit.id}>
                     <TableCell className="font-medium">{unit.unit_number}</TableCell>
@@ -233,6 +271,37 @@ export default function PropertyDetailPage() {
                     <TableCell>{unit.surface_m2 ? `${unit.surface_m2} m²` : "-"}</TableCell>
                     <TableCell className="font-medium">{formatFCFA(unit.rent_fcfa)}</TableCell>
                     <TableCell><Badge variant={status.variant}>{status.label}</Badge></TableCell>
+                    <TableCell>
+                      {/* L'action dépend du statut réel : aucun statut ne doit
+                          mener à un écran vide (cahier des charges §3). */}
+                      {unit.status === "rented" && bail?.tenants ? (
+                        <div className="flex flex-col gap-0.5">
+                          <Link href={`/dashboard/tenants/${bail.tenants.id}`}
+                            className="text-sm font-medium text-[#f97316] hover:underline">
+                            {bail.tenants.first_name} {bail.tenants.last_name}
+                          </Link>
+                          <Link href={`/dashboard/leases/${bail.id}`}
+                            className="text-xs text-gray-500 hover:text-[#1a2744] hover:underline">
+                            Bail jusqu&apos;au {formatDateFR(bail.end_date)}
+                          </Link>
+                        </div>
+                      ) : unit.status === "maintenance" ? (
+                        <Link href="/dashboard/incidents"
+                          className="text-sm text-amber-700 hover:underline">
+                          {incident ? `${incident.category} · ${incident.urgency}` : "Suivre l'intervention"}
+                        </Link>
+                      ) : annoncePubliee ? (
+                        <Link href={`/dashboard/annonces`}
+                          className="text-sm text-green-700 hover:underline">
+                          Annonce en ligne
+                        </Link>
+                      ) : (
+                        <Link href={`/dashboard/annonces?bien=${property.id}`}
+                          className="text-sm text-[#f97316] hover:underline">
+                          Publier une annonce
+                        </Link>
+                      )}
+                    </TableCell>
                     <TableCell className="text-right">
                       <Button
                         variant="ghost" size="sm"

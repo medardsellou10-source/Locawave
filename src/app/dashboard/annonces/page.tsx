@@ -3,6 +3,7 @@
 export const dynamic = "force-dynamic"
 
 import { useEffect, useState, useCallback } from "react"
+import { useSearchParams } from "next/navigation"
 import { createClient } from "@/lib/supabase"
 import { useOrganization } from "@/hooks/useOrganization"
 import { formatFCFA } from "@/lib/formatters"
@@ -14,6 +15,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { MediaUploader } from "@/components/app/MediaUploader"
 import { Megaphone, Plus, MapPin, Loader2, ShieldAlert, Trash2, Users } from "lucide-react"
 import Link from "next/link"
 import { toast } from "sonner"
@@ -51,6 +53,10 @@ export default function AnnoncesPage() {
   const [city, setCity] = useState("Dakar")
   const [description, setDescription] = useState("")
   const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(null)
+  const [propertyId, setPropertyId] = useState("")
+  const [photos, setPhotos] = useState<string[]>([])
+  const [properties, setProperties] = useState<{ id: string; name: string; address: string | null }[]>([])
+  const searchParams = useSearchParams()
 
   const load = useCallback(async () => {
     const { data: { user } } = await supabase.auth.getUser()
@@ -62,10 +68,27 @@ export default function AnnoncesPage() {
       .select("id, title, type, rent_fcfa, rooms, quartier, city, status, is_verified")
       .eq("owner_id", user.id).order("created_at", { ascending: false })
     setListings((data as Listing[]) ?? [])
+
+    // Une annonce doit être rattachée à un bien : on charge la liste pour le
+    // sélecteur, et la fiche bien peut nous envoyer directement le bon.
+    const { data: biens } = await supabase.from("properties")
+      .select("id, name, address").order("name")
+    setProperties(biens ?? [])
     setLoading(false)
   }, [])
 
   useEffect(() => { load() }, [load])
+
+  // La fiche bien renvoie ici avec ?bien=<id> : on présélectionne le bien et on
+  // ouvre le formulaire, pour que « Publier » depuis une unité vacante ne
+  // demande pas de retrouver le bien à la main.
+  useEffect(() => {
+    const bien = searchParams.get("bien")
+    if (bien && properties.some((p) => p.id === bien)) {
+      setPropertyId(bien)
+      setOpen(true)
+    }
+  }, [searchParams, properties])
 
   function useMyLocation() {
     if (!navigator.geolocation) { toast.error("Géolocalisation indisponible"); return }
@@ -77,6 +100,9 @@ export default function AnnoncesPage() {
   async function createListing() {
     if (!uid) return
     if (!title || !rent) { toast.error("Titre et loyer requis"); return }
+    if (!propertyId) { toast.error("Choisissez le bien concerné"); return }
+    if (photos.length === 0) { toast.error("Ajoutez au moins une photo"); return }
+    if (!coords) { toast.error("Localisez le bien sur la carte"); return }
     setSaving(true)
     const payload: Record<string, unknown> = {
       owner_id: uid, org_id: org?.id ?? null, type, title, description: description || null,
@@ -84,13 +110,16 @@ export default function AnnoncesPage() {
       deposit_fcfa: deposit ? parseInt(deposit) : 0, rooms: rooms ? parseInt(rooms) : null,
       area_m2: area ? parseInt(area) : null, quartier: quartier || null, city: city || "Dakar",
       is_verified: kyc === "verified", status: "published",
+      property_id: propertyId || null, photos,
     }
     if (coords) payload.geo = `SRID=4326;POINT(${coords.lng} ${coords.lat})`
     const { error } = await supabase.from("listings").insert(payload)
     setSaving(false)
-    if (error) { toast.error("Erreur lors de la publication"); return }
+    // Les règles de publication renvoient un message en français depuis la base
+    // (photo, GPS, bien rattaché) : on l'affiche tel quel plutôt qu'un « Erreur ».
+    if (error) { toast.error(error.message || "Erreur lors de la publication"); return }
     toast.success("Annonce publiée")
-    setOpen(false); setTitle(""); setRent(""); setCharges(""); setRooms(""); setArea(""); setQuartier(""); setDescription(""); setCoords(null)
+    setOpen(false); setTitle(""); setRent(""); setCharges(""); setRooms(""); setArea(""); setQuartier(""); setDescription(""); setCoords(null); setPhotos([]); setPropertyId("")
     load()
   }
 
@@ -116,6 +145,19 @@ export default function AnnoncesPage() {
           <DialogContent className="max-w-lg">
             <DialogHeader><DialogTitle>Publier une annonce</DialogTitle></DialogHeader>
             <div className="space-y-3 max-h-[70vh] overflow-y-auto pr-1">
+              <div>
+                <Label>Bien concerné <span className="text-red-500">*</span></Label>
+                <select value={propertyId} onChange={(e) => setPropertyId(e.target.value)}
+                  className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm">
+                  <option value="">— Choisissez un bien —</option>
+                  {properties.map((b) => (
+                    <option key={b.id} value={b.id}>{b.name}{b.address ? ` · ${b.address}` : ""}</option>
+                  ))}
+                </select>
+                <p className="mt-1 text-xs text-gray-500">
+                  L&apos;annonce se dépublie automatiquement quand ce bien n&apos;a plus d&apos;unité libre.
+                </p>
+              </div>
               <div className="grid grid-cols-2 gap-3">
                 <div><Label>Type</Label>
                   <select value={type} onChange={(e) => setType(e.target.value)} className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm">
@@ -138,7 +180,24 @@ export default function AnnoncesPage() {
               <div><Label>Description</Label><Textarea value={description} onChange={(e) => setDescription(e.target.value)} rows={2} /></div>
               <div className="flex items-center gap-2">
                 <Button type="button" variant="outline" size="sm" onClick={useMyLocation}><MapPin className="w-4 h-4 mr-1" /> Position du bien</Button>
-                {coords && <span className="text-xs text-green-600">Position prête</span>}
+                {coords
+                  ? <span className="text-xs text-green-600">Position prête</span>
+                  : <span className="text-xs text-amber-600">Obligatoire pour publier</span>}
+              </div>
+
+              <div>
+                <Label>Photos <span className="text-red-500">*</span></Label>
+                <MediaUploader
+                  bucket="listings"
+                  accept="image/*"
+                  label="Ajouter des photos"
+                  onUploaded={(chemins) => setPhotos((p) => [...p, ...chemins])}
+                />
+                {photos.length > 0 && (
+                  <p className="mt-1 text-xs text-green-600">
+                    {photos.length} photo(s) prête(s) — la première servira de couverture.
+                  </p>
+                )}
               </div>
               <Button onClick={createListing} disabled={saving} className="w-full bg-[#f97316] hover:bg-[#ea580c] text-white">
                 {saving ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Publication…</> : "Publier l'annonce"}
