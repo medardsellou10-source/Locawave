@@ -174,9 +174,15 @@ function SidebarContent({ pathname, onNavigate }: { pathname: string; onNavigate
     <div className="flex h-full flex-col" style={{ backgroundColor: "#1a2744" }}>
       {/* Logo */}
       <div className="flex h-16 items-center px-6">
-        <span className="text-xl font-bold">
-          <span className="text-white">Loca</span>
-          <span style={{ color: "#f97316" }}>wave</span>
+        <span className="flex items-center gap-2">
+          {/* L'icône de marque, jusqu'ici absente de la navigation : seul le
+              nom en texte y figurait. Elle vient du même fichier que le favicon,
+              donc onglet et barre latérale montrent bien le même signe. */}
+          <img src="/icon.svg" alt="" width={28} height={28} className="rounded-md" />
+          <span className="text-xl font-bold">
+            <span className="text-white">Loca</span>
+            <span style={{ color: "#f97316" }}>wave</span>
+          </span>
         </span>
       </div>
 

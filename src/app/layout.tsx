@@ -22,10 +22,14 @@ export const metadata: Metadata = {
     default: "Locawave — Gestion locative intelligente au Sénégal",
     template: "%s | Locawave",
   },
-  description: "Gérez vos loyers au Sénégal depuis n'importe où. Rappels WhatsApp automatiques, quittances PDF, paiements Wave & Orange Money. Conçu pour les propriétaires sénégalais et la diaspora.",
-  keywords: ["gestion locative", "Sénégal", "loyer", "immobilier", "Wave", "Orange Money", "WhatsApp", "Dakar", "diaspora", "quittance", "bail"],
-  authors: [{ name: "Locawave", url: "https://locawave.sn" }],
-  metadataBase: new URL("https://locawave.sn"),
+  description: "Gérez vos loyers au Sénégal depuis n'importe où. Rappels automatiques, quittances PDF, paiements Wave & Orange Money. Conçu pour les propriétaires sénégalais et la diaspora.",
+  keywords: ["gestion locative", "Sénégal", "loyer", "immobilier", "Wave", "Orange Money", "Dakar", "diaspora", "quittance", "bail"],
+  authors: [{ name: "Locawave" }],
+  // Le domaine locawave.sn ne répond pas (vérifié : HTTP 000). Tant qu'il n'est
+  // pas en service, les URLs canoniques et les images de partage social doivent
+  // pointer vers le domaine réellement servi, sinon aucun aperçu ne se charge.
+  // NEXT_PUBLIC_SITE_URL permet de basculer sans redéployer le code.
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://locawave.vercel.app"),
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
@@ -35,15 +39,15 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "fr_SN",
-    url: "https://locawave.sn",
+    url: "/",
     siteName: "Locawave",
     title: "Locawave — Gestion locative intelligente au Sénégal",
-    description: "Rappels WhatsApp automatiques, quittances PDF, paiements Wave & Orange Money. La solution de gestion locative pour le Sénégal et la diaspora.",
+    description: "Rappels de loyer automatiques, quittances PDF, paiements Wave & Orange Money. La solution de gestion locative pour le Sénégal et la diaspora.",
   },
   twitter: {
     card: "summary_large_image",
     title: "Locawave — Gestion locative au Sénégal",
-    description: "Rappels WhatsApp automatiques, quittances PDF, paiements Wave & Orange Money.",
+    description: "Rappels de loyer automatiques, quittances PDF, paiements Wave & Orange Money.",
     creator: "@locawave",
   },
   robots: {
@@ -52,7 +56,8 @@ export const metadata: Metadata = {
     googleBot: { index: true, follow: true },
   },
   alternates: {
-    canonical: "https://locawave.sn",
+    // Relatif : résolu contre metadataBase, donc juste quel que soit le domaine.
+    canonical: "/",
   },
   manifest: "/manifest.webmanifest",
   appleWebApp: {
