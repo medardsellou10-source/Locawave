@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation"
 import Link from "next/link"
 import { createServerClient } from "@/lib/supabase-server"
+import { ReceiptDownload } from "@/components/app/ReceiptDownload"
 import { formatFCFA, formatDateFR } from "@/lib/formatters"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -153,12 +154,7 @@ export default async function LocatairePage() {
                 <div key={r.id} className="flex items-center justify-between py-2 text-sm">
                   <span className="font-medium">{r.receipt_number}</span>
                   <span className="text-gray-500">{formatDateFR(r.created_at ?? "")}</span>
-                  {r.pdf_url ? (
-                    <a href={r.pdf_url} target="_blank" rel="noopener noreferrer"
-                      className="text-[#f97316] hover:underline">Télécharger</a>
-                  ) : (
-                    <span className="text-gray-400">Disponible</span>
-                  )}
+                  <ReceiptDownload receiptId={r.id} />
                 </div>
               ))}
             </div>
