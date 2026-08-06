@@ -23,6 +23,10 @@ type AutomationSettings = {
 }
 type Health = {
   vault_configured: boolean
+  vault_service_key?: boolean
+  whatsapp_operational?: boolean
+  whatsapp_sent_30d?: number
+  whatsapp_last_sent?: string | null
   last_success: string | null
   jobs: { job: string; schedule: string; active: boolean; last_run: string | null; last_status: string | null }[]
 }
@@ -348,14 +352,17 @@ export default function SettingsPage() {
                     <div>
                       <p className="text-sm font-medium text-[#1a2744]">Envoi WhatsApp</p>
                       <p className="text-xs text-gray-500">
-                        {health?.vault_configured
-                          ? "Passerelle configurée : les messages partent vers les locataires."
-                          : "Non configuré — les rappels restent visibles dans l'application uniquement."}
+                        {/* Cet état se fonde sur des envois CONSTATÉS, pas sur la
+                            présence d'un secret : le badge s'appuyait auparavant
+                            sur une clé de service sans rapport avec Twilio. */}
+                        {health?.whatsapp_operational
+                          ? `Opérationnel — ${health.whatsapp_sent_30d ?? 0} message(s) envoyé(s) ces 30 derniers jours.`
+                          : "Aucun message WhatsApp n'est parti à ce jour. Les rappels restent visibles dans l'application uniquement."}
                       </p>
                     </div>
-                    {health?.vault_configured
-                      ? <Badge className="bg-green-100 text-green-700 gap-1"><CheckCircle2 className="w-3.5 h-3.5" /> Actif</Badge>
-                      : <Badge className="bg-amber-100 text-amber-700 gap-1"><AlertTriangle className="w-3.5 h-3.5" /> À configurer</Badge>}
+                    {health?.whatsapp_operational
+                      ? <Badge className="bg-green-100 text-green-700 gap-1 shrink-0"><CheckCircle2 className="w-3.5 h-3.5" /> Actif</Badge>
+                      : <Badge className="bg-amber-100 text-amber-700 gap-1 shrink-0"><AlertTriangle className="w-3.5 h-3.5" /> Inactif</Badge>}
                   </div>
                 </div>
 
@@ -373,7 +380,7 @@ export default function SettingsPage() {
                         {/* Une tâche qui passe par la passerelle externe peut « réussir » côté
                             planificateur tout en échouant à l'envoi : on ne l'annonce pas OK
                             tant que le secret n'est pas renseigné. */}
-                        {JOBS_NEEDING_VAULT.has(j.job) && !health?.vault_configured ? (
+                        {JOBS_NEEDING_VAULT.has(j.job) && !health?.vault_service_key ? (
                           <Badge className="bg-amber-100 text-amber-700 gap-1 shrink-0">
                             <AlertTriangle className="w-3.5 h-3.5" /> À configurer
                           </Badge>

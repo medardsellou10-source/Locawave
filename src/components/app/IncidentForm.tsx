@@ -35,7 +35,7 @@ export function IncidentForm({
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) { setSaving(false); return }
 
-    // Photo optionnelle → bucket public 'reports'
+    // Photo optionnelle → bucket 'reports', privé depuis la migration 054
     let mediaUrls: string[] = []
     const file = fileRef.current?.files?.[0]
     if (file) {
@@ -62,14 +62,29 @@ export function IncidentForm({
       })
     }
 
-    // Notifier le propriétaire (best effort)
-    fetch("/api/incidents/notify", {
-      method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ incident_id: incident.id }),
-    }).catch(() => {})
+    // On attend la réponse : l'écran affirmait « le propriétaire est prévenu »
+    // sans jamais lire le résultat. Or la route sort en `notified: false` quand
+    // le propriétaire n'a pas de numéro — ce qui est le cas de tous aujourd'hui.
+    let prevenu = false
+    try {
+      const res = await fetch("/api/incidents/notify", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ incident_id: incident.id }),
+      })
+      const data = await res.json().catch(() => ({}))
+      prevenu = res.ok && data?.notified === true
+    } catch {
+      prevenu = false
+    }
 
     setSaving(false)
-    toast.success("Incident signalé — le propriétaire est prévenu")
+    // L'incident est bien enregistré dans les deux cas : c'est l'alerte qui
+    // peut échouer, pas le signalement. On distingue les deux.
+    if (prevenu) {
+      toast.success("Incident signalé — le propriétaire est prévenu")
+    } else {
+      toast.success("Incident enregistré. Le propriétaire le verra dans son tableau de bord.")
+    }
     onSuccess()
   }
 
