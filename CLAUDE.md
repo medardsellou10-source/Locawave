@@ -55,5 +55,14 @@ WhatsApp via Twilio.
 4. À la fin, me donner la checklist de test de la phase.
 
 ## Workflow par phase
-plan → validation → code → test → commit + push `origin master` → vérif Vercel.
-Une phase = un commit propre. On n'avance jamais sans avoir testé + commité.
+plan → validation → code → test → branche dédiée → PR → relecture → fusion dans
+`main` → vérif Vercel.
+
+Une phase = une branche `feat/...` ou `fix/...` + un commit propre + une PR.
+On n'avance jamais sans avoir testé + commité.
+
+**Ne jamais pousser directement sur `main` ni sur `master`.** L'ancienne règle
+poussait sur les deux à chaque commit : le travail arrivait en production sans
+relecture, et aucune PR n'était possible puisque les branches ne divergeaient
+jamais. Le déploiement Vercel est désormais différé jusqu'à la fusion de la PR —
+c'est le prix de la relecture, et c'est voulu.
