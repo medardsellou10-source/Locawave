@@ -17,8 +17,11 @@ import { BackButton } from "@/components/app/BackButton"
 import { Building2, MapPin, Search, Loader2, CheckCircle2, Home } from "lucide-react"
 import { toast } from "sonner"
 
-const ProvidersMap = dynamicImport(() => import("@/components/app/ProvidersMap"), {
-  ssr: false, loading: () => <div className="h-80 rounded-lg bg-gray-100 animate-pulse" />,
+// Carte dédiée aux annonces. La page réutilisait ProvidersMap : les popups
+// affichaient « Prestataire » et une liste de métiers au lieu du prix et du
+// bien, sans regroupement des points ni lien vers l'annonce.
+const ListingsMap = dynamicImport(() => import("@/components/app/ListingsMap"), {
+  ssr: false, loading: () => <div className="h-[520px] rounded-xl bg-gray-100 animate-pulse" />,
 })
 
 type Listing = {
@@ -73,8 +76,14 @@ export default function AnnoncesPublicPage() {
     setAuthed(!!user)
   }
 
-  const center: [number, number] = coords ?? DAKAR
-  const mapPoints = results.map((l) => ({ id: l.id, display_name: l.title, trades: [formatFCFA(l.rent_fcfa)], lat: l.lat, lng: l.lng }))
+  // `coords` est un objet {lat,lng} ; Leaflet attend un tuple [lat,lng].
+  // Le passer tel quel empêchait le recentrage sur « autour de moi ».
+  const center: [number, number] = coords ? [coords.lat, coords.lng] : DAKAR
+  const pointsCarte = results.map((l) => ({
+    id: l.id, title: l.title, type: l.type, rent_fcfa: l.rent_fcfa, rooms: l.rooms,
+    quartier: l.quartier, city: l.city, lat: l.lat, lng: l.lng,
+    published_at: l.published_at, photo: l.photos?.[0] ?? null,
+  }))
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -106,7 +115,7 @@ export default function AnnoncesPublicPage() {
           <Button onClick={() => search(coords)} className="bg-[#f97316] hover:bg-[#ea580c] text-white"><Search className="w-4 h-4 mr-1" /> Rechercher</Button>
         </CardContent></Card>
 
-        {searched && <div className="mb-6"><ProvidersMap providers={mapPoints} center={center} /></div>}
+        {searched && <div className="mb-6"><ListingsMap annonces={pointsCarte} center={center} /></div>}
 
         {loading ? <div className="flex justify-center py-10"><Loader2 className="w-6 h-6 animate-spin text-[#f97316]" /></div>
           : !searched ? <p className="text-gray-400 text-center py-10">Lancez une recherche pour voir les logements.</p>
