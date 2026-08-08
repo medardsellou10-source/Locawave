@@ -3,7 +3,6 @@
 export const dynamic = "force-dynamic"
 
 import { useState } from "react"
-import { createClient } from "@/lib/supabase"
 import { useOrganization } from "@/hooks/useOrganization"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -16,35 +15,45 @@ const PLAN_ICONS: Record<PlanId, typeof CreditCard> = { solo: CreditCard, pro: S
 
 export default function BillingPage() {
   const { org } = useOrganization()
-  const supabase = createClient()
   const [upgrading, setUpgrading] = useState<string | null>(null)
 
   const currentPlan = org?.plan ?? "trial"
   const expiresAt = org?.plan_expires_at ? new Date(org.plan_expires_at) : null
 
+  /**
+   * Ouvre le paiement de l'abonnement.
+   *
+   * Cette fonction activait auparavant le plan directement, par un UPDATE sur
+   * organizations : cliquer suffisait à obtenir le plan sans rien payer. Le
+   * commentaire l'assumait — « en production : rediriger vers Wave/OM » — mais
+   * cette production est arrivée sans que la redirection soit écrite.
+   *
+   * Le plan n'est plus jamais activé ici. On crée une intention de paiement et
+   * on redirige ; seul le webhook PSP, après encaissement réel, active le plan.
+   */
   async function handleUpgrade(planId: PlanId) {
     if (!org) return
     setUpgrading(planId)
+    try {
+      const res = await fetch("/api/billing/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ plan_id: planId, months: 1 }),
+      })
+      const data = await res.json().catch(() => ({}))
 
-    // En production : rediriger vers Wave/OM payment page
-    // Pour l'instant : mise à jour directe (simulation)
-    const expiryDate = new Date()
-    expiryDate.setMonth(expiryDate.getMonth() + 1)
+      if (!res.ok || !data.checkout_url) {
+        toast.error(data.error ?? "Paiement indisponible")
+        setUpgrading(null)
+        return
+      }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { error } = await (supabase.from("organizations") as any)
-      .update({ plan: planId, plan_expires_at: expiryDate.toISOString() })
-      .eq("id", org.id)
-
-    setUpgrading(null)
-
-    if (error) {
-      toast.error("Erreur lors de la mise à jour du plan")
-      return
+      toast.success("Redirection vers le paiement…")
+      window.location.href = data.checkout_url
+    } catch {
+      toast.error("Réseau indisponible")
+      setUpgrading(null)
     }
-
-    toast.success(`Plan ${planId.toUpperCase()} activé ! Expire le ${expiryDate.toLocaleDateString("fr-FR")}`)
-    window.location.reload()
   }
 
   return (

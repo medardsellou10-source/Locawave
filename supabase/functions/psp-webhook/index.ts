@@ -182,6 +182,72 @@ serve(async (req: Request) => {
   // refunded | expired. Seul un paiement abouti encaisse.
   const succeeded = event.status === "paid" || event.status === "completed"
 
+  // ─── Abonnement ───
+  // Nos références d'abonnement commencent par SUB-. Sans cet aiguillage, un
+  // paiement d'abonnement serait cherché dans rent_schedules, introuvable, et
+  // la route renverrait 404 : le client aurait payé sans jamais obtenir son plan.
+  if (event.reference.startsWith("SUB-")) {
+    const { data: abo } = await supabase
+      .from("subscription_payments")
+      .select("id, org_id, status, plan")
+      .eq("reference", event.reference)
+      .maybeSingle()
+
+    if (!abo) {
+      console.error(`abonnement inconnu pour la référence ${event.reference}`)
+      return new Response(JSON.stringify({ error: "Abonnement inconnu" }), { status: 404 })
+    }
+
+    // Déjà encaissé : une seconde livraison du même webhook ne doit pas
+    // prolonger l'abonnement une deuxième fois.
+    if (abo.status === "paid") {
+      return new Response(JSON.stringify({ ok: true, duplicate: true }), {
+        headers: { "Content-Type": "application/json" },
+      })
+    }
+
+    if (!succeeded) {
+      await supabase.from("subscription_payments")
+        .update({ status: event.status === "cancelled" ? "cancelled" : "failed", updated_at: new Date().toISOString() })
+        .eq("id", abo.id)
+      return new Response(JSON.stringify({ ok: true, ignored: event.status }), {
+        headers: { "Content-Type": "application/json" },
+      })
+    }
+
+    // Le passage à 'paid' déclenche activer_abonnement() : c'est le trigger,
+    // et lui seul, qui met à jour le plan de l'organisation.
+    const { error: majErr } = await supabase
+      .from("subscription_payments")
+      .update({
+        status: "paid",
+        psp_reference: event.providerRef,
+        paid_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", abo.id)
+
+    if (majErr) {
+      console.error(`activation impossible pour ${event.reference} : ${majErr.message}`)
+      return new Response(
+        JSON.stringify({ error: "Activation impossible", detail: majErr.message }),
+        { status: 500, headers: { "Content-Type": "application/json" } }
+      )
+    }
+
+    await supabase.from("activity_logs").insert({
+      org_id: abo.org_id,
+      action: "abonnement_paye",
+      entity_type: "subscription_payment",
+      entity_id: abo.id,
+      metadata: { plan: abo.plan, providerRef: event.providerRef, amount: event.amount },
+    })
+
+    return new Response(JSON.stringify({ ok: true, abonnement: abo.plan }), {
+      headers: { "Content-Type": "application/json" },
+    })
+  }
+
   const { data: schedule } = await supabase
     .from("rent_schedules")
     .select("id, org_id, amount_fcfa")

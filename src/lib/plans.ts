@@ -29,7 +29,7 @@ export const PLANS: Plan[] = [
     features: [
       "Jusqu'à 5 biens",
       "Espace locataire & paiement en ligne",
-      "Rappels WhatsApp & quittances PDF",
+      "Rappels automatiques & quittances PDF",
       "Incidents en temps réel",
       "1 utilisateur",
     ],
