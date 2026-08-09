@@ -72,6 +72,7 @@ export default function SettingsPage() {
   const [waveNumber, setWaveNumber] = useState("")
   const [omNumber, setOmNumber] = useState("")
   const [address, setAddress] = useState("")
+  const [monTelephone, setMonTelephone] = useState("")
   const [templates, setTemplates] = useState<NotificationTemplate[]>([])
   const [saving, setSaving] = useState(false)
   const [autoS, setAutoS] = useState<AutomationSettings>({ reminder_before_days: 5, reminder_on_due: true, reminder_late_days: 3 })
@@ -124,6 +125,16 @@ export default function SettingsPage() {
     supabase.rpc("automation_health").then(({ data }) => {
       if (data) setHealth(data as unknown as Health)
     })
+
+    // Le numéro personnel du propriétaire n'était capté nulle part : le champ
+    // « Téléphone WhatsApp » de l'onboarding renseigne tenants.whatsapp, c'est
+    // celui du LOCATAIRE. Résultat, profiles.phone était vide pour tous les
+    // propriétaires, et aucune alerte d'incident ne pouvait leur parvenir.
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (!user) return
+      supabase.from("profiles").select("phone").eq("id", user.id).maybeSingle()
+        .then(({ data }) => setMonTelephone(data?.phone ?? ""))
+    })
   }, [org])
 
   async function saveOrg() {
@@ -133,8 +144,22 @@ export default function SettingsPage() {
       .from("organizations")
       .update({ name: orgName, wave_number: waveNumber || null, om_number: omNumber || null, address: address || null })
       .eq("id", org.id)
+
+    // Le numéro personnel vit sur le profil, pas sur l'organisation : c'est lui
+    // que la route d'alerte d'incident interroge pour joindre le propriétaire.
+    const { data: { user } } = await supabase.auth.getUser()
+    let errTel = null
+    if (user) {
+      const r = await supabase.from("profiles")
+        .update({ phone: monTelephone || null }).eq("id", user.id)
+      errTel = r.error
+    }
+
     setSaving(false)
-    if (error) { toast.error("Erreur lors de la sauvegarde"); return }
+    if (error || errTel) {
+      toast.error(`Erreur lors de la sauvegarde : ${(error ?? errTel)?.message}`)
+      return
+    }
     toast.success("Organisation mise à jour")
   }
 
@@ -197,6 +222,24 @@ export default function SettingsPage() {
                 <Label>Nom de l'organisation</Label>
                 <Input value={orgName} onChange={(e) => setOrgName(e.target.value)} />
               </div>
+              <div>
+                <Label>Votre numéro WhatsApp</Label>
+                <Input
+                  placeholder="+221 77 000 00 00"
+                  value={monTelephone}
+                  onChange={(e) => setMonTelephone(e.target.value)}
+                />
+                <p className="mt-1 text-xs text-gray-500">
+                  C&apos;est à ce numéro que vous serez alerté quand un locataire signale
+                  un incident. Sans lui, l&apos;alerte reste seulement dans l&apos;application.
+                </p>
+                {!monTelephone && (
+                  <p className="mt-1 flex items-center gap-1 text-xs text-amber-700">
+                    <AlertTriangle className="h-3.5 w-3.5" /> Aucun numéro enregistré.
+                  </p>
+                )}
+              </div>
+
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <Label>Numéro Wave</Label>
