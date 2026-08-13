@@ -2606,6 +2606,53 @@ export type Database = {
       }
     }
     Functions: {
+      admin_account_detail: { Args: { p_id: string }; Returns: Json }
+      admin_assert_can_target: { Args: { p_id: string }; Returns: undefined }
+      admin_log_action: {
+        Args: {
+          p_action: string
+          p_target_type?: string | null
+          p_target_id?: string | null
+          p_summary?: string | null
+          p_before?: Json | null
+          p_after?: Json | null
+          p_ip?: string | null
+          p_user_agent?: string | null
+        }
+        Returns: string
+      }
+      admin_set_account_role: { Args: { p_id: string; p_role: string }; Returns: Json }
+      admin_set_account_suspension: {
+        Args: { p_id: string; p_suspendre: boolean }
+        Returns: Json
+      }
+      admin_set_platform_admin: {
+        Args: { p_id: string; p_accorder: boolean }
+        Returns: Json
+      }
+      admin_accounts: {
+        Args: {
+          p_search?: string | null
+          p_role?: string | null
+          p_limit?: number
+          p_offset?: number
+        }
+        Returns: {
+          id: string
+          full_name: string
+          email: string | null
+          role: string
+          kyc_status: string
+          phone: string | null
+          created_at: string
+          last_sign_in: string | null
+          suspendu: boolean
+          est_admin: boolean
+          org_nom: string | null
+          org_id: string | null
+          total: number
+        }[]
+      }
       admin_overview: { Args: never; Returns: Json }
       is_super_admin: { Args: never; Returns: boolean }
 

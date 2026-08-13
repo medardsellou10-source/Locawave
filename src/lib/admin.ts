@@ -85,7 +85,6 @@ export function adminDb() {
 }
 
 type LogInput = {
-  admin: AdminContext
   action: string
   targetType?: string
   targetId?: string
@@ -95,11 +94,12 @@ type LogInput = {
 }
 
 /**
- * Journalise une action de l'espace admin. Le journal est en ajout seul :
- * aucune policy UPDATE/DELETE n'existe sur admin_actions.
+ * Journalise une action de l'espace admin, via la fonction admin_log_action()
+ * gardée par is_admin() : la session de l'admin suffit, aucune clé service_role
+ * n'est requise. Le journal est en ajout seul — admin_actions n'a ni policy
+ * UPDATE ni policy DELETE.
  */
 export async function logAdminAction({
-  admin,
   action,
   targetType,
   targetId,
@@ -117,20 +117,17 @@ export async function logAdminAction({
     // Hors contexte de requête — on journalise quand même l'essentiel.
   }
 
-  const { error } = await adminDb()
-    .from("admin_actions")
-    .insert({
-      admin_id: admin.userId,
-      admin_email: admin.email,
-      action,
-      target_type: targetType ?? null,
-      target_id: targetId ?? null,
-      summary: summary ?? null,
-      before_state: (before ?? null) as never,
-      after_state: (after ?? null) as never,
-      ip,
-      user_agent: userAgent,
-    })
+  const supabase = await createServerClient()
+  const { error } = await supabase.rpc("admin_log_action", {
+    p_action: action,
+    p_target_type: targetType ?? null,
+    p_target_id: targetId ?? null,
+    p_summary: summary ?? null,
+    p_before: (before ?? null) as never,
+    p_after: (after ?? null) as never,
+    p_ip: ip,
+    p_user_agent: userAgent,
+  })
 
   if (error) {
     // Une action non traçable est une action qu'on ne veut pas avoir faite :

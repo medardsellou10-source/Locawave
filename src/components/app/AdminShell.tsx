@@ -44,7 +44,7 @@ const NAV: { label: string; items: NavItem[] }[] = [
   {
     label: "Personnes",
     items: [
-      { href: "/admin/comptes", label: "Comptes", icon: Users, soon: true },
+      { href: "/admin/comptes", label: "Comptes", icon: Users },
       { href: "/admin/organisations", label: "Organisations", icon: Building2, soon: true },
     ],
   },

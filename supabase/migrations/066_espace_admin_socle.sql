@@ -140,7 +140,10 @@ CREATE TABLE IF NOT EXISTS admin_actions (
   after_state  JSONB,
   ip           TEXT,
   user_agent   TEXT,
-  at           TIMESTAMPTZ NOT NULL DEFAULT NOW()
+  -- clock_timestamp() et non NOW() : NOW() renvoie l'heure de début de
+  -- transaction, donc deux actions d'une même transaction porteraient la même
+  -- heure et ne s'ordonneraient plus. Un journal doit dater l'événement.
+  at           TIMESTAMPTZ NOT NULL DEFAULT clock_timestamp()
 );
 ALTER TABLE admin_actions ENABLE ROW LEVEL SECURITY;
 CREATE INDEX IF NOT EXISTS idx_admin_actions_at ON admin_actions(at DESC);
