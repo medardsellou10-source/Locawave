@@ -53,7 +53,7 @@ const NAV: { label: string; items: NavItem[] }[] = [
     items: [
       { href: "/admin/finances", label: "Finances", icon: Wallet },
       { href: "/admin/moderation", label: "Annonces & modération", icon: Megaphone },
-      { href: "/admin/confiance", label: "Confiance & litiges", icon: ShieldCheck, soon: true },
+      { href: "/admin/confiance", label: "Confiance & litiges", icon: ShieldCheck },
     ],
   },
   {

@@ -37,7 +37,7 @@ tracées dans `admin_actions` (journal en ajout seul). Voir « Où vivent les
 | 3 | **Organisations & abonnements** — plans, essais, prolongation, changement de plan, revenus par organisation | ✅ fait |
 | 4 | **Finances** — paiements, liens PSP, quittances, impayés, commissions, exports | ✅ fait |
 | 5 | **Annonces & modération** — annonces, prestataires, avis, KYC (reprise de `/dashboard/admin/*`) | ✅ fait |
-| 6 | **Confiance & litiges** — litiges, cautions, arbitrage, journal métier | ⬜ |
+| 6 | **Confiance & litiges** — litiges, cautions, arbitrage, journal métier | ✅ fait |
 | 7 | **Base & sécurité** — inventaire des tables et de leur RLS, migrations appliquées, tâches cron, Edge Functions, variables d'environnement présentes, santé | ⬜ |
 | 8 | **Journal & réglages** — recherche dans `admin_actions`, interrupteurs de plateforme (maintenance, inscriptions, annonces, rappels, paiement), gestion des administrateurs | ⬜ |
 
@@ -80,6 +80,26 @@ avec un message explicite ; le reste de la console fonctionne.
 - `admin_moderation()` — les quatre files (identités, prestataires, annonces, avis).
 - `admin_decide_kyc()`, `admin_set_provider_verified()`,
   `admin_set_listing_published()`, `admin_set_review_hidden()` — les décisions.
+- `admin_trust()` — litiges, créances contestées, cautions, journal métier.
+- `admin_resolve_dispute()` — l'arbitrage.
+
+## Arbitrer, ce n'est pas rendre de l'argent
+
+Locawave ne détient jamais de fonds. `work_orders.payment_state` est l'état d'une
+**créance** entre deux personnes — `not_due`, `due`, `disputed`, `settled`,
+`cancelled` — pas celui d'un dépôt gardé quelque part.
+
+Ouvrir un litige suspend l'exigibilité (`due` → `disputed`). Trancher dit si la
+somme reste due (`due`) ou ne l'est plus (`cancelled`). Le mouvement est fait par
+le trigger `trg_dispute`, seul habilité ; la fonction d'arbitrage se contente de
+poser la décision et sa motivation.
+
+Deux règles : **une décision demande une motivation écrite** — les deux parties
+la liront — et **un litige clos ne se rejuge pas**.
+
+Les cautions, elles, restent pilotées par le propriétaire depuis la fiche du
+bail. La console les regarde et signale l'anomalie (une caution retenue sur un
+bail qui n'est plus actif) sans décider à sa place.
 
 ## Règles de modération portées par la base
 
