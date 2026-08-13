@@ -2692,6 +2692,7 @@ export type Database = {
         Args: { p_id: string; p_decision: string; p_resolution?: string | null }
         Returns: Json
       }
+      admin_system: { Args: never; Returns: Json }
       admin_trust: { Args: never; Returns: Json }
       admin_set_listing_published: {
         Args: { p_id: string; p_publier: boolean; p_motif?: string | null }

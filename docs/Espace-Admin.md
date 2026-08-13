@@ -38,7 +38,7 @@ tracées dans `admin_actions` (journal en ajout seul). Voir « Où vivent les
 | 4 | **Finances** — paiements, liens PSP, quittances, impayés, commissions, exports | ✅ fait |
 | 5 | **Annonces & modération** — annonces, prestataires, avis, KYC (reprise de `/dashboard/admin/*`) | ✅ fait |
 | 6 | **Confiance & litiges** — litiges, cautions, arbitrage, journal métier | ✅ fait |
-| 7 | **Base & sécurité** — inventaire des tables et de leur RLS, migrations appliquées, tâches cron, Edge Functions, variables d'environnement présentes, santé | ⬜ |
+| 7 | **Base & sécurité** — inventaire des tables et de leur RLS, migrations appliquées, tâches cron, variables d'environnement présentes, santé | ✅ fait |
 | 8 | **Journal & réglages** — recherche dans `admin_actions`, interrupteurs de plateforme (maintenance, inscriptions, annonces, rappels, paiement), gestion des administrateurs | ⬜ |
 
 ## Où vivent les écritures
@@ -82,6 +82,28 @@ avec un message explicite ; le reste de la console fonctionne.
   `admin_set_listing_published()`, `admin_set_review_hidden()` — les décisions.
 - `admin_trust()` — litiges, créances contestées, cautions, journal métier.
 - `admin_resolve_dispute()` — l'arbitrage.
+- `admin_system()` — tables, RLS, policies, fonctions à privilèges, buckets,
+  tâches planifiées, migrations, extensions.
+
+## La salle des machines est en lecture seule
+
+`/admin/systeme` montre ce que la base sait d'elle-même : tables et RLS, nombre
+de policies, comptage exact des lignes, fonctions `SECURITY DEFINER` (avec ou
+sans `search_path` figé, exécutables ou non sans être connecté), buckets publics
+ou privés, tâches planifiées et leur dernier passage, migrations appliquées,
+extensions. Plus, côté serveur, la version déployée et la **présence** des
+variables d'environnement — jamais leur valeur.
+
+Pas de console SQL, et ce n'est pas un oubli : une console qui laisse exécuter du
+SQL arbitraire n'est plus une console d'administration mais une porte dérobée. Le
+jour où une session d'administrateur fuite, elle donne la base entière.
+
+Deux principes de mesure, appris en construisant la page :
+- **Ne jamais compter les objets d'extension** (PostGIS) comme les nôtres : une
+  alerte qu'on ne peut pas éteindre cesse d'être lue.
+- **Compter les lignes exactement**, pas via `reltuples` : celui-ci vaut -1 tant
+  qu'une table n'a pas été analysée, ce qui affichait « 0 ligne » sur des tables
+  pleines.
 
 ## Arbitrer, ce n'est pas rendre de l'argent
 
