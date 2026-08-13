@@ -14,6 +14,109 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_actions: {
+        Row: {
+          action: string
+          admin_email: string | null
+          admin_id: string | null
+          after_state: Json | null
+          at: string
+          before_state: Json | null
+          id: string
+          ip: string | null
+          summary: string | null
+          target_id: string | null
+          target_type: string | null
+          user_agent: string | null
+        }
+        Insert: {
+          action: string
+          admin_email?: string | null
+          admin_id?: string | null
+          after_state?: Json | null
+          at?: string
+          before_state?: Json | null
+          id?: string
+          ip?: string | null
+          summary?: string | null
+          target_id?: string | null
+          target_type?: string | null
+          user_agent?: string | null
+        }
+        Update: {
+          action?: string
+          admin_email?: string | null
+          admin_id?: string | null
+          after_state?: Json | null
+          at?: string
+          before_state?: Json | null
+          id?: string
+          ip?: string | null
+          summary?: string | null
+          target_id?: string | null
+          target_type?: string | null
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
+      admin_settings: {
+        Row: {
+          description: string | null
+          key: string
+          label: string
+          updated_at: string
+          updated_by: string | null
+          value: Json
+        }
+        Insert: {
+          description?: string | null
+          key: string
+          label: string
+          updated_at?: string
+          updated_by?: string | null
+          value?: Json
+        }
+        Update: {
+          description?: string | null
+          key?: string
+          label?: string
+          updated_at?: string
+          updated_by?: string | null
+          value?: Json
+        }
+        Relationships: []
+      }
+      platform_admins: {
+        Row: {
+          email: string | null
+          granted_at: string
+          granted_by: string | null
+          is_super: boolean
+          note: string | null
+          profile_id: string
+          revoked_at: string | null
+        }
+        Insert: {
+          email?: string | null
+          granted_at?: string
+          granted_by?: string | null
+          is_super?: boolean
+          note?: string | null
+          profile_id: string
+          revoked_at?: string | null
+        }
+        Update: {
+          email?: string | null
+          granted_at?: string
+          granted_by?: string | null
+          is_super?: boolean
+          note?: string | null
+          profile_id?: string
+          revoked_at?: string | null
+        }
+        Relationships: []
+      }
+
       activity_logs: {
         Row: {
           action: string
@@ -2503,6 +2606,9 @@ export type Database = {
       }
     }
     Functions: {
+      admin_overview: { Args: never; Returns: Json }
+      is_super_admin: { Args: never; Returns: boolean }
+
       _postgis_deprecate: {
         Args: { newname: string; oldname: string; version: string }
         Returns: undefined

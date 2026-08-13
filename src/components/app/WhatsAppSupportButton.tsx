@@ -1,12 +1,18 @@
 "use client"
 
+import { usePathname } from "next/navigation"
+
 import { SUPPORT_WHATSAPP } from "@/lib/contact"
 
 export function WhatsAppSupportButton() {
+  const pathname = usePathname()
   const phoneNumber = SUPPORT_WHATSAPP
   const message = encodeURIComponent(
     "Bonjour Locawave, j'ai besoin d'aide avec l'application. 🙏"
   )
+
+  // La console d'administration n'est pas une surface client : pas de support.
+  if (pathname === "/admin" || pathname.startsWith("/admin/")) return null
 
   return (
     <a

@@ -38,6 +38,21 @@ export async function middleware(request: NextRequest) {
 
   const path = request.nextUrl.pathname
 
+  // ===== Espace admin : premier verrou =====
+  // Pour qui n'est pas administrateur de la plateforme, /admin n'existe pas.
+  // Pas de redirection vers /login (ce serait avouer que la page existe) : 404 sec.
+  if (path === "/admin" || path.startsWith("/admin/")) {
+    if (!session) return new NextResponse("Not Found", { status: 404 })
+    const { data: admin } = await supabase
+      .from("platform_admins")
+      .select("profile_id")
+      .eq("profile_id", session.user.id)
+      .is("revoked_at", null)
+      .maybeSingle()
+    if (!admin) return new NextResponse("Not Found", { status: 404 })
+    return response
+  }
+
   // Routes protégées : nécessitent une session (espaces + litiges/avantages transverses)
   if (!session && (path.startsWith("/dashboard") || path.startsWith("/locataire") || path.startsWith("/prestataire")
       || path.startsWith("/litiges") || path.startsWith("/avantages"))) {
@@ -96,5 +111,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard", "/dashboard/:path*", "/locataire", "/locataire/:path*", "/prestataire", "/prestataire/:path*", "/litiges", "/litiges/:path*", "/avantages", "/avantages/:path*", "/login", "/register"],
+  matcher: ["/admin", "/admin/:path*", "/dashboard", "/dashboard/:path*", "/locataire", "/locataire/:path*", "/prestataire", "/prestataire/:path*", "/litiges", "/litiges/:path*", "/avantages", "/avantages/:path*", "/login", "/register"],
 }
