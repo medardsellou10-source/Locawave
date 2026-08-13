@@ -34,7 +34,7 @@ tracées dans `admin_actions` (journal en ajout seul). Voir « Où vivent les
 |---|----------|------|
 | 1 | **Socle & vue d'ensemble** — `platform_admins`, fermeture des escalades de privilèges, `admin_actions`, `admin_settings`, KPI plateforme | ✅ fait |
 | 2 | **Comptes** — tous les comptes, filtres, fiche détaillée, changement de rôle, suspension, réinitialisation de mot de passe | ✅ fait |
-| 3 | **Organisations & abonnements** — plans, essais, prolongation, changement de plan, revenus par organisation | ⬜ |
+| 3 | **Organisations & abonnements** — plans, essais, prolongation, changement de plan, revenus par organisation | ✅ fait |
 | 4 | **Finances** — paiements, liens PSP, quittances, impayés, commissions, exports | ⬜ |
 | 5 | **Annonces & modération** — annonces, prestataires, avis, KYC (reprise de `/dashboard/admin/*`) | ⬜ |
 | 6 | **Confiance & litiges** — litiges, cautions, arbitrage, journal métier | ⬜ |
@@ -73,6 +73,21 @@ avec un message explicite ; le reste de la console fonctionne.
 - `admin_assert_can_target()` — la garde partagée par toutes les actions.
 - `admin_set_account_role()`, `admin_set_account_suspension()`,
   `admin_set_platform_admin()` — les trois écritures sur un compte.
+- `admin_organizations()` / `admin_organization_detail()` — les organisations.
+- `admin_set_org_plan()`, `admin_extend_org()` — plan et échéance.
+
+## Trois montants à ne jamais confondre
+
+La console sépare partout :
+
+1. **Loyers encaissés** — l'argent du propriétaire. Locawave ne détient jamais
+   ces fonds ; ce n'est pas un revenu, c'est une donnée de gestion.
+2. **Abonnements** (`subscription_payments`) — ce que l'organisation paie à
+   Locawave.
+3. **Commissions** (`commissions`) — 5 % sur les services et chantiers validés.
+
+Seuls les deux derniers sont nos revenus. La fiche d'une organisation les affiche
+sous ces noms-là, jamais additionnés aux loyers.
 
 ## Failles fermées au passage
 

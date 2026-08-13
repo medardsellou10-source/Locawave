@@ -2653,7 +2653,39 @@ export type Database = {
           total: number
         }[]
       }
+      admin_extend_org: { Args: { p_id: string; p_jours: number }; Returns: Json }
+      admin_organization_detail: { Args: { p_id: string }; Returns: Json }
+      admin_organizations: {
+        Args: {
+          p_search?: string | null
+          p_plan?: string | null
+          p_limit?: number
+          p_offset?: number
+        }
+        Returns: {
+          id: string
+          nom: string
+          plan: string
+          expire_le: string | null
+          expire: boolean
+          proprietaire: string | null
+          proprietaire_id: string | null
+          email: string | null
+          membres: number
+          biens: number
+          baux_actifs: number
+          loyers_encaisses: number
+          impayes: number
+          paye_a_locawave: number
+          creee_le: string
+          total: number
+        }[]
+      }
       admin_overview: { Args: never; Returns: Json }
+      admin_set_org_plan: {
+        Args: { p_id: string; p_plan: string; p_mois?: number }
+        Returns: Json
+      }
       is_super_admin: { Args: never; Returns: boolean }
 
       _postgis_deprecate: {
