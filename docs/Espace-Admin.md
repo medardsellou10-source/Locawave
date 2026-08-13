@@ -36,7 +36,7 @@ tracées dans `admin_actions` (journal en ajout seul). Voir « Où vivent les
 | 2 | **Comptes** — tous les comptes, filtres, fiche détaillée, changement de rôle, suspension, réinitialisation de mot de passe | ✅ fait |
 | 3 | **Organisations & abonnements** — plans, essais, prolongation, changement de plan, revenus par organisation | ✅ fait |
 | 4 | **Finances** — paiements, liens PSP, quittances, impayés, commissions, exports | ✅ fait |
-| 5 | **Annonces & modération** — annonces, prestataires, avis, KYC (reprise de `/dashboard/admin/*`) | ⬜ |
+| 5 | **Annonces & modération** — annonces, prestataires, avis, KYC (reprise de `/dashboard/admin/*`) | ✅ fait |
 | 6 | **Confiance & litiges** — litiges, cautions, arbitrage, journal métier | ⬜ |
 | 7 | **Base & sécurité** — inventaire des tables et de leur RLS, migrations appliquées, tâches cron, Edge Functions, variables d'environnement présentes, santé | ⬜ |
 | 8 | **Journal & réglages** — recherche dans `admin_actions`, interrupteurs de plateforme (maintenance, inscriptions, annonces, rappels, paiement), gestion des administrateurs | ⬜ |
@@ -77,6 +77,27 @@ avec un message explicite ; le reste de la console fonctionne.
 - `admin_set_org_plan()`, `admin_extend_org()` — plan et échéance.
 - `admin_finances()` — la synthèse sur une période.
 - `admin_payments()` — les règlements ligne à ligne, filtrables.
+- `admin_moderation()` — les quatre files (identités, prestataires, annonces, avis).
+- `admin_decide_kyc()`, `admin_set_provider_verified()`,
+  `admin_set_listing_published()`, `admin_set_review_hidden()` — les décisions.
+
+## Règles de modération portées par la base
+
+- **Un refus demande un motif.** Refus de pièce d'identité, dépublication
+  d'annonce, masquage d'avis : sans motif, la fonction SQL refuse. Le motif est
+  transmis à la personne concernée.
+- **Un prestataire ne se vérifie pas avant son identité.** Le badge « vérifié »
+  promet au client un contrôle ; le poser sans pièce validée serait mentir.
+- **Un avis se masque, il ne se supprime pas.** Colonnes `hidden_at`,
+  `hidden_by`, `hidden_reason` sur `reviews`, et la policy publique exclut les
+  avis masqués. Effacer la parole d'un client sans trace n'est pas de la
+  modération.
+- **`listings.depublished_by`** accepte désormais `admin`, en plus de `system` et
+  `owner` : une dépublication décidée en console est une cause distincte.
+
+Les anciennes pages `/dashboard/admin/kyc` et `/dashboard/admin/providers` sont
+supprimées — la console les remplace. L'entrée du tableau de bord propriétaire
+pointe vers `/admin` et se fonde sur `platform_admins`, plus sur `profiles.role`.
 
 ## La page Finances ne modifie rien
 

@@ -2683,6 +2683,23 @@ export type Database = {
         }[]
       }
       admin_extend_org: { Args: { p_id: string; p_jours: number }; Returns: Json }
+      admin_decide_kyc: {
+        Args: { p_id: string; p_valider: boolean; p_note?: string | null }
+        Returns: Json
+      }
+      admin_moderation: { Args: never; Returns: Json }
+      admin_set_listing_published: {
+        Args: { p_id: string; p_publier: boolean; p_motif?: string | null }
+        Returns: Json
+      }
+      admin_set_provider_verified: {
+        Args: { p_id: string; p_verifie: boolean; p_motif?: string | null }
+        Returns: Json
+      }
+      admin_set_review_hidden: {
+        Args: { p_id: string; p_masquer: boolean; p_motif?: string | null }
+        Returns: Json
+      }
       admin_organization_detail: { Args: { p_id: string }; Returns: Json }
       admin_organizations: {
         Args: {

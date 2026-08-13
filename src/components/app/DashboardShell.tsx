@@ -90,7 +90,6 @@ const PAGE_TITLES: Record<string, string> = {
   "/dashboard/annonces": "Annonces",
   "/dashboard/reports": "Rapports",
   "/dashboard/verification": "Vérification",
-  "/dashboard/admin/kyc": "Validation KYC",
   "/dashboard/settings": "Paramètres",
   "/dashboard/onboarding": "Configuration",
   "/dashboard/billing": "Facturation",
@@ -152,11 +151,18 @@ function SidebarContent({ pathname, onNavigate }: { pathname: string; onNavigate
   const supabase = createClient()
   const [isAdmin, setIsAdmin] = useState(false)
 
+  // L'accès à la console se lit dans platform_admins, et nulle part ailleurs :
+  // profiles.role n'ouvre plus aucune porte depuis la migration 066.
   useEffect(() => {
     supabase.auth.getUser().then(({ data: { user } }) => {
       if (!user) return
-      supabase.from("profiles").select("role").eq("id", user.id).single()
-        .then(({ data }) => setIsAdmin(data?.role === "admin"))
+      supabase
+        .from("platform_admins")
+        .select("profile_id")
+        .eq("profile_id", user.id)
+        .is("revoked_at", null)
+        .maybeSingle()
+        .then(({ data }) => setIsAdmin(Boolean(data)))
     })
   }, [])
 
@@ -214,32 +220,12 @@ function SidebarContent({ pathname, onNavigate }: { pathname: string; onNavigate
         ))}
         {isAdmin && (
           <Link
-            href="/dashboard/admin/kyc"
+            href="/admin"
             onClick={onNavigate}
-            className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
-              pathname.startsWith("/dashboard/admin")
-                ? "border-l-3 bg-white/10 text-orange-400"
-                : "text-white/70 hover:bg-white/5 hover:text-white/90"
-            }`}
-            style={pathname.startsWith("/dashboard/admin") ? { borderLeftColor: "#f97316" } : undefined}
+            className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-white/70 transition-colors hover:bg-white/5 hover:text-white/90"
           >
             <ShieldCheck className="h-5 w-5 shrink-0" />
-            Validation KYC
-          </Link>
-        )}
-        {isAdmin && (
-          <Link
-            href="/dashboard/admin/providers"
-            onClick={onNavigate}
-            className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
-              pathname.startsWith("/dashboard/admin/providers")
-                ? "border-l-3 bg-white/10 text-orange-400"
-                : "text-white/70 hover:bg-white/5 hover:text-white/90"
-            }`}
-            style={pathname.startsWith("/dashboard/admin/providers") ? { borderLeftColor: "#f97316" } : undefined}
-          >
-            <Wrench className="h-5 w-5 shrink-0" />
-            Prestataires (admin)
+            Console d&apos;administration
           </Link>
         )}
       </nav>

@@ -52,7 +52,7 @@ const NAV: { label: string; items: NavItem[] }[] = [
     label: "Activité",
     items: [
       { href: "/admin/finances", label: "Finances", icon: Wallet },
-      { href: "/admin/moderation", label: "Annonces & modération", icon: Megaphone, soon: true },
+      { href: "/admin/moderation", label: "Annonces & modération", icon: Megaphone },
       { href: "/admin/confiance", label: "Confiance & litiges", icon: ShieldCheck, soon: true },
     ],
   },
