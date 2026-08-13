@@ -2608,6 +2608,35 @@ export type Database = {
     Functions: {
       admin_account_detail: { Args: { p_id: string }; Returns: Json }
       admin_assert_can_target: { Args: { p_id: string }; Returns: undefined }
+      admin_finances: {
+        Args: { p_du?: string | null; p_au?: string | null }
+        Returns: Json
+      }
+      admin_payments: {
+        Args: {
+          p_search?: string | null
+          p_methode?: string | null
+          p_du?: string | null
+          p_au?: string | null
+          p_limit?: number
+          p_offset?: number
+        }
+        Returns: {
+          id: string
+          paye_le: string | null
+          montant: number
+          methode: string
+          reference: string | null
+          psp: string | null
+          org_id: string | null
+          org_nom: string | null
+          locataire: string | null
+          bien: string | null
+          quittance: string | null
+          echeance_le: string | null
+          total: number
+        }[]
+      }
       admin_log_action: {
         Args: {
           p_action: string

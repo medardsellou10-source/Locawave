@@ -35,7 +35,7 @@ tracées dans `admin_actions` (journal en ajout seul). Voir « Où vivent les
 | 1 | **Socle & vue d'ensemble** — `platform_admins`, fermeture des escalades de privilèges, `admin_actions`, `admin_settings`, KPI plateforme | ✅ fait |
 | 2 | **Comptes** — tous les comptes, filtres, fiche détaillée, changement de rôle, suspension, réinitialisation de mot de passe | ✅ fait |
 | 3 | **Organisations & abonnements** — plans, essais, prolongation, changement de plan, revenus par organisation | ✅ fait |
-| 4 | **Finances** — paiements, liens PSP, quittances, impayés, commissions, exports | ⬜ |
+| 4 | **Finances** — paiements, liens PSP, quittances, impayés, commissions, exports | ✅ fait |
 | 5 | **Annonces & modération** — annonces, prestataires, avis, KYC (reprise de `/dashboard/admin/*`) | ⬜ |
 | 6 | **Confiance & litiges** — litiges, cautions, arbitrage, journal métier | ⬜ |
 | 7 | **Base & sécurité** — inventaire des tables et de leur RLS, migrations appliquées, tâches cron, Edge Functions, variables d'environnement présentes, santé | ⬜ |
@@ -75,6 +75,18 @@ avec un message explicite ; le reste de la console fonctionne.
   `admin_set_platform_admin()` — les trois écritures sur un compte.
 - `admin_organizations()` / `admin_organization_detail()` — les organisations.
 - `admin_set_org_plan()`, `admin_extend_org()` — plan et échéance.
+- `admin_finances()` — la synthèse sur une période.
+- `admin_payments()` — les règlements ligne à ligne, filtrables.
+
+## La page Finances ne modifie rien
+
+Volontairement : un règlement constaté se corrige là où il a été saisi, par celui
+qui l'a saisi. Corriger d'un clic depuis la console ferait cesser la comptabilité
+du propriétaire d'être la sienne.
+
+Le seul geste possible est l'export CSV — et il est journalisé comme une action
+admin, avec le nombre de lignes et le total emportés : sortir des données de la
+plateforme laisse une trace.
 
 ## Trois montants à ne jamais confondre
 
