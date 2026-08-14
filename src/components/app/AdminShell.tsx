@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation"
 import { useState } from "react"
 import {
   Gauge,
+  Radio,
   Users,
   Building2,
   Wallet,
@@ -39,7 +40,10 @@ type NavItem = {
 const NAV: { label: string; items: NavItem[] }[] = [
   {
     label: "Pilotage",
-    items: [{ href: "/admin", label: "Vue d'ensemble", icon: Gauge }],
+    items: [
+      { href: "/admin", label: "Vue d'ensemble", icon: Gauge },
+      { href: "/admin/direct", label: "En direct", icon: Radio },
+    ],
   },
   {
     label: "Personnes",

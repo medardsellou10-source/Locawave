@@ -2608,6 +2608,11 @@ export type Database = {
     Functions: {
       admin_account_detail: { Args: { p_id: string }; Returns: Json }
       admin_assert_can_target: { Args: { p_id: string }; Returns: undefined }
+      admin_events_list: {
+        Args: { p_limit?: number; p_non_lus_seulement?: boolean }
+        Returns: Json
+      }
+      admin_events_mark_read: { Args: { p_id?: string | null }; Returns: Json }
       admin_finances: {
         Args: { p_du?: string | null; p_au?: string | null }
         Returns: Json

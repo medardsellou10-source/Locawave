@@ -79,7 +79,23 @@ vaut accès — **une fois, pour une seule personne, et pas au-delà de sa date*
 Aucune policy d'écriture n'existe sur `admin_invitations` : tout passe par les
 fonctions, qui vérifient les droits elles-mêmes.
 
-## Objets créés en base (migrations 066 à 075)
+## Le direct
+
+`/admin/direct` montre ce qui arrive au moment où ça arrive : incidents
+signalés, litiges ouverts, avis déposés, comptes créés, pièces d'identité
+soumises, candidatures, loyers réglés, abonnements payés.
+
+Pourquoi une table dédiée `admin_events` plutôt qu'un abonnement direct aux
+tables métier : **Realtime respecte la RLS**, et l'administrateur n'a pas de
+policy de lecture sur `incidents`, `applications` ou `reviews` — il les lit par
+des fonctions `SECURITY DEFINER`. S'abonner aux tables d'origine ne livrerait
+donc rien. Un flux unique, alimenté par des triggers et lisible des seuls
+administrateurs, règle la question et ne donne qu'une seule chose à écouter.
+
+Un incident urgent ou un litige lève une alerte visible ; le nombre de non-lus
+s'affiche dans le titre de l'onglet, pour se voir depuis une autre page.
+
+## Objets créés en base (migrations 066 à 076)
 
 - `platform_admins` — qui a le droit d'entrer (`is_super` = peut nommer/révoquer).
 - `admin_actions` — journal des actions admin, en ajout seul, lisible des admins.
@@ -88,6 +104,8 @@ fonctions, qui vérifient les droits elles-mêmes.
 - `admin_overview()` — tous les chiffres de la plateforme en un appel.
 - `admin_invitations` + `admin_create_invitation()`, `admin_accept_invitation()`,
   `admin_revoke_invitation()`, `admin_invitations_list()` — l'entrée par invitation.
+- `admin_events` + huit triggers + `admin_events_list()` / `admin_events_mark_read()`
+  — le flux en direct, publié dans `supabase_realtime`.
 - `admin_accounts()` / `admin_account_detail()` — la liste filtrable et la fiche.
 - `admin_log_action()` — écrit au journal (relève l'IP et l'agent dans les
   en-têtes de la requête, que PostgREST expose à la base).
