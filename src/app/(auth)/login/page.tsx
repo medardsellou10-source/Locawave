@@ -4,7 +4,7 @@ export const dynamic = "force-dynamic"
 
 import { useState } from "react"
 import { createClient } from "@/lib/supabase"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import Link from "next/link"
 import { Loader2, Mail, ArrowLeft } from "lucide-react"
@@ -21,17 +21,24 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 
-export default function LoginPage() {
+/**
+ * Retour vers la page demandée après connexion (ex. une invitation à la
+ * console). Lu au moment du clic plutôt qu'avec useSearchParams() : ce hook
+ * impose d'envelopper toute la page dans une frontière Suspense, alors que la
+ * valeur n'est utile qu'ici, dans le navigateur.
+ *
+ * Seuls les chemins internes sont acceptés : « //ailleurs.com » ressemble à un
+ * chemin mais emmène sur un autre domaine.
+ */
+function destinationApresConnexion(): string {
+  if (typeof window === "undefined") return "/dashboard"
+  const demande = new URLSearchParams(window.location.search).get("next")
+  return demande && demande.startsWith("/") && !demande.startsWith("//")
+    ? demande
+    : "/dashboard"
+}
 
-  const params = useSearchParams()
-  // Retour vers la page demandée après connexion (ex. une invitation à la
-  // console). Seuls les chemins internes sont acceptés : « //ailleurs.com »
-  // ressemble à un chemin mais emmène sur un autre domaine.
-  const demande = params.get("next")
-  const destination =
-    demande && demande.startsWith("/") && !demande.startsWith("//")
-      ? demande
-      : "/dashboard"
+export default function LoginPage() {
   const router = useRouter()
   const supabase = createClient()
   const [isLoading, setIsLoading] = useState(false)
@@ -78,7 +85,7 @@ export default function LoginPage() {
       }
 
       toast.success("Connexion réussie !")
-      router.push(destination)
+      router.push(destinationApresConnexion())
     } catch {
       toast.error("Une erreur inattendue est survenue")
     } finally {
