@@ -14,6 +14,109 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_actions: {
+        Row: {
+          action: string
+          admin_email: string | null
+          admin_id: string | null
+          after_state: Json | null
+          at: string
+          before_state: Json | null
+          id: string
+          ip: string | null
+          summary: string | null
+          target_id: string | null
+          target_type: string | null
+          user_agent: string | null
+        }
+        Insert: {
+          action: string
+          admin_email?: string | null
+          admin_id?: string | null
+          after_state?: Json | null
+          at?: string
+          before_state?: Json | null
+          id?: string
+          ip?: string | null
+          summary?: string | null
+          target_id?: string | null
+          target_type?: string | null
+          user_agent?: string | null
+        }
+        Update: {
+          action?: string
+          admin_email?: string | null
+          admin_id?: string | null
+          after_state?: Json | null
+          at?: string
+          before_state?: Json | null
+          id?: string
+          ip?: string | null
+          summary?: string | null
+          target_id?: string | null
+          target_type?: string | null
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
+      admin_settings: {
+        Row: {
+          description: string | null
+          key: string
+          label: string
+          updated_at: string
+          updated_by: string | null
+          value: Json
+        }
+        Insert: {
+          description?: string | null
+          key: string
+          label: string
+          updated_at?: string
+          updated_by?: string | null
+          value?: Json
+        }
+        Update: {
+          description?: string | null
+          key?: string
+          label?: string
+          updated_at?: string
+          updated_by?: string | null
+          value?: Json
+        }
+        Relationships: []
+      }
+      platform_admins: {
+        Row: {
+          email: string | null
+          granted_at: string
+          granted_by: string | null
+          is_super: boolean
+          note: string | null
+          profile_id: string
+          revoked_at: string | null
+        }
+        Insert: {
+          email?: string | null
+          granted_at?: string
+          granted_by?: string | null
+          is_super?: boolean
+          note?: string | null
+          profile_id: string
+          revoked_at?: string | null
+        }
+        Update: {
+          email?: string | null
+          granted_at?: string
+          granted_by?: string | null
+          is_super?: boolean
+          note?: string | null
+          profile_id?: string
+          revoked_at?: string | null
+        }
+        Relationships: []
+      }
+
       activity_logs: {
         Row: {
           action: string
@@ -2503,6 +2606,183 @@ export type Database = {
       }
     }
     Functions: {
+      admin_account_detail: { Args: { p_id: string }; Returns: Json }
+      admin_assert_can_target: { Args: { p_id: string }; Returns: undefined }
+      admin_events_list: {
+        Args: { p_limit?: number; p_non_lus_seulement?: boolean }
+        Returns: Json
+      }
+      admin_events_mark_read: { Args: { p_id?: string | null }; Returns: Json }
+      admin_finances: {
+        Args: { p_du?: string | null; p_au?: string | null }
+        Returns: Json
+      }
+      admin_payments: {
+        Args: {
+          p_search?: string | null
+          p_methode?: string | null
+          p_du?: string | null
+          p_au?: string | null
+          p_limit?: number
+          p_offset?: number
+        }
+        Returns: {
+          id: string
+          paye_le: string | null
+          montant: number
+          methode: string
+          reference: string | null
+          psp: string | null
+          org_id: string | null
+          org_nom: string | null
+          locataire: string | null
+          bien: string | null
+          quittance: string | null
+          echeance_le: string | null
+          total: number
+        }[]
+      }
+      admin_log_action: {
+        Args: {
+          p_action: string
+          p_target_type?: string | null
+          p_target_id?: string | null
+          p_summary?: string | null
+          p_before?: Json | null
+          p_after?: Json | null
+          p_ip?: string | null
+          p_user_agent?: string | null
+        }
+        Returns: string
+      }
+      admin_set_account_role: { Args: { p_id: string; p_role: string }; Returns: Json }
+      admin_set_account_suspension: {
+        Args: { p_id: string; p_suspendre: boolean }
+        Returns: Json
+      }
+      admin_set_platform_admin: {
+        Args: { p_id: string; p_accorder: boolean }
+        Returns: Json
+      }
+      admin_accounts: {
+        Args: {
+          p_search?: string | null
+          p_role?: string | null
+          p_limit?: number
+          p_offset?: number
+        }
+        Returns: {
+          id: string
+          full_name: string
+          email: string | null
+          role: string
+          kyc_status: string
+          phone: string | null
+          created_at: string
+          last_sign_in: string | null
+          suspendu: boolean
+          est_admin: boolean
+          org_nom: string | null
+          org_id: string | null
+          total: number
+        }[]
+      }
+      admin_extend_org: { Args: { p_id: string; p_jours: number }; Returns: Json }
+      admin_decide_kyc: {
+        Args: { p_id: string; p_valider: boolean; p_note?: string | null }
+        Returns: Json
+      }
+      admin_moderation: { Args: never; Returns: Json }
+      admin_resolve_dispute: {
+        Args: { p_id: string; p_decision: string; p_resolution?: string | null }
+        Returns: Json
+      }
+      admin_accept_invitation: { Args: { p_token: string }; Returns: Json }
+      admin_create_invitation: {
+        Args: { p_email?: string | null; p_heures?: number; p_note?: string | null }
+        Returns: Json
+      }
+      admin_invitations_list: { Args: never; Returns: Json }
+      admin_revoke_invitation: { Args: { p_id: string }; Returns: Json }
+      admin_journal: {
+        Args: {
+          p_search?: string | null
+          p_action?: string | null
+          p_du?: string | null
+          p_au?: string | null
+          p_limit?: number
+          p_offset?: number
+        }
+        Returns: {
+          id: string
+          action: string
+          resume: string | null
+          admin_email: string | null
+          admin_nom: string | null
+          cible_type: string | null
+          cible_id: string | null
+          avant: Json | null
+          apres: Json | null
+          ip: string | null
+          au_moment: string
+          total: number
+        }[]
+      }
+      admin_set_setting: {
+        Args: { p_key: string; p_active: boolean; p_message?: string | null }
+        Returns: Json
+      }
+      admin_settings_view: { Args: never; Returns: Json }
+      admin_system: { Args: never; Returns: Json }
+      mode_maintenance: { Args: never; Returns: boolean }
+      reglage_actif: { Args: { p_key: string }; Returns: boolean }
+      admin_trust: { Args: never; Returns: Json }
+      admin_set_listing_published: {
+        Args: { p_id: string; p_publier: boolean; p_motif?: string | null }
+        Returns: Json
+      }
+      admin_set_provider_verified: {
+        Args: { p_id: string; p_verifie: boolean; p_motif?: string | null }
+        Returns: Json
+      }
+      admin_set_review_hidden: {
+        Args: { p_id: string; p_masquer: boolean; p_motif?: string | null }
+        Returns: Json
+      }
+      admin_organization_detail: { Args: { p_id: string }; Returns: Json }
+      admin_organizations: {
+        Args: {
+          p_search?: string | null
+          p_plan?: string | null
+          p_limit?: number
+          p_offset?: number
+        }
+        Returns: {
+          id: string
+          nom: string
+          plan: string
+          expire_le: string | null
+          expire: boolean
+          proprietaire: string | null
+          proprietaire_id: string | null
+          email: string | null
+          membres: number
+          biens: number
+          baux_actifs: number
+          loyers_encaisses: number
+          impayes: number
+          paye_a_locawave: number
+          creee_le: string
+          total: number
+        }[]
+      }
+      admin_overview: { Args: never; Returns: Json }
+      admin_set_org_plan: {
+        Args: { p_id: string; p_plan: string; p_mois?: number }
+        Returns: Json
+      }
+      is_super_admin: { Args: never; Returns: boolean }
+
       _postgis_deprecate: {
         Args: { newname: string; oldname: string; version: string }
         Returns: undefined

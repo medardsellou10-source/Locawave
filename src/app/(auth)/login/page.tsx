@@ -21,6 +21,23 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 
+/**
+ * Retour vers la page demandée après connexion (ex. une invitation à la
+ * console). Lu au moment du clic plutôt qu'avec useSearchParams() : ce hook
+ * impose d'envelopper toute la page dans une frontière Suspense, alors que la
+ * valeur n'est utile qu'ici, dans le navigateur.
+ *
+ * Seuls les chemins internes sont acceptés : « //ailleurs.com » ressemble à un
+ * chemin mais emmène sur un autre domaine.
+ */
+function destinationApresConnexion(): string {
+  if (typeof window === "undefined") return "/dashboard"
+  const demande = new URLSearchParams(window.location.search).get("next")
+  return demande && demande.startsWith("/") && !demande.startsWith("//")
+    ? demande
+    : "/dashboard"
+}
+
 export default function LoginPage() {
   const router = useRouter()
   const supabase = createClient()
@@ -68,7 +85,7 @@ export default function LoginPage() {
       }
 
       toast.success("Connexion réussie !")
-      router.push("/dashboard")
+      router.push(destinationApresConnexion())
     } catch {
       toast.error("Une erreur inattendue est survenue")
     } finally {

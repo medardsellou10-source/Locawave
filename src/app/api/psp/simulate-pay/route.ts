@@ -35,7 +35,10 @@ export async function POST(request: NextRequest) {
   const signature = await computeWebhookSignature(rawBody, secret)
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-  const res = await fetch(`${supabaseUrl}/functions/v1/psp-webhook`, {
+  // La référence dit de quoi il s'agit : SUB- pour un abonnement Locawave,
+  // le reste pour un loyer. Chacun a sa fonction.
+  const fonction = String(ref).startsWith("SUB-") ? "abonnement-webhook" : "psp-webhook"
+  const res = await fetch(`${supabaseUrl}/functions/v1/${fonction}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

@@ -24,6 +24,17 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Non authentifié" }, { status: 401 })
   }
 
+  // Interrupteur « Paiement en ligne » : coupé, on ne fabrique plus de liens.
+  // Les liens déjà envoyés restent honorés par le PSP — on ne casse pas un
+  // paiement en cours de route.
+  const { data: pspActif } = await supabase.rpc("reglage_actif", { p_key: "psp_enabled" })
+  if (pspActif === false) {
+    return NextResponse.json(
+      { error: "Le paiement en ligne est momentanément désactivé." },
+      { status: 503 }
+    )
+  }
+
   const { data: schedule, error: schedErr } = await supabase
     .from("rent_schedules")
     .select(

@@ -14,6 +14,8 @@ serve(async () => {
   if (!schedules?.length) return new Response(JSON.stringify({ sent: 0 }))
 
   let sent = 0
+
+  let echecs = 0
   for (const sched of schedules) {
     const lease = (sched as any).leases
     const tenant = lease?.tenants
@@ -34,11 +36,24 @@ serve(async () => {
       .replace("{wave_number}", org?.wave_number ?? "")
 
     try {
-      await fetch(`${Deno.env.get("SUPABASE_URL")}/functions/v1/send-whatsapp`, {
+      // send-whatsapp renvoie { sent: boolean } et un statut HTTP fidèle depuis
+      // sa correction : 503 si la passerelle Twilio n'est pas configurée, 502 si
+      // Twilio refuse. On lit ce résultat au lieu de supposer l'envoi — fetch()
+      // ne rejette que sur erreur réseau, donc un 503 se résolvait normalement
+      // et le rappel était compté comme parti.
+      const res = await fetch(`${Deno.env.get("SUPABASE_URL")}/functions/v1/send-whatsapp`, {
         method: "POST",
         headers: { Authorization: `Bearer ${Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")}`, "Content-Type": "application/json" },
         body: JSON.stringify({ to: tenant.whatsapp, message, org_id: sched.org_id }),
       })
+      const envoi = await res.json().catch(() => ({}))
+      if (!res.ok || envoi?.sent !== true) {
+        // Ne pas horodater un rappel qui n'est jamais parti : sinon le
+        // locataire ne sera jamais relancé, le système le croyant prévenu.
+        console.error(`rappel non envoyé à ${tenant.whatsapp} : ${envoi?.error ?? res.status}`)
+        echecs++
+        continue
+      }
 
       await supabase.from("rent_schedules").update({
         reminder_count: (sched.reminder_count ?? 0) + 1,
@@ -49,5 +64,5 @@ serve(async () => {
     } catch (e) { console.error(e) }
   }
 
-  return new Response(JSON.stringify({ sent }), { headers: { "Content-Type": "application/json" } })
+  return new Response(JSON.stringify({ sent, echecs }), { headers: { "Content-Type": "application/json" } })
 })

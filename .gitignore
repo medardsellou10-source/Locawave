@@ -40,3 +40,6 @@ next-env.d.ts
 deps*.json
 logs*.json
 build_*.txt
+
+# Jeu de données de démonstration — hors dépôt depuis la table rase du 14/08/2026
+supabase/seed-demo.sql

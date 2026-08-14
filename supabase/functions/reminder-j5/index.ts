@@ -30,6 +30,8 @@ serve(async () => {
 
   let sent = 0
 
+  let echecs = 0
+
   for (const sched of schedules) {
     const lease = (sched as any).leases
     const tenant = lease?.tenants
@@ -66,7 +68,12 @@ serve(async () => {
 
     // Envoyer via send-whatsapp
     try {
-      await fetch(`${Deno.env.get("SUPABASE_URL")}/functions/v1/send-whatsapp`, {
+      // send-whatsapp renvoie { sent: boolean } et un statut HTTP fidèle depuis
+      // sa correction : 503 si la passerelle Twilio n'est pas configurée, 502 si
+      // Twilio refuse. On lit ce résultat au lieu de supposer l'envoi — fetch()
+      // ne rejette que sur erreur réseau, donc un 503 se résolvait normalement
+      // et le rappel était compté comme parti.
+      const res = await fetch(`${Deno.env.get("SUPABASE_URL")}/functions/v1/send-whatsapp`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")}`,
@@ -74,13 +81,19 @@ serve(async () => {
         },
         body: JSON.stringify({ to: tenant.whatsapp, message, org_id: sched.org_id }),
       })
+      const envoi = await res.json().catch(() => ({}))
+      if (!res.ok || envoi?.sent !== true) {
+        console.error(`rappel non envoyé à ${tenant.whatsapp} : ${envoi?.error ?? res.status}`)
+        echecs++
+        continue
+      }
       sent++
     } catch (e) {
       console.error(`Erreur envoi ${tenant.whatsapp}:`, e)
     }
   }
 
-  return new Response(JSON.stringify({ sent, total: schedules.length }), {
+  return new Response(JSON.stringify({ sent, echecs, total: schedules.length }), {
     headers: { "Content-Type": "application/json" },
   })
 })
