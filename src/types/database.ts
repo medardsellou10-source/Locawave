@@ -2692,6 +2692,13 @@ export type Database = {
         Args: { p_id: string; p_decision: string; p_resolution?: string | null }
         Returns: Json
       }
+      admin_accept_invitation: { Args: { p_token: string }; Returns: Json }
+      admin_create_invitation: {
+        Args: { p_email?: string | null; p_heures?: number; p_note?: string | null }
+        Returns: Json
+      }
+      admin_invitations_list: { Args: never; Returns: Json }
+      admin_revoke_invitation: { Args: { p_id: string }; Returns: Json }
       admin_journal: {
         Args: {
           p_search?: string | null

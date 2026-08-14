@@ -4,7 +4,7 @@ export const dynamic = "force-dynamic"
 
 import { useState } from "react"
 import { createClient } from "@/lib/supabase"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { toast } from "sonner"
 import Link from "next/link"
 import { Loader2, Mail, ArrowLeft } from "lucide-react"
@@ -22,6 +22,16 @@ import {
 } from "@/components/ui/card"
 
 export default function LoginPage() {
+
+  const params = useSearchParams()
+  // Retour vers la page demandée après connexion (ex. une invitation à la
+  // console). Seuls les chemins internes sont acceptés : « //ailleurs.com »
+  // ressemble à un chemin mais emmène sur un autre domaine.
+  const demande = params.get("next")
+  const destination =
+    demande && demande.startsWith("/") && !demande.startsWith("//")
+      ? demande
+      : "/dashboard"
   const router = useRouter()
   const supabase = createClient()
   const [isLoading, setIsLoading] = useState(false)
@@ -68,7 +78,7 @@ export default function LoginPage() {
       }
 
       toast.success("Connexion réussie !")
-      router.push("/dashboard")
+      router.push(destination)
     } catch {
       toast.error("Une erreur inattendue est survenue")
     } finally {

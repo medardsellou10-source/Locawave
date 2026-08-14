@@ -6,6 +6,7 @@ import {
   type Reglage,
   type Administrateur,
 } from "@/components/app/AdminReglages"
+import { AdminInvitations, type Invitation } from "@/components/app/AdminInvitations"
 
 export const dynamic = "force-dynamic"
 
@@ -19,7 +20,10 @@ export default async function AdminReglagesPage() {
   await requireAdmin()
 
   const supabase = await createServerClient()
-  const { data, error } = await supabase.rpc("admin_settings_view")
+  const [{ data, error }, { data: invitations }] = await Promise.all([
+    supabase.rpc("admin_settings_view"),
+    supabase.rpc("admin_invitations_list"),
+  ])
 
   if (error || !data) {
     return (
@@ -45,6 +49,11 @@ export default async function AdminReglagesPage() {
       <AdminReglages
         reglages={v.reglages}
         administrateurs={v.administrateurs}
+        jeSuisSuper={v.je_suis_super}
+      />
+
+      <AdminInvitations
+        invitations={(invitations as unknown as Invitation[]) ?? []}
         jeSuisSuper={v.je_suis_super}
       />
 

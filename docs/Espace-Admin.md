@@ -60,13 +60,34 @@ Seule exception : le lien de réinitialisation de mot de passe, qui exige l'API
 Auth admin — donc `SUPABASE_SERVICE_ROLE_KEY`. Sans elle, l'action répond 503
 avec un message explicite ; le reste de la console fonctionne.
 
-## Objets créés en base (migrations 066 à 068)
+## L'accès ne s'obtient que par invitation
+
+Le super-admin crée une invitation depuis « Réglages ». Elle produit un lien qui
+vaut accès — **une fois, pour une seule personne, et pas au-delà de sa date**.
+
+- La base ne stocke que **l'empreinte** du jeton (SHA-256). Une fuite de la base
+  ne donne aucune invitation utilisable, et le lien clair n'est affiché qu'une
+  seule fois, à sa création.
+- Un email posé sur l'invitation la **verrouille sur cette adresse** : même
+  interceptée, elle ne sert à personne d'autre.
+- L'acceptation exige une session : on sait donc toujours à qui l'accès est
+  donné. La page vit à `/acces-admin`, hors de `/admin` — sinon elle serait
+  invisible pour l'invité, qui n'est pas encore administrateur.
+- Un lien déjà servi, révoqué, expiré ou inconnu reçoit **le même message**.
+  Détailler renseignerait qui cherche à deviner.
+
+Aucune policy d'écriture n'existe sur `admin_invitations` : tout passe par les
+fonctions, qui vérifient les droits elles-mêmes.
+
+## Objets créés en base (migrations 066 à 075)
 
 - `platform_admins` — qui a le droit d'entrer (`is_super` = peut nommer/révoquer).
 - `admin_actions` — journal des actions admin, en ajout seul, lisible des admins.
 - `admin_settings` — réglages globaux (5 interrupteurs posés, câblés à l'étape 8).
 - `is_admin()` / `is_super_admin()` — refondues sur `platform_admins`.
 - `admin_overview()` — tous les chiffres de la plateforme en un appel.
+- `admin_invitations` + `admin_create_invitation()`, `admin_accept_invitation()`,
+  `admin_revoke_invitation()`, `admin_invitations_list()` — l'entrée par invitation.
 - `admin_accounts()` / `admin_account_detail()` — la liste filtrable et la fiche.
 - `admin_log_action()` — écrit au journal (relève l'IP et l'agent dans les
   en-têtes de la requête, que PostgREST expose à la base).
