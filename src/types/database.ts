@@ -2692,7 +2692,38 @@ export type Database = {
         Args: { p_id: string; p_decision: string; p_resolution?: string | null }
         Returns: Json
       }
+      admin_journal: {
+        Args: {
+          p_search?: string | null
+          p_action?: string | null
+          p_du?: string | null
+          p_au?: string | null
+          p_limit?: number
+          p_offset?: number
+        }
+        Returns: {
+          id: string
+          action: string
+          resume: string | null
+          admin_email: string | null
+          admin_nom: string | null
+          cible_type: string | null
+          cible_id: string | null
+          avant: Json | null
+          apres: Json | null
+          ip: string | null
+          au_moment: string
+          total: number
+        }[]
+      }
+      admin_set_setting: {
+        Args: { p_key: string; p_active: boolean; p_message?: string | null }
+        Returns: Json
+      }
+      admin_settings_view: { Args: never; Returns: Json }
       admin_system: { Args: never; Returns: Json }
+      mode_maintenance: { Args: never; Returns: boolean }
+      reglage_actif: { Args: { p_key: string }; Returns: boolean }
       admin_trust: { Args: never; Returns: Json }
       admin_set_listing_published: {
         Args: { p_id: string; p_publier: boolean; p_motif?: string | null }

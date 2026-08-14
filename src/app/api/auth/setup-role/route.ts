@@ -20,6 +20,14 @@ export async function POST(request: NextRequest) {
 
   const admin = createAdminClient()
 
+  const { data: ouvertes } = await admin.rpc("reglage_actif", { p_key: "signups_open" })
+  if (ouvertes === false) {
+    return NextResponse.json(
+      { error: "Les inscriptions sont momentanément fermées." },
+      { status: 503 }
+    )
+  }
+
   const { error: profErr } = await admin
     .from("profiles")
     .upsert({ id: user_id, full_name, role }, { onConflict: "id" })

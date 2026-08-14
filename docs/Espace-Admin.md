@@ -39,7 +39,7 @@ tracées dans `admin_actions` (journal en ajout seul). Voir « Où vivent les
 | 5 | **Annonces & modération** — annonces, prestataires, avis, KYC (reprise de `/dashboard/admin/*`) | ✅ fait |
 | 6 | **Confiance & litiges** — litiges, cautions, arbitrage, journal métier | ✅ fait |
 | 7 | **Base & sécurité** — inventaire des tables et de leur RLS, migrations appliquées, tâches cron, variables d'environnement présentes, santé | ✅ fait |
-| 8 | **Journal & réglages** — recherche dans `admin_actions`, interrupteurs de plateforme (maintenance, inscriptions, annonces, rappels, paiement), gestion des administrateurs | ⬜ |
+| 8 | **Journal & réglages** — recherche dans `admin_actions`, interrupteurs de plateforme (maintenance, inscriptions, annonces, rappels, paiement), gestion des administrateurs | ✅ fait |
 
 ## Où vivent les écritures
 
@@ -84,6 +84,29 @@ avec un message explicite ; le reste de la console fonctionne.
 - `admin_resolve_dispute()` — l'arbitrage.
 - `admin_system()` — tables, RLS, policies, fonctions à privilèges, buckets,
   tâches planifiées, migrations, extensions.
+- `admin_journal()` — l'historique des actions admin, cherchable.
+- `admin_settings_view()`, `admin_set_setting()` — les interrupteurs.
+- `reglage_actif()` / `mode_maintenance()` — lus par le code qui les applique.
+
+## Un interrupteur qui n'éteint rien serait pire qu'absent
+
+Les cinq réglages sont branchés à l'endroit qui les applique, pas seulement
+affichés :
+
+| Interrupteur | Où il agit |
+|---|---|
+| Mode maintenance | middleware — page de maintenance pour tous sauf les administrateurs |
+| Inscriptions ouvertes | `/api/auth/setup-org` et `/api/auth/setup-role` (503) |
+| Paiement en ligne | `/api/psp/create-link` (503) ; les liens déjà envoyés restent honorés |
+| Rappels WhatsApp | commande des tâches `lw_rent_reminders` et `lw_escalating_reminders` |
+| Annonces publiques | marketplace publique |
+
+`reglage_actif()` répond « cette fonctionnalité marche-t-elle ? » et retombe sur
+OUI si la ligne manque. **Le mode maintenance a sa propre fonction**,
+`mode_maintenance()` : la question y est inversée (« l'application est-elle
+coupée ? ») et le repli sûr aussi — ligne absente = pas de maintenance. Sans
+cette distinction, supprimer une ligne de réglage aurait mis toute la plateforme
+à l'arrêt.
 
 ## La salle des machines est en lecture seule
 

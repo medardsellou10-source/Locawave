@@ -53,6 +53,31 @@ export async function middleware(request: NextRequest) {
     return response
   }
 
+  // ===== Mode maintenance =====
+  // Il coupe les espaces applicatifs, pas les pages publiques : le site doit
+  // pouvoir continuer d'expliquer ce qui se passe. Les administrateurs passent —
+  // sans quoi on se retrouverait enfermé dehors avec l'interrupteur à l'intérieur.
+  if (path !== "/maintenance") {
+    // mode_maintenance() et non reglage_actif() : la question est inversée
+    // (« l'application est-elle coupée ? ») et le repli sûr l'est aussi.
+    const { data: maintenance } = await supabase.rpc("mode_maintenance")
+    if (maintenance === true) {
+      let estAdmin = false
+      if (session) {
+        const { data: adm } = await supabase
+          .from("platform_admins")
+          .select("profile_id")
+          .eq("profile_id", session.user.id)
+          .is("revoked_at", null)
+          .maybeSingle()
+        estAdmin = Boolean(adm)
+      }
+      if (!estAdmin) {
+        return NextResponse.rewrite(new URL("/maintenance", request.url))
+      }
+    }
+  }
+
   // Routes protégées : nécessitent une session (espaces + litiges/avantages transverses)
   if (!session && (path.startsWith("/dashboard") || path.startsWith("/locataire") || path.startsWith("/prestataire")
       || path.startsWith("/litiges") || path.startsWith("/avantages"))) {

@@ -27,6 +27,18 @@ export async function POST(request: NextRequest) {
 
     const supabase = createAdminClient()
 
+    // Interrupteur « Inscriptions ouvertes » : refusé ici plutôt qu'au niveau de
+    // l'interface seule, pour qu'un appel direct à l'API ne le contourne pas.
+    const { data: ouvertes } = await supabase.rpc("reglage_actif", {
+      p_key: "signups_open",
+    })
+    if (ouvertes === false) {
+      return NextResponse.json(
+        { error: "Les inscriptions sont momentanément fermées." },
+        { status: 503 }
+      )
+    }
+
     // Calculer la date d'expiration du plan trial (30 jours)
     const planExpiresAt = new Date()
     planExpiresAt.setDate(planExpiresAt.getDate() + 30)

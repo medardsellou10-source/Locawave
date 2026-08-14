@@ -60,8 +60,8 @@ const NAV: { label: string; items: NavItem[] }[] = [
     label: "Système",
     items: [
       { href: "/admin/systeme", label: "Base & sécurité", icon: Database },
-      { href: "/admin/journal", label: "Journal", icon: ScrollText, soon: true },
-      { href: "/admin/reglages", label: "Réglages", icon: SlidersHorizontal, soon: true },
+      { href: "/admin/journal", label: "Journal", icon: ScrollText },
+      { href: "/admin/reglages", label: "Réglages", icon: SlidersHorizontal },
     ],
   },
 ]
