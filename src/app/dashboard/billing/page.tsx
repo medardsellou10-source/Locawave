@@ -18,33 +18,47 @@ export default function BillingPage() {
   const { org } = useOrganization()
   const supabase = createClient()
   const [upgrading, setUpgrading] = useState<string | null>(null)
+  // Payer plusieurs mois d'avance est fréquent au Sénégal, et évite autant de
+  // passages par le paiement mobile.
+  const [mois, setMois] = useState(1)
 
   const currentPlan = org?.plan ?? "trial"
   const expiresAt = org?.plan_expires_at ? new Date(org.plan_expires_at) : null
 
+  /**
+   * S'abonner, pour de vrai.
+   *
+   * L'ancienne version écrivait le plan directement depuis le navigateur : un
+   * clic suffisait à s'offrir l'Agence sans rien payer. Désormais on demande un
+   * lien de paiement au serveur, et c'est le webhook du fournisseur qui
+   * activera l'abonnement une fois le règlement confirmé.
+   */
   async function handleUpgrade(planId: PlanId) {
     if (!org) return
     setUpgrading(planId)
 
-    // En production : rediriger vers Wave/OM payment page
-    // Pour l'instant : mise à jour directe (simulation)
-    const expiryDate = new Date()
-    expiryDate.setMonth(expiryDate.getMonth() + 1)
+    try {
+      const res = await fetch("/api/billing/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ plan: planId, mois }),
+      })
+      const data = await res.json().catch(() => ({}))
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { error } = await (supabase.from("organizations") as any)
-      .update({ plan: planId, plan_expires_at: expiryDate.toISOString() })
-      .eq("id", org.id)
+      if (!res.ok || !data.url) {
+        toast.error(data.error ?? "Impossible d'ouvrir le paiement.")
+        setUpgrading(null)
+        return
+      }
 
-    setUpgrading(null)
-
-    if (error) {
-      toast.error("Erreur lors de la mise à jour du plan")
-      return
+      if (data.simulation) {
+        toast.info("Mode simulation : aucun franc ne sera débité.")
+      }
+      window.location.href = data.url
+    } catch {
+      toast.error("Le serveur n'a pas répondu.")
+      setUpgrading(null)
     }
-
-    toast.success(`Plan ${planId.toUpperCase()} activé ! Expire le ${expiryDate.toLocaleDateString("fr-FR")}`)
-    window.location.reload()
   }
 
   return (
@@ -79,6 +93,25 @@ export default function BillingPage() {
           </div>
         </CardContent>
       </Card>
+
+      {/* Durée */}
+      <div className="mb-6 flex flex-wrap items-center gap-2">
+        <span className="text-sm text-gray-600">Je paie d&apos;avance :</span>
+        {[1, 3, 6, 12].map((m) => (
+          <button
+            key={m}
+            type="button"
+            onClick={() => setMois(m)}
+            className={`rounded-lg border px-3 py-1.5 text-sm transition-colors ${
+              mois === m
+                ? "border-[#1a2744] bg-[#1a2744] text-white"
+                : "border-gray-200 bg-white text-gray-700 hover:bg-gray-50"
+            }`}
+          >
+            {m} mois
+          </button>
+        ))}
+      </div>
 
       {/* Plans */}
       <div className="grid md:grid-cols-3 gap-6">
@@ -126,7 +159,7 @@ export default function BillingPage() {
                     {upgrading === plan.id ? (
                       <><Loader2 className="w-4 h-4 mr-1 animate-spin" /> Activation...</>
                     ) : (
-                      `Passer au ${plan.name}`
+                      `Passer au ${plan.name} — ${(plan.priceFcfa * mois).toLocaleString("fr-FR")} FCFA`
                     )}
                   </Button>
                 )}
